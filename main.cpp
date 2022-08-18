@@ -18,7 +18,7 @@ int sumaIterativa(int n){
 
 //Suma recursiva con complejidad de O(n)
 int sumaRecursiva(int n){
-    if (n != 0){
+    if (n >= 1){
         return n + sumaRecursiva(n - 1);
     }
     return n;
@@ -33,7 +33,7 @@ int main(){
     int n;
 
 
-    std::cout << "Dame un valor de n que sea positivo:\n";
+    std::cout << "Dame un valor de n que sea entero positivo:\n";
     std::cin >> n;
 
     if (n>=0){
