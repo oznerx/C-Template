@@ -4,9 +4,21 @@
 //Mtricula
 //Nombre
 
-void ordenaIntercambio(){
-
+void ordenaIntercambio(std::vector<int> vec, int n){ 
+    int i, j, aux; 
+    for (i = 0 ; i <= n-2 ; i++){
+        for (j = i+1 ; j <= n-1 ; j++){
+            if (vec[i] > vec[j]){
+                aux = vec[i];
+                vec[i] = vec[j];
+                vec[j]= aux ;
+            }
+        }
+        std::cout << "a\n";
+    } 
 }
+
+
 
 void ordenaBurbuja(){
     
@@ -37,7 +49,9 @@ int main()
         std::cin >> num;
         vec.push_back(num);  
     } 
-    
+
+    ordenaIntercambio(vec,n);
+
     std::cout << "\n";
     std::cout << "El vector tiene los valores: \n";
     for(auto i=0;i<vec.size();i++){
