@@ -33,8 +33,14 @@ int main()
 
     for (int i = 0;i < n; i++){
         int num;
-        std::cout << "Dame un número: \n";
+        std::cout << "Dame un número para la posición " << i+1 << ":\n";
         std::cin >> num;
-        vec.insert(i,num);  
+        vec.push_back(num);  
     } 
+    
+    std::cout << "\n";
+    std::cout << "El vector tiene los valores: \n";
+    for(auto i=0;i<vec.size();i++){
+        std::cout << vec[i] << "\n";
+    }
 }
