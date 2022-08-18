@@ -53,5 +53,6 @@ int main(){
         std::cout << "El numero no es positivo\n";
     }
 
+    return 0;
 }
 
