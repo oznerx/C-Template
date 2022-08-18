@@ -81,18 +81,54 @@ void ordenaMerge(std::vector<int>& vector, int s, int e) {
 }
 
 
-void busqBinaria(){
+int busqBinaria(std::vector<int>& vec, int low, int high, int num){
 
+    while (low <= high) {
+
+        int mid = low + (high - low) / 2;
+
+        if (vec[mid] == num){
+            return mid;
+        }
+
+        if (vec[mid] < num){
+            low = mid + 1;
+        }
+
+        else{
+            high = mid - 1;
+        }
+        
+    }
+
+    return -1;
 }
 
-void busqSecuencial(){
-
+int busqSecuencial(std::vector<int>& vector, int num){
+    bool found = false;
+    int location;
+    for(location=0; location<vector.size(); location++)
+    {
+        if(vector.at(location) == num)
+        {
+            found = true;
+            break;
+        }
+    }
+    if(found)
+    {
+        return location;
+    }
+    else
+    {
+        return -1;
+    }
 }
 
 int main()
 {
     std::vector<int> vec;
-    int n, low , mid, high;
+    int n, low , mid, high, valor;
     std::cout << "¿Cúantos datos quieres que tenga el vector?\n";
     std::cin >> n;
 
@@ -111,11 +147,16 @@ int main()
     std::vector <int> ordenaB = ordenaBurbuja(vec,n);
     ordenaMerge(vec,0,n-1);
 
-
-
     for(auto i=0;i<vec.size();i++){
         std::cout << vec[i] << "\n";
     }
+
+    std::cout << "Dame un valor a buscar en el vector\n";
+    std::cin >> valor;
+    low = 0;
+    high = vec.size();
+    //std::cout << "El numero se encuentra en la posición " << busqSecuencial(vec,valor) << " del vector (iniciando en 0)\n";
+    std::cout << "El numero se encuentra en la posición " << busqBinaria(vec,0,vec.size(),valor) << " del vector (iniciando en 0)\n";
 
 
 }
