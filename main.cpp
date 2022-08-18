@@ -1,10 +1,32 @@
-#include "Perro.hpp"
 #include <iostream>
+#include <vector>
+
+//Mtricula
+//Nombre
+
+void ordenaIntercambio(){
+
+}
+
+void ordenaBurbuja(){
+    
+}
+
+void ordenaMerge(){
+    
+}
+
+void busqSecuencial(){
+    
+}
+
+void busqBinaria(){
+    
+}
 
 int main()
 {
-    Perro c(4,5);
-    c.salta();
+    std::vector<int> vec;
 
     std::cout << "This is my C++ gitpod template\n";
 }
