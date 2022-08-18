@@ -1,8 +1,8 @@
 #include <iostream>
 #include <vector>
 
-//Mtricula
 //Nombre
+//Matricula
 
 std::vector<int> ordenaIntercambio(std::vector<int> vec, int n){ 
     int i, j, aux; 
@@ -139,14 +139,21 @@ int main()
         vec.push_back(num);  
     } 
 
+    std::cout << "\n";
+    std::cout << "Utilizando el método de intercambio el vector tiene los valores en el siguiente orden : \n";
+    for(auto i=0;i<ordenaIntercambio(vec,n).size();i++){
+        std::cout << ordenaIntercambio(vec,n)[i] << "\n";
+    }
 
     std::cout << "\n";
-    std::cout << "El vector tiene los valores en el siguiente orden: \n";
+    std::cout << "Utilizando el método de burbuja el vector tiene los siguientes valores en el siguiente orden : \n";
+    for(auto i=0;i<ordenaBurbuja(vec,n).size();i++){
+        std::cout << ordenaBurbuja(vec,n)[i] << "\n";
+    }
 
-    std::vector <int> ordenaI = ordenaIntercambio(vec,n);
-    std::vector <int> ordenaB = ordenaBurbuja(vec,n);
-    ordenaMerge(vec,0,n-1);
-
+    std::cout << "\n";
+    std::cout << "Utilizando el método de merge el vector tiene los valores en el siguiente orden : \n";
+    ordenaMerge(vec,0,n-1);    
     for(auto i=0;i<vec.size();i++){
         std::cout << vec[i] << "\n";
     }
@@ -155,8 +162,8 @@ int main()
     std::cin >> valor;
     low = 0;
     high = vec.size();
-    //std::cout << "El numero se encuentra en la posición " << busqSecuencial(vec,valor) << " del vector (iniciando en 0)\n";
-    std::cout << "El numero se encuentra en la posición " << busqBinaria(vec,0,vec.size(),valor) << " del vector (iniciando en 0)\n";
+    std::cout << "Utilizando la busqueda secuencial el numero se encuentra en la posición  " << busqSecuencial(vec,valor) << " del vector (iniciando en 0)\n";
+    std::cout << "Utilizando la busqueda binaria el numero se encuentra en la posición  " << busqBinaria(vec,0,vec.size(),valor) << " del vector (iniciando en 0)\n";
 
 
 }
