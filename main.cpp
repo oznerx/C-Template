@@ -27,6 +27,14 @@ void busqBinaria(){
 int main()
 {
     std::vector<int> vec;
+    int n;
+    std::cout << "¿Cúantos datos quieres que tenga el vector?\n";
+    std::cin >> n;
 
-    std::cout << "This is my C++ gitpod template\n";
+    for (int i = 0;i < n; i++){
+        int num;
+        std::cout << "Dame un número: \n";
+        std::cin >> num;
+        vec.insert(i,num);  
+    } 
 }
