@@ -1,8 +1,8 @@
 #include <iostream>
 #include <vector>
 
-//Nombre
-//Matricula
+//Brizeth Alejandra Solano Martínez
+//A01742281
 
 //Se crea una función que retorna el otro vector con los mismos valores que el introducido pero ya esta ordenado con el método de Intercambio
 //Es de orden O(n^2)
@@ -133,19 +133,34 @@ int busqSecuencial(std::vector<int>& vector, int num){
     }
 }
 
-int main()
+int main() //Si se quiere trabajar con terminal solo elimine los bloques de código comentado y quite los valores a las variables
 {
     std::vector<int> vec; //Declaració del vector a utilizar 
     int n, low , mid, high, valor;
+
+    /*
     std::cout << "¿Cúantos datos quieres que tenga el vector?\n";
     std::cin >> n;
+    */
 
+    n=7;
+
+    /*
     for (int i = 0;i < n; i++){ //Se recorre el vector para agragar valores 
         int num;
         std::cout << "Dame un número para la posición " << i << ":\n";
         std::cin >> num;
         vec.push_back(num);  
     } 
+    */
+
+    vec = {8, 5, 1, 4, 3, 7, 6 }; //Definimos los datos del vector 
+
+    std::cout << "\n";
+    std::cout << "Los valores predeterminados del vector son los siguientes: \n";
+    for(auto i=0;i<vec.size();i++){ //Se recorre el nuevo vector para ir mostrando valor por valor 
+        std::cout << vec[i] << "\n";
+    }
 
     std::cout << "\n";
     std::cout << "Utilizando el método de intercambio el vector tiene los valores en el siguiente orden : \n";
@@ -166,13 +181,19 @@ int main()
         std::cout << vec[i] << "\n";
     }
 
+    /*
     std::cout << "\n";
     std::cout << "Dame un valor a buscar en el vector\n";
     std::cin >> valor;
+    */
+
+    valor = 7;
     low = 0;
     high = vec.size();
-    std::cout << "\n";
-    std::cout << "Utilizando la busqueda secuencial el numero se encuentra en la posición  " << busqSecuencial(vec,valor) << " del vector (iniciando en 0)\n";
-    std::cout << "Utilizando la busqueda binaria el numero se encuentra en la posición  " << busqBinaria(vec,0,vec.size(),valor) << " del vector (iniciando en 0)\n";
 
+    std::cout << "\n";
+    std::cout << "Utilizando la busqueda secuencial el número '7' se encuentra en la posición  " << busqSecuencial(vec,valor) << " del vector (iniciando en 0)\n";
+    std::cout << "\n";
+    std::cout << "Utilizando la busqueda binaria el número '7' se encuentra en la posición  " << busqBinaria(vec,0,vec.size(),valor) << " del vector (iniciando en 0)\n";
+    std::cout << "\n";
 }
