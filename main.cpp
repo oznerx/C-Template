@@ -27,29 +27,30 @@ void print(std::vector <std::string>& v){
     }
 }
 
-void loadFile(std::vector <std::string>& data, std::vector <std::string>& dates){
+void loadFile(std::vector <std::string>& data, std::vector <std::string>& dates, std::vector <std::string>& months,std::vector <std::string>& days){
     std::string str;
     std::ifstream file("bitacora.txt");
-    char separator = ' ';
     
-
-
     // Read the next line from File untill it reaches the end.
 
     while (std::getline(file, str))
     {
-        
-
         // Line contains string of length > 0 then save it in vector
         if(str.size() > 0){
             data.push_back(str);
         }
-    }
 
+    }
+    
     for(int i=0;i<data.size();i++){
         split(data[i], dates);
-        //print(dates);
+        days.push_back(dates[1]);
+        months.push_back(dates[0]);
     }
+
+
+
+    print(days);
     
     //Close The File
     file.close();
@@ -79,10 +80,13 @@ int main()
 
     std::vector <std::string> data;
     std::vector <std::string> dates;
+    std::vector <std::string> months;
+    std::vector <std::string> days;
+
     
 
 
-    loadFile(data,dates);
+    loadFile(data,dates, months, days);
     //print(data);
     //print(dates);
 
