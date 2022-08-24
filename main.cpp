@@ -3,15 +3,60 @@
 #include <string>
 #include <fstream> 
 
-void loadFromFile(std::vector <std::string>& data){
+void split(std::string s, std::vector<std::string>& data){
+	
+    std::vector <std::string> date;
+	std::string temp = "";
+
+	for(int i=0;i<s.length();++i){
+		
+		if(s[i]==' '){
+			date.push_back(temp);
+			temp = "";
+		}
+		else{
+			temp.push_back(s[i]);
+		}
+		
+	}
+	date.push_back(temp);
+}
+
+void SplitString(std::string s, std::vector<std::string> &v){
+	
+	std::string temp = "";
+	for(int i=0;i<s.length();++i){
+		
+		if(s[i]==' '){
+			v.push_back(temp);
+			temp = "";
+		}
+		else{
+			temp.push_back(s[i]);
+		}
+		
+	}
+	v.push_back(temp);
+	
+}
+
+void loadFile(std::vector <std::string>& data){
     std::string str;
     std::ifstream file("bitacora.txt");
+    std::vector <std::string> splitVector;
+    std::string date;
+
+    
 
 
     // Read the next line from File untill it reaches the end.
 
     while (std::getline(file, str))
     {
+        SplitString(str,splitVector);
+
+        splitVector[1] = date;
+
         // Line contains string of length > 0 then save it in vector
         if(str.size() > 0){
             data.push_back(str);
@@ -21,39 +66,23 @@ void loadFromFile(std::vector <std::string>& data){
     //Close The File
     file.close();
 }
-/*
-void split (std::vector <std::string> splitVector, std::string seperator){
 
-
-    for (int x=0;x<=9;x++)
-    {
-        splitVector[x]="";
+void print(std::vector <std::string>& v){
+        for(int i = 0; i < v.size();i++){
+        std::cout << v[i] << "\n";
     }
-
-    int currIndex = 0, i = 0;  
-    int startIndex = 0, endIndex = 0;  
-
-    while (i <= splitVector.size())  
-    {  
-        if (splitVector[i] == seperator || i == splitVector.size())  
-        {  
-            endIndex = i;  
-            std::string subStr = "";  
-            subStr.append(str, startIndex, endIndex - startIndex);  
-            splitVector[currIndex] = subStr;  
-            currIndex += 1;  
-            startIndex = endIndex + 1;  
-        }  
-        i++;  
-    }  
 }
+
+
+
+
 
 void search(std::vector <int>& vec , int sDate, int eDate){
     for (int sDate;sDate < eDate;sDate++){
         std::cout << "This is my C++ gitpod template\n";
     }
 }
-*/
+
 int main()
 {
 /*
@@ -65,13 +94,11 @@ int main()
 */
 
     std::vector <std::string> data;
-    loadFromFile(data);
 
-    std::cout << "This is my C++ gitpod template\n";
+    loadFile(data);
+    print(data);
     
-    for(int i = 0; i < data.size();i++){
-        std::cout << data[i] << "\n";
-    }
+
 
 
 }
