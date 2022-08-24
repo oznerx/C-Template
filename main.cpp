@@ -40,12 +40,10 @@ void SplitString(std::string s, std::vector<std::string> &v){
 	
 }
 
-void loadFile(std::vector <std::string>& data){
+void loadFile(std::vector <std::string>& data, std::vector <std::string>& dates){
     std::string str;
     std::ifstream file("bitacora.txt");
     std::vector <std::string> splitVector;
-    std::string date;
-
     
 
 
@@ -55,7 +53,7 @@ void loadFile(std::vector <std::string>& data){
     {
         SplitString(str,splitVector);
 
-        splitVector[1] = date;
+        dates.push_back(splitVector[1]);
 
         // Line contains string of length > 0 then save it in vector
         if(str.size() > 0){
@@ -94,9 +92,12 @@ int main()
 */
 
     std::vector <std::string> data;
+    std::vector <std::string> dates;
 
-    loadFile(data);
-    print(data);
+    loadFile(data, dates);
+    //print(data);
+    print(dates);
+
     
 
 
