@@ -3,27 +3,8 @@
 #include <string>
 #include <fstream> 
 
-void split(std::string s, std::vector<std::string>& data){
-	
-    std::vector <std::string> date;
-	std::string temp = "";
+void split(std::string s, std::vector<std::string> &v){
 
-	for(int i=0;i<s.length();++i){
-		
-		if(s[i]==' '){
-			date.push_back(temp);
-			temp = "";
-		}
-		else{
-			temp.push_back(s[i]);
-		}
-		
-	}
-	date.push_back(temp);
-}
-
-void SplitString(std::string s, std::vector<std::string> &v){
-	
 	std::string temp = "";
 	for(int i=0;i<s.length();++i){
 		
@@ -37,13 +18,19 @@ void SplitString(std::string s, std::vector<std::string> &v){
 		
 	}
 	v.push_back(temp);
-	
+
+}  
+
+void print(std::vector <std::string>& v){
+        for(int i = 0; i < v.size();i++){
+        std::cout << v[i] << "\n";
+    }
 }
 
 void loadFile(std::vector <std::string>& data, std::vector <std::string>& dates){
     std::string str;
     std::ifstream file("bitacora.txt");
-    std::vector <std::string> splitVector;
+    char separator = ' ';
     
 
 
@@ -51,9 +38,7 @@ void loadFile(std::vector <std::string>& data, std::vector <std::string>& dates)
 
     while (std::getline(file, str))
     {
-        SplitString(str,splitVector);
-
-        dates.push_back(splitVector[1]);
+        
 
         // Line contains string of length > 0 then save it in vector
         if(str.size() > 0){
@@ -61,15 +46,16 @@ void loadFile(std::vector <std::string>& data, std::vector <std::string>& dates)
         }
     }
 
+    for(int i=0;i<data.size();i++){
+        split(data[i], dates);
+        //print(dates);
+    }
+    
     //Close The File
     file.close();
 }
 
-void print(std::vector <std::string>& v){
-        for(int i = 0; i < v.size();i++){
-        std::cout << v[i] << "\n";
-    }
-}
+
 
 
 
@@ -93,12 +79,14 @@ int main()
 
     std::vector <std::string> data;
     std::vector <std::string> dates;
-
-    loadFile(data, dates);
-    //print(data);
-    print(dates);
-
     
+
+
+    loadFile(data,dates);
+    //print(data);
+    //print(dates);
+
+
 
 
 
