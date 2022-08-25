@@ -24,12 +24,15 @@ void split(std::string s, std::vector<std::string>& data, std::vector <std::stri
 		
 	}
     
-    if (data.size()<6){
+    if (data.size()==6){
         data.push_back(temp);
         months.push_back(data[0]);
         days.push_back(data[1]);
         main.push_back(months);
         main.push_back(days);
+    }
+    else if(data.size()==6){
+
     }
     else{
         data.clear();  
