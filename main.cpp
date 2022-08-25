@@ -4,18 +4,18 @@
 #include <fstream> 
 
 void print(std::vector <std::string>& v){
-        for(int i = 0; i < v.size();i++){
+    for(int i = 0; i < v.size();i++){
         std::cout << v[i] << "\n";
     }
 }
 
-void split(std::string s, std::vector<std::string>& data, std::vector <std::string>& months,std::vector <std::string>& days, std::vector < std::vector <std::string> >& main){
+void split(std::string s, std::vector<std::string>& splitData, std::vector <std::string>& months,std::vector <std::string>& days, std::vector < std::vector <std::string> >& main){
 
 	std::string temp = "";
 	for(int i=0;i<s.length();++i){
 		
 		if(s[i]==' '){
-			data.push_back(temp);
+			splitData.push_back(temp);
 			temp = "";
 		}
 		else{
@@ -23,24 +23,24 @@ void split(std::string s, std::vector<std::string>& data, std::vector <std::stri
 		}
 		
 	}
-    
-    if (data.size()==5 || data.size()==9 || data.size()==7 ){
-        data.push_back(temp);
-        months.push_back(data[0]);
-        days.push_back(data[1]);
+    splitData.push_back(temp);
+    //std::cout << splitData.size() << "\n";
+  
+    if (splitData.size()<=9){
+        months.push_back(splitData[0]);
+        days.push_back(splitData[1]);
         main.push_back(months);
         main.push_back(days);
     }
     else{
-        data.clear();  
+        splitData.clear();  
     }
-
 
 }  
 
 
 
-void loadFile(std::vector <std::string>& data, std::vector <std::string>& dates, std::vector <std::string>& months,std::vector <std::string>& days,std::vector < std::vector <std::string> >& main){
+void loadFile(std::vector <std::string>& data, std::vector <std::string>& splitData, std::vector <std::string>& months,std::vector <std::string>& days,std::vector < std::vector <std::string> >& main){
     std::string str;
     std::ifstream file("bitacora.txt");
     
@@ -48,11 +48,12 @@ void loadFile(std::vector <std::string>& data, std::vector <std::string>& dates,
 
     while (std::getline(file, str))
     {
+        split(str,splitData,months,days,main);
+        
         // Line contains string of length > 0 then save it in vector
         if(str.size() > 0){
             data.push_back(str);
         }
-        split(str,dates,months,days,main);
 
     }
 
@@ -84,17 +85,18 @@ int main()
 */
 
     std::vector <std::string> data;
-    std::vector <std::string> dates;
+    std::vector <std::string> splitData;
     std::vector <std::string> months;
     std::vector <std::string> days;
     std::vector < std::vector <std::string> > main;
     
 
 
-    loadFile(data,dates, months, days,main);
+    loadFile(data,splitData, months, days,main);
     //print(data);
-    print(months);
-    //std::cout << months[1];
+    //print(splitData);
+    print(days);
+    //std::cout << main[0][1];
 
 
 
