@@ -24,15 +24,12 @@ void split(std::string s, std::vector<std::string>& data, std::vector <std::stri
 		
 	}
     
-    if (data.size()==6){
+    if (data.size()==5 || data.size()==9 || data.size()==7 ){
         data.push_back(temp);
         months.push_back(data[0]);
         days.push_back(data[1]);
         main.push_back(months);
         main.push_back(days);
-    }
-    else if(data.size()==6){
-
     }
     else{
         data.clear();  
@@ -51,12 +48,11 @@ void loadFile(std::vector <std::string>& data, std::vector <std::string>& dates,
 
     while (std::getline(file, str))
     {
-        split(str,dates,months,days,main);
-
         // Line contains string of length > 0 then save it in vector
         if(str.size() > 0){
             data.push_back(str);
         }
+        split(str,dates,months,days,main);
 
     }
 
