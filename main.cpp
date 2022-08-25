@@ -9,7 +9,7 @@ void print(std::vector <std::string>& v){
     }
 }
 
-void split(std::string s, std::vector<std::string>& data, std::vector <std::string>& months,std::vector <std::string>& days){
+void split(std::string s, std::vector<std::string>& data, std::vector <std::string>& months,std::vector <std::string>& days, std::vector < std::vector <std::string> >& main){
 
 	std::string temp = "";
 	for(int i=0;i<s.length();++i){
@@ -23,22 +23,24 @@ void split(std::string s, std::vector<std::string>& data, std::vector <std::stri
 		}
 		
 	}
-    data.push_back(temp);
-
-
-    std::vector < std::vector <std::string> > main;
-    std::vector<std::string> m;
-    std::vector<std::string> d;
-    main.push_back(m);  
-    main.push_back(d);  
     
+    if (data.size()<6){
+        data.push_back(temp);
+        months.push_back(data[0]);
+        days.push_back(data[1]);
+        main.push_back(months);
+        main.push_back(days);
+    }
+    else{
+        data.clear();  
+    }
 
 
 }  
 
 
 
-void loadFile(std::vector <std::string>& data, std::vector <std::string>& dates, std::vector <std::string>& months,std::vector <std::string>& days){
+void loadFile(std::vector <std::string>& data, std::vector <std::string>& dates, std::vector <std::string>& months,std::vector <std::string>& days,std::vector < std::vector <std::string> >& main){
     std::string str;
     std::ifstream file("bitacora.txt");
     
@@ -46,7 +48,7 @@ void loadFile(std::vector <std::string>& data, std::vector <std::string>& dates,
 
     while (std::getline(file, str))
     {
-        split(str,dates,months,days);
+        split(str,dates,months,days,main);
 
         // Line contains string of length > 0 then save it in vector
         if(str.size() > 0){
@@ -86,14 +88,14 @@ int main()
     std::vector <std::string> dates;
     std::vector <std::string> months;
     std::vector <std::string> days;
-    std::vector<std::string> splitData;
-
+    std::vector < std::vector <std::string> > main;
     
 
 
-    loadFile(data,dates, months, days);
+    loadFile(data,dates, months, days,main);
     //print(data);
-    //print(dates);
+    print(months);
+    //std::cout << months[1];
 
 
 
