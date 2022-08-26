@@ -3,7 +3,7 @@
 #include <string>
 #include <fstream> 
 
-void print(std::vector <std::string>& v){
+void print(std::vector <std::string>& v){ //test purpose
     for(int i = 0; i < v.size();i++){
         std::cout << v[i] << "\n";
     }
@@ -83,25 +83,80 @@ void datesToNum(std::vector <std::string>& data, std::vector <std::string>& mont
 
 }
 
-void sort(std::vector<std::string>& vec){
-    int i, j, aux; 
-    for (i = 0 ; i <= vec.size()-2 ; i++){
-        for (j = i+1 ; j <= vec.size()-1 ; j++){
-            if (std::stoi(vec[i]) > std::stoi(vec[j])){
-                aux = std::stoi(vec[i]);
-                vec[i] = vec[j];
-                vec[j] = std::to_string(aux) ;
+void numToDates(std::vector <std::string>& data, std::vector <std::string>& months,std::vector <std::string>& days,std::vector <std::string>& hour,std::vector <std::string>& ip,std::vector <std::string>& message){
+    
+    for(int i = 0; i < months.size() ;i++){
+
+        if(months[i] == "6"){
+            months[i] = "Jun";
+        }
+        else if(months[i] == "7"){
+            months[i] = "Jul";
+        }
+        else if(months[i] == "8"){
+            months[i] = "Aug";
+        }
+        else if(months[i] == "9"){
+            months[i] = "Sep";
+        }
+        else if(months[i] == "10"){
+            months[i] = "Oct";
+        }
+        else{
+            months[i] = "0000000"; //To identify some errors 
+        }
+
+    }
+
+}
+
+void sort(std::vector<std::string>& months,std::vector <std::string>& days,std::vector <std::string>& hour,std::vector <std::string>& ip,std::vector <std::string>& message){
+    int i, j ; 
+    std::string mAux;
+    std::string dAux;
+    std::string hAux;
+    std::string ipAux;
+    std::string messageAux;
+
+
+
+    for (i = 0 ; i <= months.size()-2 ; i++){
+        for (j = i+1 ; j <= months.size()-1 ; j++){
+            if (std::stoi(months[i]) > std::stoi(months[j])){
+
+                mAux = months[i];
+                months[i] = months[j];
+                months[j] = mAux;
+
+                //falta hacer sort por días 
+
+                dAux = days[i];
+                days[i] = days[j];
+                days[j] = dAux;
+
+                hAux = hour[i];
+                hour[i] = hour[j];
+                hour[j] = hAux;
+
+                ipAux = ip[i];
+                ip[i] = ip[j];
+                ip[j] = ipAux;   
+
+                messageAux = message[i];
+                message[i] = message[j];
+                message[j] = messageAux;    
+                         
             }
         }
     } 
 }
 
-void output(std::vector<std::string>& v){
+void output(std::vector<std::string>& months,std::vector <std::string>& days,std::vector <std::string>& hour,std::vector <std::string>& ip,std::vector <std::string>& message){
   std::ofstream myfile ("bit.txt");
   if (myfile.is_open())
   {
-    for(int i = 0; i < v.size();i++){
-        myfile << v[i] << "\n";
+    for(int i = 0; i < months.size();i++){
+        myfile << months[i] + " " + days[i] + " " + hour[i] + " " + ip[i] + " " + message[i] << "\n";
     }
     myfile.close();
   }
@@ -141,8 +196,9 @@ int main()
     
     loadFile(data,splitData,months,days,hour,ip,message);
     datesToNum(data,months,days,hour,ip,message);
-    sort(months);
-    output(months);
+    sort(months,days,hour,ip,message);
+    numToDates(data,months,days,hour,ip,message);
+    output(months,days,hour,ip,message);
 
     
 }
