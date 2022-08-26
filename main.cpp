@@ -56,8 +56,31 @@ void loadFile(std::vector <std::string>& data, std::vector <std::string>& splitD
     file.close();
 }
 
-void dates(){
+void datesToNum(std::vector <std::string>& data, std::vector <std::string>& months,std::vector <std::string>& days,std::vector <std::string>& hour,std::vector <std::string>& ip,std::vector <std::string>& message){
     
+    for(int i = 0; i < months.size() ;i++){
+
+        if(months[i] == "Jun"){
+            months[i] = "6";
+        }
+        else if(months[i] == "Jul"){
+            months[i] = "7";
+        }
+        else if(months[i] == "Ago"){
+            months[i] = "8";
+        }
+        else if(months[i] == "Sep"){
+            months[i] = "9";
+        }
+        else if(months[i] == "Oct"){
+            months[i] = "10";
+        }
+        else{
+            months[i] = "1";
+        }
+
+    }
+
 }
 
 void search(std::vector <int>& vec , int sDate, int eDate){
@@ -68,8 +91,10 @@ void search(std::vector <int>& vec , int sDate, int eDate){
 
 int main()
 {
+
 /*
-    Abra el archivo de entrada llamado "bitacora.txt Descargar bitacora.txt " lealo y almacene los datos en un vector  (Formato del archivo bitacora.pdf Descargar Formato del archivo bitacora.pdf ).
+    Abra el archivo de entrada llamado "bitacora.txt Descargar bitacora.txt " lealo y almacene los datos en un vector.
+    (Formato del archivo bitacora.pdf Descargar Formato del archivo bitacora.pdf).
     Ordene la información por fecha para la realización de las búsquedas.
     Solicite al usuario las fechas de inicio y fin de búsqueda de información.
     Despliegue los registros correspondientes a esas fechas.
@@ -91,6 +116,7 @@ int main()
     loadFile(data,splitData,months,days,hour,ip,message);
     //print(data);
     //print(splitData);
-    print(message);
+    //print(message);
+    std::cout << message[0];
     
 }
