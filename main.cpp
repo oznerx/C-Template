@@ -66,7 +66,7 @@ void datesToNum(std::vector <std::string>& data, std::vector <std::string>& mont
         else if(months[i] == "Jul"){
             months[i] = "7";
         }
-        else if(months[i] == "Ago"){
+        else if(months[i] == "Aug"){
             months[i] = "8";
         }
         else if(months[i] == "Sep"){
@@ -76,11 +76,37 @@ void datesToNum(std::vector <std::string>& data, std::vector <std::string>& mont
             months[i] = "10";
         }
         else{
-            months[i] = "1";
+            months[i] = "0000000"; //To identify some errors 
         }
 
     }
 
+}
+
+void sort(std::vector<std::string>& vec){
+    int i, j, aux; 
+    for (i = 0 ; i <= vec.size()-2 ; i++){
+        for (j = i+1 ; j <= vec.size()-1 ; j++){
+            if (std::stoi(vec[i]) > std::stoi(vec[j])){
+                aux = std::stoi(vec[i]);
+                vec[i] = vec[j];
+                vec[j] = std::to_string(aux) ;
+            }
+        }
+    } 
+}
+
+void output(std::vector<std::string>& v){
+  std::ofstream myfile ("bit.txt");
+  if (myfile.is_open())
+  {
+    for(int i = 0; i < v.size();i++){
+        myfile << v[i] << "\n";
+    }
+    myfile.close();
+  }
+
+  else std::cout << "Unable to open file";
 }
 
 void search(std::vector <int>& vec , int sDate, int eDate){
@@ -114,9 +140,9 @@ int main()
 
     
     loadFile(data,splitData,months,days,hour,ip,message);
-    //print(data);
-    //print(splitData);
-    //print(message);
-    std::cout << message[0];
+    datesToNum(data,months,days,hour,ip,message);
+    sort(months);
+    output(months);
+
     
 }
