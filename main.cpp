@@ -9,7 +9,7 @@ void print(std::vector <std::string>& v){
     }
 }
 
-void split(std::string s, std::vector<std::string>& splitData, std::vector <std::string>& months,std::vector <std::string>& days, std::vector < std::vector <std::string> >& main){
+void split(std::string s, std::vector<std::string>& splitData, std::vector <std::string>& months,std::vector <std::string>& days){
 
 	std::string temp = "";
 	for(int i=0;i<s.length();++i){
@@ -24,23 +24,16 @@ void split(std::string s, std::vector<std::string>& splitData, std::vector <std:
 		
 	}
     splitData.push_back(temp);
-    //std::cout << splitData.size() << "\n";
-  
-    if (splitData.size()<=9){
-        months.push_back(splitData[0]);
-        days.push_back(splitData[1]);
-        main.push_back(months);
-        main.push_back(days);
-    }
-    else{
-        splitData.clear();  
-    }
 
+    months.push_back(splitData[0]);
+    days.push_back(splitData[1]);
+    splitData.clear();  
+    
 }  
 
 
 
-void loadFile(std::vector <std::string>& data, std::vector <std::string>& splitData, std::vector <std::string>& months,std::vector <std::string>& days,std::vector < std::vector <std::string> >& main){
+void loadFile(std::vector <std::string>& data, std::vector <std::string>& splitData, std::vector <std::string>& months,std::vector <std::string>& days){
     std::string str;
     std::ifstream file("bitacora.txt");
     
@@ -48,7 +41,7 @@ void loadFile(std::vector <std::string>& data, std::vector <std::string>& splitD
 
     while (std::getline(file, str))
     {
-        split(str,splitData,months,days,main);
+        split(str,splitData,months,days);
         
         // Line contains string of length > 0 then save it in vector
         if(str.size() > 0){
@@ -57,7 +50,6 @@ void loadFile(std::vector <std::string>& data, std::vector <std::string>& splitD
 
     }
 
-    
     //Close The File
     file.close();
 }
@@ -88,18 +80,10 @@ int main()
     std::vector <std::string> splitData;
     std::vector <std::string> months;
     std::vector <std::string> days;
-    std::vector < std::vector <std::string> > main;
     
-
-
-    loadFile(data,splitData, months, days,main);
+    loadFile(data,splitData,months,days);
     //print(data);
     //print(splitData);
-    print(days);
-    //std::cout << main[0][1];
-
-
-
-
-
+    print(months);
+    
 }
