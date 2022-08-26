@@ -9,7 +9,7 @@ void print(std::vector <std::string>& v){
     }
 }
 
-void split(std::string s, std::vector<std::string>& splitData, std::vector <std::string>& months,std::vector <std::string>& days){
+void split(std::string s, std::vector<std::string>& splitData, std::vector <std::string>& months,std::vector <std::string>& days,std::vector <std::string>& hour,std::vector <std::string>& ip,std::vector <std::string>& message){
 
 	std::string temp = "";
 	for(int i=0;i<s.length();++i){
@@ -23,17 +23,19 @@ void split(std::string s, std::vector<std::string>& splitData, std::vector <std:
 		}
 		
 	}
+
     splitData.push_back(temp);
 
     months.push_back(splitData[0]);
     days.push_back(splitData[1]);
+    hour.push_back(splitData[2]);
+    ip.push_back(splitData[3]);
+    message.push_back(splitData[4] + " " + splitData[5] + " " +  splitData[6] + " " + splitData[7] + " " + splitData[8] + " " + splitData[9]);
     splitData.clear();  
     
 }  
 
-
-
-void loadFile(std::vector <std::string>& data, std::vector <std::string>& splitData, std::vector <std::string>& months,std::vector <std::string>& days){
+void loadFile(std::vector <std::string>& data, std::vector <std::string>& splitData, std::vector <std::string>& months,std::vector <std::string>& days,std::vector <std::string>& hour,std::vector <std::string>& ip,std::vector <std::string>& message){
     std::string str;
     std::ifstream file("bitacora.txt");
     
@@ -41,7 +43,7 @@ void loadFile(std::vector <std::string>& data, std::vector <std::string>& splitD
 
     while (std::getline(file, str))
     {
-        split(str,splitData,months,days);
+        split(str,splitData,months,days,hour,ip,message);
         
         // Line contains string of length > 0 then save it in vector
         if(str.size() > 0){
@@ -54,11 +56,9 @@ void loadFile(std::vector <std::string>& data, std::vector <std::string>& splitD
     file.close();
 }
 
-
-
-
-
-
+void dates(){
+    
+}
 
 void search(std::vector <int>& vec , int sDate, int eDate){
     for (int sDate;sDate < eDate;sDate++){
@@ -80,10 +80,17 @@ int main()
     std::vector <std::string> splitData;
     std::vector <std::string> months;
     std::vector <std::string> days;
+    std::vector <std::string> hour;
+    std::vector <std::string> ip;
+    std::vector <std::string> message;
+
+
+
+
     
-    loadFile(data,splitData,months,days);
+    loadFile(data,splitData,months,days,hour,ip,message);
     //print(data);
     //print(splitData);
-    print(months);
+    print(message);
     
 }
