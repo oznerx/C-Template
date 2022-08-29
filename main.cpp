@@ -3,7 +3,7 @@
 #include <string>
 #include <fstream> 
 
-void print(std::vector <std::string>& v){ //test purpose
+void print(std::vector <int>& v){ //test purpose
     for(int i = 0; i < v.size();i++){
         std::cout << v[i] << "\n";
     }
@@ -56,7 +56,7 @@ void loadFile(std::vector <std::string>& data, std::vector <std::string>& splitD
     file.close();
 }
 
-void datesToNum(std::vector <std::string>& data, std::vector <std::string>& months,std::vector <std::string>& days,std::vector <std::string>& hour,std::vector <std::string>& ip,std::vector <std::string>& message){
+void datesToNum(std::vector <std::string>& months){
     
     for(int i = 0; i < months.size() ;i++){
 
@@ -80,6 +80,40 @@ void datesToNum(std::vector <std::string>& data, std::vector <std::string>& mont
         }
 
     }
+
+}
+
+std::vector<int> getId(std::vector <std::string>& months,std::vector <std::string>& days){
+
+    std::vector <int> ids;
+    int id;
+    for(int i = 0; i < months.size() ;i++){
+        if(months[i] == "Jun"){
+            id = stoi("6" + days[i]);
+            ids.push_back(id);
+        }
+        else if(months[i] == "Jul"){
+            id = stoi("7" + days[i]);
+            ids.push_back(id);
+        }
+        else if(months[i] == "Aug"){
+            id = stoi("8" + days[i]);
+            ids.push_back(id);
+        }
+        else if(months[i] == "Sep"){
+            id = stoi("9" + days[i]);
+            ids.push_back(id);
+        }
+        else if(months[i] == "Oct"){
+            id = stoi("10" + days[i]);
+            ids.push_back(id);
+        }
+        else{
+            ids.push_back(0000000); //To identify some errors 
+        }
+    }
+
+    return ids;
 
 }
 
@@ -195,10 +229,14 @@ int main()
 
     
     loadFile(data,splitData,months,days,hour,ip,message);
-    datesToNum(data,months,days,hour,ip,message);
+    //datesToNum(data,months,days,hour,ip,message);
+    std::vector <int> ids =getId(months,days) ;
+    print(ids);
+    /*
     sort(months,days,hour,ip,message);
     numToDates(data,months,days,hour,ip,message);
     output(months,days,hour,ip,message);
+    */
 
     
 }
