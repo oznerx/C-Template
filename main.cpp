@@ -185,6 +185,22 @@ void sort(std::vector<std::string>& months,std::vector <std::string>& days,std::
     } 
 }
 
+void sortIds(std::vector<int>& ids){
+    int i, j, aux; 
+
+    for (i = 0 ; i <= ids.size()-2 ; i++){
+        for (j = i+1 ; j <= ids.size()-1 ; j++){
+            if (ids[i] > ids[j]){
+
+                aux = ids[i];
+                ids[i] = ids[j];
+                ids[j] = aux;  
+
+            }
+        }
+    }
+}
+
 void output(std::vector<std::string>& months,std::vector <std::string>& days,std::vector <std::string>& hour,std::vector <std::string>& ip,std::vector <std::string>& message){
   std::ofstream myfile ("bit.txt");
   if (myfile.is_open())
@@ -230,7 +246,8 @@ int main()
     
     loadFile(data,splitData,months,days,hour,ip,message);
     //datesToNum(data,months,days,hour,ip,message);
-    std::vector <int> ids =getId(months,days) ;
+    std::vector <int> ids = getId(months,days);
+    sortIds(ids);
     print(ids);
     /*
     sort(months,days,hour,ip,message);
