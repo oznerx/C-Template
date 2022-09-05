@@ -60,6 +60,10 @@ class Date {
 			return this->secondsSinceStartOfYear;
 		}
 
+		void setSecondsSinceStartOfYear(int sec){
+			this->secondsSinceStartOfYear = sec;
+		}
+
 		bool operator > (Date anotherDate) {
 			return this->getSecondsSinceStartOfYear() > anotherDate.getSecondsSinceStartOfYear();
 		}
@@ -77,6 +81,7 @@ class LogMessage {
 	string info;
 
 	public:
+		
 		LogMessage(string month, string day, string time, string ip, string info) : date(month, day, time) {
 			this->ip = ip;
 			this->info = info;
@@ -97,6 +102,7 @@ class LogMessagesManager {
 	vector<LogMessage> logMessages;
 
 	public:
+
 		LogMessagesManager() {
 			
 		}
@@ -115,24 +121,7 @@ class LogMessagesManager {
 	
 			inputFile.close();
 		}
-/*
-		void sort() {
-			for(int i=0; i<logMessages.size(); i++) {
-				bool isOrdered = true;
-				
-				for(int j=1; j<logMessages.size()-i; j++) {
-					if(logMessages[j-1].getDate() > logMessages[j].getDate()) {
-						swap(logMessages[j-1], logMessages[j]);
-						isOrdered = false;
-					}
-				}
-	
-				if (isOrdered) {
-					return;
-				}
-			}
-		}
-*/	
+
 		int partition(vector<LogMessage> &v, int left, int right) {
 			int pivotIndex = left + (right - left) / 2;
 			int pivotValue = v[pivotIndex].getDate().getSecondsSinceStartOfYear();
@@ -147,8 +136,8 @@ class LogMessagesManager {
 				}
 				if(i <= j) {
 					temp = v[i].getDate().getSecondsSinceStartOfYear();
-					v[i] = v[j];
-					v[j] = temp;
+					swap(v[i] , v[j]);
+					v[j].getDate().setSecondsSinceStartOfYear(temp);
 					i++;
 					j--;
 				}
@@ -180,6 +169,7 @@ class LogMessagesManager {
 
 			outputFile.close();
 		}
+		
 		void sort() {
 			quicksort(logMessages, 0, logMessages.size() - 1);
 		}
