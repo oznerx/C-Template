@@ -115,7 +115,7 @@ class LogMessagesManager {
 	
 			inputFile.close();
 		}
-
+/*
 		void sort() {
 			for(int i=0; i<logMessages.size(); i++) {
 				bool isOrdered = true;
@@ -132,6 +132,38 @@ class LogMessagesManager {
 				}
 			}
 		}
+*/	
+		int partition(vector<LogMessage> &v, int left, int right) {
+			int pivotIndex = left + (right - left) / 2;
+			int pivotValue = v[pivotIndex].getDate().getSecondsSinceStartOfYear();
+			int i = left, j = right;
+			int temp;
+			while(i <= j) {
+				while(v[i].getDate().getSecondsSinceStartOfYear() < pivotValue) {
+					i++;
+				}
+				while(v[j].getDate().getSecondsSinceStartOfYear() > pivotValue) {
+					j--;
+				}
+				if(i <= j) {
+					temp = v[i].getDate().getSecondsSinceStartOfYear();
+					v[i] = v[j];
+					v[j] = temp;
+					i++;
+					j--;
+				}
+			}
+			return i;
+		}
+
+		void quicksort(vector<LogMessage> &v, int left, int right) {
+			if(left < right) {
+				int pivotIndex = partition(v, left, right);
+				quicksort(v, left, pivotIndex - 1);
+				quicksort(v, pivotIndex, right);
+			}
+		}
+	
 
 		vector<LogMessage> getLogMessagesBetweenDates(Date startDate, Date endDate) {
 			vector<LogMessage> results;
@@ -147,6 +179,9 @@ class LogMessagesManager {
 			}
 
 			outputFile.close();
+		}
+		void sort() {
+			quicksort(logMessages, 0, logMessages.size() - 1);
 		}
 };
 
