@@ -1,6 +1,6 @@
 /* 
 	TODO:
-	[ ] Poner un algoritmo de sorting que no sea lento (actualmente bubble sort sube el uso de CPU al 100%)
+	[X] Poner un algoritmo de sorting que no sea lento (actualmente bubble sort sube el uso de CPU al 100%)
 	[ ] Completar el método getLogMessagesBetweenDates()
 	[ ] Agregar comentarios de time complexities y header con nuestros nombres
 	[ ] Hacer pruebas para ver si funciona
@@ -60,10 +60,6 @@ class Date {
 			return this->secondsSinceStartOfYear;
 		}
 
-		void setSecondsSinceStartOfYear(int sec){
-			this->secondsSinceStartOfYear = sec;
-		}
-
 		bool operator > (Date anotherDate) {
 			return this->getSecondsSinceStartOfYear() > anotherDate.getSecondsSinceStartOfYear();
 		}
@@ -73,6 +69,11 @@ class Date {
 			return output;
 		}
 
+		void setSecondsSinceStartOfYear(int sec){
+			this->secondsSinceStartOfYear = sec;
+		}
+
+
 };
 
 class LogMessage {
@@ -81,7 +82,6 @@ class LogMessage {
 	string info;
 
 	public:
-		
 		LogMessage(string month, string day, string time, string ip, string info) : date(month, day, time) {
 			this->ip = ip;
 			this->info = info;
@@ -102,7 +102,6 @@ class LogMessagesManager {
 	vector<LogMessage> logMessages;
 
 	public:
-
 		LogMessagesManager() {
 			
 		}
@@ -120,6 +119,40 @@ class LogMessagesManager {
 			}
 	
 			inputFile.close();
+		}
+/*
+		void sort() {
+			for(int i=0; i<logMessages.size(); i++) {
+				bool isOrdered = true;
+				
+				for(int j=1; j<logMessages.size()-i; j++) {
+					if(logMessages[j-1].getDate() > logMessages[j].getDate()) {
+						swap(logMessages[j-1], logMessages[j]);
+						isOrdered = false;
+					}
+				}
+	
+				if (isOrdered) {
+					return;
+				}
+			}
+		}
+*/
+
+		vector<LogMessage> getLogMessagesBetweenDates(Date startDate, Date endDate) {
+			vector<LogMessage> results;
+			
+			return results;
+		}
+
+		void save(string outputFilePath) {
+			ofstream outputFile(outputFilePath);
+
+			for(LogMessage logMessage : logMessages) {
+				outputFile << logMessage << "\n";
+			}
+
+			outputFile.close();
 		}
 
 		int partition(vector<LogMessage> &v, int left, int right) {
@@ -143,36 +176,20 @@ class LogMessagesManager {
 				}
 			}
 			return i;
-		}
+		};
 
-		void quicksort(vector<LogMessage> &v, int left, int right) {
+		void quickSort(vector<LogMessage> &v, int left, int right) {
 			if(left < right) {
 				int pivotIndex = partition(v, left, right);
-				quicksort(v, left, pivotIndex - 1);
-				quicksort(v, pivotIndex, right);
+				quickSort(v, left, pivotIndex - 1);
+				quickSort(v, pivotIndex, right);
 			}
-		}
-	
+		};
 
-		vector<LogMessage> getLogMessagesBetweenDates(Date startDate, Date endDate) {
-			vector<LogMessage> results;
-			
-			return results;
-		}
-
-		void save(string outputFilePath) {
-			ofstream outputFile(outputFilePath);
-
-			for(LogMessage logMessage : logMessages) {
-				outputFile << logMessage << "\n";
-			}
-
-			outputFile.close();
-		}
-		
 		void sort() {
-			quicksort(logMessages, 0, logMessages.size() - 1);
+			quickSort(logMessages, 0, logMessages.size() - 1);
 		}
+
 };
 
 
@@ -182,7 +199,7 @@ int main() {
 	
 	cout << "Ordenando..." << "\n";
 	logMessagesManager->sort();
-
+/*
 	cout << "===Intoduzca fechas para la búsqueda===" << "\n";
 	cout << "Ejemplo: Oct 13 07:01:33" << "\n\n";
 
@@ -202,11 +219,12 @@ int main() {
 	for(LogMessage logMessage : results) {
 		cout << logMessage << "\n";
 	}
-	
+	*/
 	logMessagesManager->save("bitacora_ordenada.txt");
+
 }
 
-/* 
+/*
 Referencias:
 https://www.w3schools.com/cpp/cpp_classes.asp
 https://www.w3schools.com/cpp/cpp_access_specifiers.asp
@@ -233,5 +251,5 @@ https://cplusplus.com/reference/istream/istream/ignore/
 https://www.w3schools.com/cpp/cpp_files.asp
 https://docs.microsoft.com/en-us/cpp/standard-library/overloading-the-output-operator-for-your-own-classes?view=msvc-170
 https://www.tutorialspoint.com/cplusplus/input_output_operators_overloading.htm
+https://www.thepolyglotdeveloper.com/2019/04/sort-vector-integers-quicksort-algorithm-cpp
 */
-
