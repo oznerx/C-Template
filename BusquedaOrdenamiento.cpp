@@ -6,7 +6,13 @@ Ozner Axel Leyva Mariscal
 A01742377
 */
 
-/*Descripción*/
+/*
+La función debe.. hace.. 
+Param: int n (tamaño del vector), vector vec (vector a ordenar) 
+Salida: nada
+Complejidad de tiempo: O(n^2) 
+Complejidad de espacio: O(1)
+*/
 void ordenaIntercambio(std::vector<int>& vec, int n){ 
     int i, j, aux; 
     for (i = 0 ; i <= n-2 ; i++){ 
@@ -20,7 +26,13 @@ void ordenaIntercambio(std::vector<int>& vec, int n){
     } 
 }
 
-/**/
+/*
+La función debe.. hace.. 
+Param: int n (tamaño del vector), vector vec (vector a ordenar) 
+Salida: nada
+Complejidad de tiempo: O(n^2) 
+Complejidad de espacio: O(1)
+*/
 void ordenaBurbuja(std::vector<int>& vec, int n){
     int tmp; 
     bool interruptor = true; 
@@ -38,7 +50,13 @@ void ordenaBurbuja(std::vector<int>& vec, int n){
 }
 
 
-/**/
+/*
+La función debe.. hace.. 
+Param: int n (tamaño del vector), vector vec (vector a ordenar) 
+Salida: nada
+Complejidad de tiempo: O(n^2) 
+Complejidad de espacio: O(1)
+*/
 void ordenaMergeIntervalos(std::vector<int>& vector,int low, int mid, int high){
 	std::vector<int> temp; 
 
@@ -73,7 +91,9 @@ void ordenaMergeIntervalos(std::vector<int>& vector,int low, int mid, int high){
 		vector[i] = temp[i - low];
 }
 
-/**/ 
+/*
+La función debe.. hace.. 
+*/
 void ordenaMerge(std::vector<int>& vector, int low, int high) {
 	if (low < high) { 
 		int mid = (low + high) / 2;  
@@ -83,7 +103,13 @@ void ordenaMerge(std::vector<int>& vector, int low, int high) {
 	}
 }
 
-/**/
+/*
+La función debe.. hace.. 
+Param: int n (tamaño del vector), vector vec (vector a ordenar) 
+Salida: nada
+Complejidad de tiempo: O(n) 
+Complejidad de espacio: O(1)
+*/
 int busqBinaria(std::vector<int>& vec, int low, int high, int num){
 
     while (low <= high) { 
@@ -107,7 +133,13 @@ int busqBinaria(std::vector<int>& vec, int low, int high, int num){
     return -1;
 }
 
-/**/
+/*
+La función debe.. hace.. 
+Param: int n (tamaño del vector), vector vec (vector a ordenar) 
+Salida: nada
+Complejidad de tiempo: O(n) 
+Complejidad de espacio: O(1)
+*/
 int busqSecuencial(std::vector<int>& vector, int num){
     bool found = false;
     int i; 
