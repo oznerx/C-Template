@@ -4,6 +4,8 @@
 /*
 Ozner Axel Leyva Mariscal
 A01742377
+En este código se crean varios vectores a los cuiales se les aplican distintos métodos de ordenación 
+y se buscan valores determinados dentro del vector con métodos de busqueda 
 */
 
 /*
@@ -54,7 +56,7 @@ void ordenaBurbuja(std::vector<int>& vec, int n){
 La función debe.. hace.. 
 Param: int n (tamaño del vector), vector vec (vector a ordenar) 
 Salida: nada
-Complejidad de tiempo: O(n^2) 
+Complejidad de tiempo: O(n) 
 Complejidad de espacio: O(1)
 */
 void ordenaMergeIntervalos(std::vector<int>& vector,int low, int mid, int high){
@@ -92,7 +94,9 @@ void ordenaMergeIntervalos(std::vector<int>& vector,int low, int mid, int high){
 }
 
 /*
-La función debe.. hace.. 
+La función debe.. hace..
+Compplejidad de  tiempo O(n log n)
+Complejidad de espacio: O()
 */
 void ordenaMerge(std::vector<int>& vector, int low, int high) {
 	if (low < high) { 
