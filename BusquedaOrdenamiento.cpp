@@ -9,8 +9,8 @@ y se buscan valores determinados dentro del vector con métodos de busqueda
 */
 
 /*
-La función debe.. hace.. 
-Param: int n (tamaño del vector), vector vec (vector a ordenar) 
+La función ordena un vector por el método de intercambio
+Param: int n (tamaño del vector), vector<int> vec (vector a ordenar) 
 Salida: nada
 Complejidad de tiempo: O(n^2) 
 Complejidad de espacio: O(1)
@@ -29,8 +29,8 @@ void ordenaIntercambio(std::vector<int>& vec, int n){
 }
 
 /*
-La función debe.. hace.. 
-Param: int n (tamaño del vector), vector vec (vector a ordenar) 
+La función ordena un vector por el método burbuja 
+Param: int n (tamaño del vector), vector<int> vec (vector a ordenar) 
 Salida: nada
 Complejidad de tiempo: O(n^2) 
 Complejidad de espacio: O(1)
@@ -53,11 +53,8 @@ void ordenaBurbuja(std::vector<int>& vec, int n){
 
 
 /*
-La función debe.. hace.. 
-Param: int n (tamaño del vector), vector vec (vector a ordenar) 
+Param: int low (de donde empieza el vector), int high (donde termina el vector), int high (donde se encuentra la mitad del vector), int n (tamaño del vector), vector<int> vector (vector a ordenar) 
 Salida: nada
-Complejidad de tiempo: O(n) 
-Complejidad de espacio: O(1)
 */
 void ordenaMergeIntervalos(std::vector<int>& vector,int low, int mid, int high){
 	std::vector<int> temp; 
@@ -94,9 +91,11 @@ void ordenaMergeIntervalos(std::vector<int>& vector,int low, int mid, int high){
 }
 
 /*
-La función debe.. hace..
+La función completa el proceso llamando a los 2 intervalos para ordenar por el método de Merge 
+Param: int low (de donde empieza el vector), int high (donde termina el vector), vector<int> vector (vector a ordenar) 
+Salida: nada
 Compplejidad de  tiempo O(n log n)
-Complejidad de espacio: O()
+Complejidad de espacio: O(n)
 */
 void ordenaMerge(std::vector<int>& vector, int low, int high) {
 	if (low < high) { 
@@ -108,10 +107,10 @@ void ordenaMerge(std::vector<int>& vector, int low, int high) {
 }
 
 /*
-La función debe.. hace.. 
-Param: int n (tamaño del vector), vector vec (vector a ordenar) 
-Salida: nada
-Complejidad de tiempo: O(n) 
+La busca un número n dentro del vector por el método de busqueda binaria y lo retorna 
+Param: int low (de donde empieza el vector), int high (donde termina el vector), int num (número a buscar), vector<int> vec (vector donde se hará la busqueda) 
+Salida: int num (número a retornar)
+Complejidad de tiempo: O(log n) 
 Complejidad de espacio: O(1)
 */
 int busqBinaria(std::vector<int>& vec, int low, int high, int num){
@@ -138,9 +137,9 @@ int busqBinaria(std::vector<int>& vec, int low, int high, int num){
 }
 
 /*
-La función debe.. hace.. 
-Param: int n (tamaño del vector), vector vec (vector a ordenar) 
-Salida: nada
+La busca un número n dentro del vector por el método de busqueda secuencial y lo retorna 
+Param: int num (número a buscar), vector<int> vec (vector donde se hará la busqueda) 
+Salida: int num (número a retornar)
 Complejidad de tiempo: O(n) 
 Complejidad de espacio: O(1)
 */
@@ -165,11 +164,20 @@ int busqSecuencial(std::vector<int>& vector, int num){
     }
 }
 
-/**/
+/*
+función que imprime los vectores a la términal 
+Param: vector<int> vec (vector que se imprimirá en la terminal) 
+Salida: nada
+Complejidad de tiempo: O(n) 
+Complejidad de espacio: O(1)
+*/
 void print(std::vector<int>& vec){
+
     for(auto i=0;i<vec.size();i++){
-        std::cout << vec[i] << "\n";
+        std::cout << vec[i] << " ";
     }
+
+    std::cout << "\n";
 }
 
 int main() 
