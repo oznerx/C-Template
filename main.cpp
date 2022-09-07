@@ -124,22 +124,25 @@ class LogMessagesManager {
 		vector<LogMessage> getLogMessagesBetweenDates(Date startDate, Date endDate) {
 			vector<LogMessage> results;
 
-			for (auto &&logMessage : logMessages ){
+			for(auto i = 0 ; i < logMessages.size() ; i++){
+				if (logMessages[i].getDate().getSecondsSinceStartOfYear() >= startDate.getSecondsSinceStartOfYear() && logMessages[i].getDate().getSecondsSinceStartOfYear() <= endDate.getSecondsSinceStartOfYear()){
+					results.push_back(logMessages[i]);
+				}
+			}
+			return results;
 
-				for ( auto Date = startDate.getSecondsSinceStartOfYear() ; startDate.getSecondsSinceStartOfYear() < endDate.getSecondsSinceStartOfYear() ; Date++ ){
+		}
+
+
+		/*
+				for ( auto Date = startDate.getSecondsSinceStartOfYear() ; startDate.getSecondsSinceStartOfYear() < endDate.getSecondsSinceStartOfYear() ; ++Date ){
 
 					if (logMessage.getDate().getSecondsSinceStartOfYear() == Date){
 						results.push_back(logMessage);
 					}
 
 				}
-				
-			}
-			
-			
-
-			return results;
-		}
+		*/
 
 		void save(string outputFilePath) {
 			ofstream outputFile(outputFilePath);
