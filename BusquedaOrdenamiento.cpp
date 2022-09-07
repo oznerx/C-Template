@@ -4,6 +4,7 @@
 /*
 Ozner Axel Leyva Mariscal
 A01742377
+6 de septiembre del 2022
 En este código se crean varios vectores a los cuiales se les aplican distintos métodos de ordenación 
 y se buscan valores determinados dentro del vector con métodos de busqueda 
 */
@@ -53,7 +54,7 @@ void ordenaBurbuja(std::vector<int>& vec, int n){
 
 
 /*
-Param: int low (de donde empieza el vector), int high (donde termina el vector), int high (donde se encuentra la mitad del vector), int n (tamaño del vector), vector<int> vector (vector a ordenar) 
+Param: int low (de donde empieza el vector), int high (donde se encuentra la mitad del vector), int n (tamaño del vector), vector<int> vector (vector a ordenar) 
 Salida: nada
 */
 void ordenaMergeIntervalos(std::vector<int>& vector,int low, int mid, int high){
@@ -109,7 +110,7 @@ void ordenaMerge(std::vector<int>& vector, int low, int high) {
 /*
 La busca un número n dentro del vector por el método de busqueda binaria y lo retorna 
 Param: int low (de donde empieza el vector), int high (donde termina el vector), int num (número a buscar), vector<int> vec (vector donde se hará la busqueda) 
-Salida: int num (número a retornar)
+Salida: int num (número a retornar), retorna -1 si no es encontrado
 Complejidad de tiempo: O(log n) 
 Complejidad de espacio: O(1)
 */
@@ -219,4 +220,6 @@ int main()
     std::cout << "\n";
     std::cout << "Utilizando la busqueda binaria, el número '7' se encuentra en la posición  " << busqBinaria(vec3,0,vec3.size(),valor) << " del vector de prueba 3\n";
     std::cout << "\n";
+
+    return 0;
 }
