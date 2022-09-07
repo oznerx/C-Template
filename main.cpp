@@ -120,28 +120,24 @@ class LogMessagesManager {
 	
 			inputFile.close();
 		}
-/*
-		void sort() {
-			for(int i=0; i<logMessages.size(); i++) {
-				bool isOrdered = true;
-				
-				for(int j=1; j<logMessages.size()-i; j++) {
-					if(logMessages[j-1].getDate() > logMessages[j].getDate()) {
-						swap(logMessages[j-1], logMessages[j]);
-						isOrdered = false;
-					}
-				}
-	
-				if (isOrdered) {
-					return;
-				}
-			}
-		}
-*/
 
 		vector<LogMessage> getLogMessagesBetweenDates(Date startDate, Date endDate) {
 			vector<LogMessage> results;
+
+			for (auto &&logMessage : logMessages ){
+
+				for ( auto Date = startDate.getSecondsSinceStartOfYear() ; startDate.getSecondsSinceStartOfYear() < endDate.getSecondsSinceStartOfYear() ; Date++ ){
+
+					if (logMessage.getDate().getSecondsSinceStartOfYear() == Date){
+						results.push_back(logMessage);
+					}
+
+				}
+				
+			}
 			
+			
+
 			return results;
 		}
 
@@ -199,7 +195,7 @@ int main() {
 	
 	cout << "Ordenando..." << "\n";
 	logMessagesManager->sort();
-/*
+
 	cout << "===Intoduzca fechas para la búsqueda===" << "\n";
 	cout << "Ejemplo: Oct 13 07:01:33" << "\n\n";
 
@@ -219,7 +215,7 @@ int main() {
 	for(LogMessage logMessage : results) {
 		cout << logMessage << "\n";
 	}
-	*/
+
 	logMessagesManager->save("bitacora_ordenada.txt");
 
 }
