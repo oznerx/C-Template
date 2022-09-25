@@ -94,23 +94,23 @@ public:
   */
     T get(int index)
     {
-        if (index < 0) {
+        if (index < 0) { // solo se verifica que el indice no sea negativo
             return 0;
         }
-        Node<T>* last = head;
+        Node<T>* last = head; // se dice que nuestro ultimo nodo leido es igual al primero de la lista
         Node<T>* previous = nullptr;
-        if (head == nullptr) {
+        if (head == nullptr) { // si la lista no existe entonces solo regresa 
             return 0;
         }
         else {
             int i = 0;
-            while (i < index && last->next != nullptr) {
-                previous = last;
-                last = last->next;
+            while (i < index && last->next != nullptr) { // mientras que el elemento 'next' de 'last' osea el el valor actual no este vacio, entonces se hace lo siguiente:  
+                previous = last; // basicamente aqui 'previous' y 'last' tienen los mismos valores (el ultimo elemento recorrido)
+                last = last->next; // el valor de 'last' se convierte en el elemento actual
                 i++;
             }
-            if (i == index) {
-                return last->data;
+            if (i == index) { // si se encuentra el indice del  valor despues del while, se hace lo siguiente:
+                return last->data; // como 'last' es el valor actual, se retorna la data del nodo
             }
         }
         return 0;
@@ -118,10 +118,10 @@ public:
 
     void printList()
     {
-        Node<T>* current = head;
-        while (current != NULL) {
-            cout << current->data << " ";
-            current = current->next;
+        Node<T>* current = head; // se dice que nos encontramos en el primer elemento de la lista  
+        while (current != NULL) { // si la lista si tiene elementos, se hara lo siguiente: 
+            cout << current->data << " "; // se imprime la data con un espacio entre cada valor 
+            current = current->next; // se asigna al valor siguiente de la lista con el proposito de recorrela
         }
         cout << "\n";
     }
