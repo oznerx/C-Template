@@ -3,6 +3,14 @@
 #include <iostream>
 #include <fstream>
 
+/*
+Ozner Axel Leyva Mariscal
+A01742377
+28 de septiembre del 2022
+En este código se crerá una lista ligada con una estructura de datos lineal a partir de una archivo de texto
+en el cual podremos usar métodos como  create, read, update y del.
+*/
+
 template <class T>
 class Node
 {
@@ -34,6 +42,7 @@ public:
     Agrega un elemento T a la estructura de datos en la ultima posición
     @Param T value: (T) elemento añadir del tipo T 
     Complejidad de tiempo: O(n)
+    Complejidad de espacio: O(1)
     */
     void create(T value) {
 
@@ -45,11 +54,13 @@ public:
         }
 
         else { 
+
             Node<T>* current = head; 
             while (current->next != nullptr) { 
                 current = current->next;
             }
             current->next = new_node;  
+
         }
 
     }
@@ -58,6 +69,7 @@ public:
     Busca un elemento T en la posicion indicada dentro de la estructura de datos  
     @Param T value: (int) indice en el cual se encuentra el dato T 
     Complejidad de tiempo: O(n) 
+    Complejidad de espacio: O(1)
     */
     void read(int index)
     {
@@ -93,6 +105,7 @@ public:
     Actualiza un elemento T dentro de la estructura de datos en una posicion determinada 
     @Param T value: (int) indice en el cual se desea modificar el dato T  
     Complejidad de tiempo: O(n)
+    Complejidad de espacio: O(1)
     */
     void update(int index, T newData){
 
@@ -129,6 +142,7 @@ public:
     Elimina un elemento dentro de la estructura de datos en una posicion indicada 
     @Param T value: (int) indice en el cual se eliminara el dato T  
     Complejidad de tiempo: O(n)
+    Complejidad de espacio: O(1)
     */
     void del(int index){
 
@@ -170,10 +184,12 @@ public:
     }
 
 };
+
 /*
 Elimina un elemento dentro de la estructura de datos en una posicion indicada 
 @Param T value: (string) archivo a leer, (LinkedList <std::string>) estructura de datos   
 Complejidad de tiempo: O(n)
+Complejidad de espacio: O(1)
 */
 void readFile(std::string filePath,LinkedList <std::string>* lista ){
 
@@ -188,6 +204,7 @@ void readFile(std::string filePath,LinkedList <std::string>* lista ){
 
 int main()
 {
+
     //Leyendo el archivo y creando la lista ligada con cada linea 
     LinkedList <std::string>* lista = new LinkedList<std::string>();
     readFile("bitacora.txt", lista);
@@ -219,9 +236,5 @@ int main()
     lista->read(0);
     lista->del(0);
     std::cout << "El nodo fue exitosamente eliminado \n";
-
-
-
-
-
+    
 }
