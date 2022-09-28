@@ -8,8 +8,8 @@
 Ozner Axel Leyva Mariscal
 A01742377
 28 de septiembre del 2022
-En este código se crerá una lista ligada con una estructura de datos lineal a partir de una archivo de texto
-en el cual podremos usar métodos como  create, read, update y del.
+En este código se crerá una lista ligada, una doblemente ligada y una circularmente ligada a partir de un archivo de texto
+en el cual podremos usar métodos CRUD (create, read, update y del).
 */
 
 template <class T>
@@ -59,7 +59,7 @@ public:
 
     /*
     Agrega un elemento T a la estructura de datos en la ultima posición
-    @Param T value: (T) elemento añadir del tipo T 
+    @Param: (T value) elemento añadir del tipo T 
     Complejidad de tiempo: O(n)
     Complejidad de espacio: O(1)
     */
@@ -86,7 +86,7 @@ public:
 
     /*
     Busca e imprime un elemento T en la posicion indicada dentro de la estructura de datos  
-    @Param T value: (int) indice en el cual se encuentra el dato T 
+    @Param: (int index) indice en el cual se encuentra el dato T 
     Complejidad de tiempo: O(n) 
     Complejidad de espacio: O(1)
     */
@@ -122,7 +122,7 @@ public:
 
     /*
     Actualiza un elemento T dentro de la estructura de datos en una posicion determinada 
-    @Param T value: (int) indice en el cual se desea modificar el dato T  
+    @Param: (int) indice en el cual se desea modificar el dato T, (T newData) nuevo dato   
     Complejidad de tiempo: O(n)
     Complejidad de espacio: O(1)
     */
@@ -159,7 +159,7 @@ public:
 
     /*
     Elimina un elemento dentro de la estructura de datos en una posicion indicada 
-    @Param T value: (int) indice en el cual se eliminara el dato T  
+    @Param: (int index) indice en el cual se eliminara el dato T  
     Complejidad de tiempo: O(n)
     Complejidad de espacio: O(1)
     */
@@ -220,7 +220,7 @@ public:
 
     /*
     Agrega un elemento T a la estructura de datos en la ultima posición
-    @Param T value: (T) elemento añadir del tipo T 
+    @Param: (T value) elemento añadir del tipo T 
     Complejidad de tiempo: O(n)
     Complejidad de espacio: O(1)
     */
@@ -248,7 +248,7 @@ public:
 
     /*
     Agrega un elemento T a la estructura de datos en la primera posición
-    @Param T value: (T) elemento añadir del tipo T 
+    @Param: (T value) elemento añadir del tipo T 
     Complejidad de tiempo: O(n)
     Complejidad de espacio: O(1)
     */
@@ -273,7 +273,7 @@ public:
 
     /*
     Busca e imprime un elemento T en la posicion indicada dentro de la estructura de datos  
-    @Param T value: (int) indice en el cual se encuentra el dato T 
+    @Param T value: (int index) indice en el cual se encuentra el dato T 
     Complejidad de tiempo: O(n) 
     Complejidad de espacio: O(1)
     */
@@ -309,7 +309,7 @@ public:
 
     /*
     Actualiza un elemento T dentro de la estructura de datos en una posicion determinada 
-    @Param T value: (int) indice en el cual se desea modificar el dato T  
+    @Param: (int index) indice en el cual se desea modificar el dato T , (T newData) nuevo dato   
     Complejidad de tiempo: O(n)
     Complejidad de espacio: O(1)
     */
@@ -346,7 +346,7 @@ public:
 
     /*
     Elimina un elemento dentro de la estructura de datos en una posicion indicada 
-    @Param T value: (int) indice en el cual se eliminara el dato T  
+    @Param: (int index) indice en el cual se eliminara el dato T  
     Complejidad de tiempo: O(n)
     Complejidad de espacio: O(1)
     */
@@ -392,7 +392,7 @@ public:
 
     /*
     Imprime el penúltimo valor de la estructura para comprobar que es una lista doblemente ligada 
-    @Param T value: nada 
+    @Param: nada 
     Complejidad de tiempo: O(n)
     Complejidad de espacio: O(1)
     */
@@ -437,8 +437,8 @@ public:
 
     /*
     Agrega un elemento T a la estructura de datos en la ultima posición
-    @Param T value: (T) elemento añadir del tipo T 
-    Complejidad de tiempo: O(n)
+    @Param: (T value) elemento añadir del tipo T 
+    Complejidad de tiempo: O(1)
     Complejidad de espacio: O(1)
     */
     void create(T value) {
@@ -470,7 +470,7 @@ public:
 
     /*
     Busca e imprime un elemento T en la posicion indicada dentro de la estructura de datos  
-    @Param T value: (int) indice en el cual se encuentra el dato T 
+    @Param: (int index) indice en el cual se encuentra el dato T 
     Complejidad de tiempo: O(n) 
     Complejidad de espacio: O(1)
     */
@@ -508,7 +508,7 @@ public:
 
     /*
     Actualiza un elemento T dentro de la estructura de datos en una posicion determinada 
-    @Param T value: (int) indice en el cual se desea modificar el dato T  
+    @Param: (int index) indice en el cual se desea modificar el dato T, (T newData) nuevo dato  
     Complejidad de tiempo: O(n)
     Complejidad de espacio: O(1)
     */
@@ -545,7 +545,7 @@ public:
 
     /*
     Elimina un elemento dentro de la estructura de datos en una posicion indicada 
-    @Param T value: (int) indice en el cual se eliminara el dato T  
+    @Param: (int index) indice en el cual se eliminara el dato T  
     Complejidad de tiempo: O(n)
     Complejidad de espacio: O(1)
     */
@@ -604,7 +604,11 @@ public:
     }
 
 
-    //Para testear
+    /*Imprime los valores de toda la lista
+    @Param: nada  
+    Complejidad de tiempo: O(n)
+    Complejidad de espacio: O(1)
+    */
     void printList()
     {
         Node<T>* current = head; 
@@ -627,7 +631,7 @@ public:
 
     /*
     Imprime el primer valor de la estructura referenciado desde el último nodo para comprobar que es una lista circular 
-    @Param T value: nada  
+    @Param: nada  
     Complejidad de tiempo: O(n)
     Complejidad de espacio: O(1)
     */
@@ -654,7 +658,7 @@ public:
 
 /*
 Lee el archivo indicado y por cada linea se es creado un nuevo nodo en la lista ligada 
-@Param T value: (string) archivo a leer, (LinkedList <std::string>) estructura de datos   
+@Param: (string) archivo a leer, (LinkedList <std::string>) estructura de datos   
 Complejidad de tiempo: O(n)
 Complejidad de espacio: O(1)
 */
@@ -671,7 +675,7 @@ void readFile(std::string filePath,linkedList <std::string>* lista ){
 
 /*
 Lee el archivo indicado y por cada linea se es creado un nuevo nodo en la lista doblemente ligada   
-@Param T value: (string) archivo a leer, (LinkedList <std::string>) estructura de datos   
+@Param: (string) archivo a leer, (LinkedList <std::string>) estructura de datos   
 Complejidad de tiempo: O(n)
 Complejidad de espacio: O(1)
 */
@@ -688,7 +692,7 @@ void readFile2(std::string filePath,doubleLinkedList <std::string>* lista ){
 
 /*
 Lee el archivo indicado y por cada linea se es creado un nuevo nodo en la lista ligada circularmente   
-@Param T value: (string) archivo a leer, (LinkedList <std::string>) estructura de datos   
+@Param: (string) archivo a leer, (LinkedList <std::string>) estructura de datos   
 Complejidad de tiempo: O(n)
 Complejidad de espacio: O(1)
 */
@@ -812,12 +816,12 @@ int main()
     std::cout << "¡Actualización exitosa! \n\n";
 
     //Eliminando un nodo dentro de la estructura 
-    std::cout << "La posicón del nodo que se va a eliminar es el último \n";
+    std::cout << "La posicón del nodo que se va a eliminar es la última \n";
     std::cout << "El nodo en la última posición que se va a eliminar tiene la siguiente información: \n";
     listaCircular->read(listaCircular->size-1);
     listaCircular->del(listaCircular->size-1);
     std::cout << "¡El nodo fue exitosamente eliminado! \n";
-    std::cout << "Ahora el nodo en la última posición  es:\n";
+    std::cout << "Ahora el nodo en la última posición es:\n";
     listaCircular->read(listaCircular->size-1);
     std::cout << "\n";
 
