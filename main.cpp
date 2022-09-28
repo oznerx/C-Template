@@ -18,6 +18,7 @@ public:
 
     T data;
     Node<T>* next; 
+
     Node(T dataValue) {
         data = dataValue;  
         next = nullptr; 
@@ -25,16 +26,33 @@ public:
 
 };
 
+template <class T>
+class DNode
+{
+public:
+
+    T data;
+    DNode<T>* next; 
+    DNode<T>* prev; 
+
+    DNode(T dataValue) {
+        data = dataValue;  
+        next = nullptr; 
+        prev = nullptr; 
+    }
+
+};
+
 
 template <class T>
-class LinkedList {
+class linkedList {
 private:
 
     Node<T>* head;
 
 public:
     int size = 0; 
-    LinkedList() {
+    linkedList() {
         head = nullptr; 
     }
 
@@ -185,13 +203,220 @@ public:
 
 };
 
+template <class T>
+class doubleLinkedList { //No comentado todavia
+private:
+
+    DNode<T>* head;
+
+public:
+
+    int size = 0; 
+
+    doubleLinkedList() {
+        head = nullptr;
+    }
+
+    /*
+    Agrega un elemento T a la estructura de datos en la ultima posición
+    @Param T value: (T) elemento añadir del tipo T 
+    Complejidad de tiempo: O(n)
+    Complejidad de espacio: O(1)
+    */
+    void createAtEnd(T value) {
+
+        size++;
+        DNode<T>* new_node = new DNode<T>(value); 
+
+        if (head == nullptr) { 
+            head = new_node; 
+        }
+
+        else { 
+
+            DNode<T>* current = head; 
+            while (current->next != nullptr) { 
+                current = current->next;
+            }
+            current->next = new_node; 
+            new_node->prev = current; 
+
+        }
+
+    }
+
+    /*
+    Agrega un elemento T a la estructura de datos en la ultima posición
+    @Param T value: (T) elemento añadir del tipo T 
+    Complejidad de tiempo: O(n)
+    Complejidad de espacio: O(1)
+    */
+    void createAtFront(T value) {
+
+        size++;
+        DNode<T>* new_node = new DNode<T>(value); 
+
+        if (head == nullptr) { 
+            head = new_node; 
+        }
+
+        else { 
+
+            new_node->next = head;
+            head->prev = new_node;
+            head = new_node; 
+
+        }
+
+    }
+
+    /*
+    Busca un elemento T en la posicion indicada dentro de la estructura de datos  
+    @Param T value: (int) indice en el cual se encuentra el dato T 
+    Complejidad de tiempo: O(n) 
+    Complejidad de espacio: O(1)
+    */
+    void read(int index)
+    {
+        if (index < 0) { 
+            std::cout << "no existe un elemento con posicion negativa";
+        }
+
+        DNode<T>* last = head; 
+        DNode<T>* previous = nullptr;
+
+        if (head == nullptr) { 
+            std::cout << "la lista no existe";
+        }
+
+        else {
+
+            int i = 0;
+            while (i < index && last->next != nullptr) { 
+                previous = last; 
+                last = last->next;
+                i++;
+            }
+
+            if (i == index) {
+                std::cout << last->data << "\n"; 
+            }
+
+        }
+
+    }
+
+    /*
+    Actualiza un elemento T dentro de la estructura de datos en una posicion determinada 
+    @Param T value: (int) indice en el cual se desea modificar el dato T  
+    Complejidad de tiempo: O(n)
+    Complejidad de espacio: O(1)
+    */
+    void update(int index, T newData){
+
+        if (index < 0) { 
+            std::cout << "No existe una posición negativa" ;
+        }
+
+        DNode<T>* last = head; 
+        DNode<T>* previous = nullptr;
+
+        if (head == nullptr) { 
+            std::cout << "Error";
+        }
+
+        else {
+
+            int i = 0;
+
+            while (i < index && last->next != nullptr) {   
+                previous = last; 
+                last = last->next;
+                i++;
+            }
+
+            if (i == index) { 
+                last->data = newData; 
+            }
+
+        }
+
+    }
+
+    /*
+    Elimina un elemento dentro de la estructura de datos en una posicion indicada 
+    @Param T value: (int) indice en el cual se eliminara el dato T  
+    Complejidad de tiempo: O(n)
+    Complejidad de espacio: O(1)
+    */
+    void del(int index){
+
+        if (index < 0) {  
+            return;
+        }
+
+        DNode<T>* last = head; 
+        DNode<T>* previous = nullptr;
+        
+        if (head == nullptr) {  
+            return;
+        }
+
+        else { 
+
+            int i = 0;
+            while (i < index && last->next != NULL) {   
+                previous = last;
+                last = last->next; 
+                i++;
+            }
+
+            if (i == 0) {
+                head = last->next; 
+                free(last);  
+                size--;
+                return;
+            }
+
+            else if (i == index) {
+                previous->next = last->next; 
+                previous->prev = last->prev;
+                size--;
+                free(last); 
+            }
+
+        }
+
+    }
+
+    void printList()
+    {
+        DNode<T>* current = head; // se dice que nos encontramos en el primer elemento de la lista  
+        while (current != NULL) { // si la lista si tiene elementos, se hara lo siguiente: 
+            std::cout << current->data << "\n"; // se imprime la data con un espacio entre cada valor 
+            current = current->next; // se asigna al valor siguiente de la lista con el proposito de recorrela
+        }
+        std::cout << "\n";
+    }
+
+};
+
+template <class T>
+class circularLinkedList {
+private:
+
+
+
+public:
+
+};
 /*
 Elimina un elemento dentro de la estructura de datos en una posicion indicada 
 @Param T value: (string) archivo a leer, (LinkedList <std::string>) estructura de datos   
 Complejidad de tiempo: O(n)
 Complejidad de espacio: O(1)
 */
-void readFile(std::string filePath,LinkedList <std::string>* lista ){
+void readFile(std::string filePath,linkedList <std::string>* lista ){
 
     std::ifstream inputFile(filePath);
     std::string line;
@@ -202,11 +427,22 @@ void readFile(std::string filePath,LinkedList <std::string>* lista ){
 
 }
 
+void readFile2(std::string filePath,doubleLinkedList <std::string>* lista ){
+
+    std::ifstream inputFile(filePath);
+    std::string line;
+
+    while (getline (inputFile , line)) {
+        lista->createAtEnd(line);
+    }
+
+}
+
 int main()
 {
-
+/*
     //Leyendo el archivo y creando la lista ligada con cada linea 
-    LinkedList <std::string>* lista = new LinkedList<std::string>();
+    linkedList <std::string>* lista = new linkedList<std::string>();
     readFile("bitacora.txt", lista);
    
     //Agrega un nuevo nodo a la estructura de datos
@@ -236,5 +472,15 @@ int main()
     lista->read(0);
     lista->del(0);
     std::cout << "El nodo fue exitosamente eliminado \n";
-    
+*/
+    doubleLinkedList <std::string>* listaDoble = new doubleLinkedList<std::string>();
+    readFile2("bitacora.txt", listaDoble);
+
+    listaDoble->createAtFront("Inicio bb");
+    listaDoble->read(0);
+    listaDoble->createAtEnd("Fin bb");
+    listaDoble->read(listaDoble->size - 1);
+    listaDoble->printList();
+
+
 }
