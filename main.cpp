@@ -84,7 +84,7 @@ public:
     }
 
     /*
-    Busca un elemento T en la posicion indicada dentro de la estructura de datos  
+    Busca e imprime un elemento T en la posicion indicada dentro de la estructura de datos  
     @Param T value: (int) indice en el cual se encuentra el dato T 
     Complejidad de tiempo: O(n) 
     Complejidad de espacio: O(1)
@@ -204,7 +204,7 @@ public:
 };
 
 template <class T>
-class doubleLinkedList { //No comentado todavia
+class doubleLinkedList { 
 private:
 
     DNode<T>* head;
@@ -246,7 +246,7 @@ public:
     }
 
     /*
-    Agrega un elemento T a la estructura de datos en la ultima posición
+    Agrega un elemento T a la estructura de datos en la primera posición
     @Param T value: (T) elemento añadir del tipo T 
     Complejidad de tiempo: O(n)
     Complejidad de espacio: O(1)
@@ -271,7 +271,7 @@ public:
     }
 
     /*
-    Busca un elemento T en la posicion indicada dentro de la estructura de datos  
+    Busca e imprime un elemento T en la posicion indicada dentro de la estructura de datos  
     @Param T value: (int) indice en el cual se encuentra el dato T 
     Complejidad de tiempo: O(n) 
     Complejidad de espacio: O(1)
@@ -389,6 +389,12 @@ public:
 
     }
 
+    /*
+    Imprime el penúltimo valor de la estructura para comprobar que es una lista doblemente ligada 
+    @Param T value: nada 
+    Complejidad de tiempo: O(n)
+    Complejidad de espacio: O(1)
+    */
     void test(){
 
         DNode<T>* last = head; 
@@ -454,7 +460,7 @@ public:
     }
 
     /*
-    Busca un elemento T en la posicion indicada dentro de la estructura de datos  
+    Busca e imprime un elemento T en la posicion indicada dentro de la estructura de datos  
     @Param T value: (int) indice en el cual se encuentra el dato T 
     Complejidad de tiempo: O(n) 
     Complejidad de espacio: O(1)
@@ -485,21 +491,6 @@ public:
                 std::cout << last->data << "\n"; 
             }
 
-        }
-
-    }
-
-    void printList()
-    {
-        Node<T>* last = head; 
-        Node<T>* previous = nullptr; 
-        int i = 0;
-
-        while (i < size - 1 ) { 
-            previous = last; 
-            last = last->next;
-            std::cout << last->data << "\n";
-            i++;
         }
 
     }
@@ -587,6 +578,30 @@ public:
 
     }
 
+/*
+    //Para testear
+    void printList()
+    {
+        Node<T>* last = head; 
+        Node<T>* previous = nullptr; 
+        int i = 0;
+
+        while (i < size - 1 ) { 
+            previous = last; 
+            last = last->next;
+            std::cout << last->data << "\n";
+            i++;
+        }
+
+    }
+*/
+
+    /*
+    Imprime el primer valor de la estructura referenciado desde el último nodo para comprobar que es una lista circular 
+    @Param T value: nada  
+    Complejidad de tiempo: O(n)
+    Complejidad de espacio: O(1)
+    */
     void test(){
 
         Node<T>* last = head; 
@@ -604,10 +619,11 @@ public:
         }
 
     }
+
 };
 
 /*
-Elimina un elemento dentro de la estructura de datos en una posicion indicada 
+Lee el archivo indicado y por cada linea se es creado un nuevo nodo en la lista ligada 
 @Param T value: (string) archivo a leer, (LinkedList <std::string>) estructura de datos   
 Complejidad de tiempo: O(n)
 Complejidad de espacio: O(1)
@@ -623,6 +639,12 @@ void readFile(std::string filePath,linkedList <std::string>* lista ){
 
 }
 
+/*
+Lee el archivo indicado y por cada linea se es creado un nuevo nodo en la lista doblemente ligada   
+@Param T value: (string) archivo a leer, (LinkedList <std::string>) estructura de datos   
+Complejidad de tiempo: O(n)
+Complejidad de espacio: O(1)
+*/
 void readFile2(std::string filePath,doubleLinkedList <std::string>* lista ){
 
     std::ifstream inputFile(filePath);
@@ -634,6 +656,12 @@ void readFile2(std::string filePath,doubleLinkedList <std::string>* lista ){
 
 }
 
+/*
+Lee el archivo indicado y por cada linea se es creado un nuevo nodo en la lista ligada circularmente   
+@Param T value: (string) archivo a leer, (LinkedList <std::string>) estructura de datos   
+Complejidad de tiempo: O(n)
+Complejidad de espacio: O(1)
+*/
 void readFileCirc(std::string filePath,circularLinkedList <std::string>* lista ){
 
     std::ifstream inputFile(filePath);
@@ -647,7 +675,9 @@ void readFileCirc(std::string filePath,circularLinkedList <std::string>* lista )
 
 int main()
 {
-/*
+
+    std::cout << "------------------------------------------------------------------------------ Lista Ligada ------------------------------------------------------------------------------" << "\n";
+
     //Leyendo el archivo y creando la lista ligada con cada linea 
     linkedList <std::string>* lista = new linkedList<std::string>();
     readFile("bitacora.txt", lista);
@@ -668,7 +698,7 @@ int main()
     std::cout << "La posicón del nodo que se va a actualizar es: 2 \n";
     std::cout << "Informacion del nodo a actualizar: ";
     lista->read(2);
-    std::cout << "El nodo tiene la siguiente información:" << "\n";
+    std::cout << "El nodo actualizado tiene la siguiente información:" << "\n";
     lista->update(2, "Nodo Actualizado");
     lista->read(2);
     std::cout << "Actualización exitosa \n\n";
@@ -679,22 +709,55 @@ int main()
     lista->read(0);
     lista->del(0);
     std::cout << "El nodo fue exitosamente eliminado \n";
-*/
-/*
+    std::cout << "Ahora el nodo en la posición 0 es:\n";
+    lista->read(0);
+    std::cout << "\n";
+
+
+    std::cout << "------------------------------------------------------------------------------ Lista Doblemente Ligada ------------------------------------------------------------------------------" << "\n";
+
     doubleLinkedList <std::string>* listaDoble = new doubleLinkedList<std::string>();
     readFile2("bitacora.txt", listaDoble);
 
-    listaDoble->createAtFront("Inicio bb");
-    listaDoble->read(0);
-    listaDoble->createAtEnd("Fin bb");
+    //Agrega un nuevo nodo a la estructura de datos en la ultima posición
+    std::cout << "A continuación se agregará un nodo en la ultima posición" << "\n";
+    listaDoble->createAtEnd("Nuevo Nodo");
+    std::cout << "El nodo agregado tiene la siguiente informacion: " << "\n";
     listaDoble->read(listaDoble->size - 1);
-    listaDoble->update(listaDoble->size -1 , "update");
-    listaDoble->read(listaDoble->size - 1);
-    listaDoble->del(listaDoble->size - 1);
-    listaDoble->read(listaDoble->size - 1);
-    listaDoble->test();
-*/
+    std::cout << "\n";
+    
+    //Buscando un elemento dentro de la estructura de datos 
+    std::cout << "El nodo en la posición 4 tiene la siguiente información: ";
+    listaDoble->read(4);
+    std::cout << "\n";
 
+    //Actualizando un nodo dentro de la estructura 
+    std::cout << "La posicón del nodo que se va a actualizar es: 2 \n";
+    std::cout << "Informacion del nodo a actualizar: ";
+    listaDoble->read(2);
+    std::cout << "El nodo actualizado tiene la siguiente información:" << "\n";
+    listaDoble->update(2, "Nodo Actualizado");
+    listaDoble->read(2);
+    std::cout << "Actualización exitosa \n\n";
+
+    //Eliminando un nodo dentro de la estructura
+    std::cout << "La posicón del nodo que se va a eliminar es: 0 \n";
+    std::cout << "El nodo en la posición 0 que se va a eliminar tiene la siguiente información: \n";
+    listaDoble->read(0);
+    listaDoble->del(0);
+    std::cout << "El nodo fue exitosamente eliminado \n";
+    std::cout << "Ahora el nodo en la posición 0 es:\n";
+    listaDoble->read(0);
+    std::cout << "\n";
+
+    //Se imprime la información del penúltimo nodo para comprobar que si es una lista doblemente ligada 
+    std::cout << "Imprimiendo la información del penúltimo nodo para comprobar que si es una lista doblemente ligada: \n";
+    listaDoble->test();
+
+
+    std::cout << "------------------------------------------------------------------------------ Lista Ligada Circularmente ------------------------------------------------------------------------------" << "\n";
+
+/*
     circularLinkedList <std::string>* listaCircular = new circularLinkedList<std::string>();
     readFileCirc("bitacora.txt", listaCircular);
 
@@ -708,5 +771,8 @@ int main()
     listaCircular->read(listaCircular->size - 1);
     listaCircular->test();
     //cambiar size a -1 en ves de 0
+*/
+    
+
 
 }
