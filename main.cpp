@@ -1,3 +1,4 @@
+#include <cstdlib>
 #include <stdio.h>
 #include <stdlib.h>
 #include <iostream>
@@ -421,6 +422,8 @@ class circularLinkedList { //No comentado todavia
 private:
 
 Node<T>* head;
+Node<T>* tail;
+Node<T>* next;
 
 public:
 
@@ -428,6 +431,8 @@ public:
 
     circularLinkedList() {
         head = nullptr;
+        tail = nullptr;
+        next = nullptr;
     }
 
     /*
@@ -438,26 +443,30 @@ public:
     */
     void create(T value) {
 
+        size++;
+
         Node<T>* new_node = new Node<T>(value); 
 
-        if (head == nullptr) { 
-            head = new_node; 
-            size++;
+        new_node->data = value;
+
+        if (head == nullptr) {
+
+            head = new_node;
+            head->next = head;
+            tail = head;
+
         }
 
         else{
-            
-            Node<T>* current = head; 
-            for(int i = 0 ; i < size - 1 ;i++){
-                current = current->next;
-            }
-            current->next = new_node;  
+
+            tail->next = new_node;
             new_node->next = head;
-            size++;
+            tail = new_node; 
             
         }
-
+    
     }
+
 
     /*
     Busca e imprime un elemento T en la posicion indicada dentro de la estructura de datos  
@@ -471,8 +480,7 @@ public:
             std::cout << "no existe un elemento con posicion negativa";
         }
 
-        Node<T>* last = head; 
-        Node<T>* previous = nullptr;
+        Node<T>* current = head; 
 
         if (head == nullptr) { 
             std::cout << "la lista no existe";
@@ -480,11 +488,14 @@ public:
 
         else {
 
-            int i = 0;
-            while (i < index && last->next != nullptr) { 
+            int i = 0 ;
+            Node<T>* last = head; 
+            Node<T>* previous = nullptr;
+
+            while( i < index ) { 
                 previous = last; 
                 last = last->next;
-                i++;
+                i++; 
             }
 
             if (i == index) {
@@ -560,41 +571,56 @@ public:
                 last = last->next; 
                 i++;
             }
-
+/*
             if (i == 0) {
-                head = last->next; 
-                free(last);  
+                previous->next = head->next;
                 size--;
-                return;
+                free(head);
             }
+*/
+            if (i == index) {
 
-            else if (i == index) {
-                previous->next = last->next; 
-                size--;
-                free(last); 
+                if(i == size - 1 ){
+                    previous->next = last->next;
+                    head = last->next;
+                    size--;
+                    free(last); 
+                }
+
+                else{
+                    previous->next = last->next;
+                    previous = last; 
+                    size--;
+                    free(last); 
+                }
+
             }
 
         }
 
     }
 
-/*
+
     //Para testear
     void printList()
     {
-        Node<T>* last = head; 
-        Node<T>* previous = nullptr; 
-        int i = 0;
+        Node<T>* current = head; 
 
-        while (i < size - 1 ) { 
-            previous = last; 
-            last = last->next;
-            std::cout << last->data << "\n";
-            i++;
+        if(head != nullptr){
+
+            for(int i = 0 ; i < size - 1 ; i++){
+                std::cout << current->data << "\n";
+                current = current->next;
+            }
+
+        }
+
+        else{
+            std::cout << "Lista vacia" << "\n";
         }
 
     }
-*/
+
 
     /*
     Imprime el primer valor de la estructura referenciado desde el último nodo para comprobar que es una lista circular 
@@ -608,13 +634,14 @@ public:
         Node<T>* previous = nullptr;
 
         int i = 0;
-        while (i < size - 1  && last->next != nullptr) { 
+
+        while (i < size - 1 && last->next != nullptr) { 
             previous = last; 
             last = last->next;
             i++;
         }
 
-        if (i == size-1) {
+        if (i == size - 1 ) {
             std::cout << last->next->data << "\n"; 
         }
 
@@ -675,7 +702,7 @@ void readFileCirc(std::string filePath,circularLinkedList <std::string>* lista )
 
 int main()
 {
-
+/*
     std::cout << "------------------------------------------------------------------------------ Lista Ligada ------------------------------------------------------------------------------" << "\n";
 
     //Leyendo el archivo y creando la lista ligada con cada linea 
@@ -701,7 +728,7 @@ int main()
     std::cout << "El nodo actualizado tiene la siguiente información:" << "\n";
     lista->update(2, "Nodo Actualizado");
     lista->read(2);
-    std::cout << "Actualización exitosa \n\n";
+    std::cout << "¡Actualización exitosa! \n\n";
 
     //Eliminando un nodo dentro de la estructura
     std::cout << "La posicón del nodo que se va a eliminar es: 0 \n";
@@ -738,7 +765,7 @@ int main()
     std::cout << "El nodo actualizado tiene la siguiente información:" << "\n";
     listaDoble->update(2, "Nodo Actualizado");
     listaDoble->read(2);
-    std::cout << "Actualización exitosa \n\n";
+    std::cout << "¡Actualización exitosa! \n\n";
 
     //Eliminando un nodo dentro de la estructura
     std::cout << "La posicón del nodo que se va a eliminar es: 0 \n";
@@ -751,28 +778,48 @@ int main()
     std::cout << "\n";
 
     //Se imprime la información del penúltimo nodo para comprobar que si es una lista doblemente ligada 
-    std::cout << "Imprimiendo la información del penúltimo nodo para comprobar que si es una lista doblemente ligada: \n";
+    std::cout << "Imprimiendo la información del penúltimo nodo apuntando desde el último para comprobar que si es una lista doblemente ligada: \n";
     listaDoble->test();
+*/
 
+    std::cout << "------------------------------------------------------------------------------ Lista Circularmente Ligada ------------------------------------------------------------------------------" << "\n";
 
-    std::cout << "------------------------------------------------------------------------------ Lista Ligada Circularmente ------------------------------------------------------------------------------" << "\n";
-
-/*
     circularLinkedList <std::string>* listaCircular = new circularLinkedList<std::string>();
     readFileCirc("bitacora.txt", listaCircular);
 
-    //listaCircular->printList();
-    //listaCircular->read(16806);
-    listaCircular->create("Nodo creado");
+    //Agrega un nuevo nodo a la estructura de datos en la ultima posición
+    std::cout << "A continuación se agregará un nodo en la ultima posición" << "\n";
+    listaCircular->create("Nuevo Nodo");
+    std::cout << "El nodo agregado tiene la siguiente informacion: " << "\n";
     listaCircular->read(listaCircular->size - 1);
-    listaCircular->update(listaCircular->size-1, "Nodo cambiado");
-    listaCircular->read(listaCircular->size - 1);
-    listaCircular->del(listaCircular->size-1);
-    listaCircular->read(listaCircular->size - 1);
-    listaCircular->test();
-    //cambiar size a -1 en ves de 0
-*/
+    std::cout << "\n";
     
+    //Buscando un elemento dentro de la estructura de datos 
+    std::cout << "El nodo en la posición 4 tiene la siguiente información: ";
+    listaCircular->read(4);
+    std::cout << "\n";
 
+    //Actualizando un nodo dentro de la estructura 
+    std::cout << "La posicón del nodo que se va a actualizar es: 3 \n";
+    std::cout << "Informacion del nodo a actualizar: ";
+    listaCircular->read(3);
+    std::cout << "El nodo actualizado tiene la siguiente información:" << "\n";
+    listaCircular->update(3, "Nodo Actualizado");
+    listaCircular->read(3);
+    std::cout << "¡Actualización exitosa! \n\n";
+
+    //Eliminando un nodo dentro de la estructura
+    std::cout << "La posicón del nodo que se va a eliminar es: listaCircular->size-1 \n";
+    std::cout << "El nodo en la posición listaCircular->size-1 que se va a eliminar tiene la siguiente información: \n";
+    listaCircular->read(listaCircular->size-1);
+    listaCircular->del(listaCircular->size-1);
+    std::cout << "El nodo fue exitosamente eliminado \n";
+    std::cout << "Ahora el nodo en la posición listaCircular->size-1 es:\n";
+    listaCircular->read(listaCircular->size-1);
+    std::cout << "\n";
+
+    //Se imprime la información del penúltimo nodo para comprobar que si es una lista doblemente ligada 
+    std::cout << "Imprimiendo la información del nodo en la posición 0 apuntando desde el último para comprobar que si es una lista circularmente ligada: \n";
+    listaCircular->test();
 
 }
