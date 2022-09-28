@@ -202,6 +202,19 @@ public:
 
     }
 
+    /*
+    Imprime el valor que se encuentra en la posición 1 de la estructura apuntando desde la posición 0 para comprobar que es una lista ligada 
+    @Param: nada 
+    Complejidad de tiempo: O(n)
+    Complejidad de espacio: O(1)
+    */
+    void test(){
+
+        Node<T>* last = head; 
+        std::cout << last->next->data << "\n"; 
+
+    }
+
 };
 
 template <class T>
@@ -719,12 +732,12 @@ int main()
     //Agrega un nuevo nodo a la estructura de datos
     std::cout << "A continuación se agregará un nodo en la ultima posición" << "\n";
     lista->create("Nuevo Nodo");
-    std::cout << "El nodo agregado tiene la siguiente informacion: " << "\n";
+    std::cout << "El nodo agregado tiene la siguiente informacion: ";
     lista->read(lista->size - 1);
     std::cout << "\n";
     
     //Buscando un elemento dentro de la estructura de datos 
-    std::cout << "El nodo en la posición 4 tiene la siguiente información: ";
+    std::cout << "El nodo en la posición 4 tiene la siguiente información: \n";
     lista->read(4);
     std::cout << "\n";
 
@@ -732,21 +745,24 @@ int main()
     std::cout << "La posicón del nodo que se va a actualizar es: 2 \n";
     std::cout << "Informacion del nodo a actualizar: ";
     lista->read(2);
-    std::cout << "El nodo actualizado tiene la siguiente información:" << "\n";
+    std::cout << "El nodo actualizado tiene la siguiente información: ";
     lista->update(2, "Nodo Actualizado");
     lista->read(2);
     std::cout << "¡Actualización exitosa! \n\n";
 
     //Eliminando un nodo dentro de la estructura
-    std::cout << "La posicón del nodo que se va a eliminar es: 0 \n";
-    std::cout << "El nodo en la posición 0 que se va a eliminar tiene la siguiente información: \n";
-    lista->read(0);
-    lista->del(0);
+    std::cout << "La posicón del nodo que se va a eliminar es: 5 \n";
+    std::cout << "El nodo en la posición 5 que se va a eliminar tiene la siguiente información: ";
+    lista->read(5);
+    lista->del(5);
     std::cout << "¡El nodo fue exitosamente eliminado! \n";
-    std::cout << "Ahora el nodo en la posición 0 es:\n";
-    lista->read(0);
+    std::cout << "Ahora el nodo en la posición 5 es: ";
+    lista->read(5);
     std::cout << "\n";
 
+    //Se imprime el valor que se encuentra en la posición 1 de la estructura apuntando desde la posición 0 para comprobar que es una lista ligada  
+    std::cout << "Imprimiendo el valor que se encuentra en la posición 1 de la estructura apuntando desde la posición 0 para comprobar que es una lista ligada: \n";
+    lista->test();
 
     std::cout << "------------------------------------------------------------------------------ Lista Doblemente Ligada ------------------------------------------------------------------------------" << "\n";
 
@@ -756,12 +772,12 @@ int main()
     //Agrega un nuevo nodo a la estructura de datos en la ultima posición
     std::cout << "A continuación se agregará un nodo en la ultima posición" << "\n";
     listaDoble->createAtEnd("Nuevo Nodo");
-    std::cout << "El nodo agregado tiene la siguiente informacion: " << "\n";
+    std::cout << "El nodo agregado tiene la siguiente informacion: ";
     listaDoble->read(listaDoble->size - 1);
     std::cout << "\n";
     
     //Buscando un elemento dentro de la estructura de datos 
-    std::cout << "El nodo en la posición 4 tiene la siguiente información: ";
+    std::cout << "El nodo en la posición 4 tiene la siguiente información: \n";
     listaDoble->read(4);
     std::cout << "\n";
 
@@ -769,14 +785,14 @@ int main()
     std::cout << "La posicón del nodo que se va a actualizar es: 2 \n";
     std::cout << "Informacion del nodo a actualizar: ";
     listaDoble->read(2);
-    std::cout << "El nodo actualizado tiene la siguiente información:" << "\n";
+    std::cout << "El nodo actualizado tiene la siguiente información: ";
     listaDoble->update(2, "Nodo Actualizado");
     listaDoble->read(2);
     std::cout << "¡Actualización exitosa! \n\n";
 
     //Eliminando un nodo dentro de la estructura
     std::cout << "La posicón del nodo que se va a eliminar es: 0 \n";
-    std::cout << "El nodo en la posición 0 que se va a eliminar tiene la siguiente información: \n";
+    std::cout << "El nodo en la posición 0 que se va a eliminar tiene la siguiente información: ";
     listaDoble->read(0);
     listaDoble->del(0);
     std::cout << "¡El nodo fue exitosamente eliminado! \n";
@@ -797,12 +813,12 @@ int main()
     //Agrega un nuevo nodo a la estructura de datos en la ultima posición
     std::cout << "A continuación se agregará un nodo en la ultima posición" << "\n";
     listaCircular->create("Nuevo Nodo");
-    std::cout << "El nodo agregado tiene la siguiente informacion: " << "\n";
+    std::cout << "El nodo agregado tiene la siguiente informacion: ";
     listaCircular->read(listaCircular->size - 1);
     std::cout << "\n";
     
     //Buscando un elemento dentro de la estructura de datos 
-    std::cout << "El nodo en la posición 4 tiene la siguiente información: ";
+    std::cout << "El nodo en la posición 4 tiene la siguiente información: \n";
     listaCircular->read(4);
     std::cout << "\n";
 
@@ -810,14 +826,14 @@ int main()
     std::cout << "La posicón del nodo que se va a actualizar es: 3 \n";
     std::cout << "Informacion del nodo a actualizar: ";
     listaCircular->read(3);
-    std::cout << "El nodo actualizado tiene la siguiente información:" << "\n";
+    std::cout << "El nodo actualizado tiene la siguiente información: ";
     listaCircular->update(3, "Nodo Actualizado");
     listaCircular->read(3);
     std::cout << "¡Actualización exitosa! \n\n";
 
     //Eliminando un nodo dentro de la estructura 
     std::cout << "La posicón del nodo que se va a eliminar es la última \n";
-    std::cout << "El nodo en la última posición que se va a eliminar tiene la siguiente información: \n";
+    std::cout << "El nodo en la última posición que se va a eliminar tiene la siguiente información: ";
     listaCircular->read(listaCircular->size-1);
     listaCircular->del(listaCircular->size-1);
     std::cout << "¡El nodo fue exitosamente eliminado! \n";
@@ -825,7 +841,7 @@ int main()
     listaCircular->read(listaCircular->size-1);
     std::cout << "\n";
 
-    //Se imprime la información del penúltimo nodo para comprobar que si es una lista doblemente ligada 
+    //Se imprime la información del nodo en la posición 0 apuntando desde el último para comprobar que si es una lista ligada circular 
     std::cout << "Imprimiendo la información del nodo en la posición 0 apuntando desde el último para comprobar que si es una lista circularmente ligada: \n";
     listaCircular->test();
     std::cout << "------------------------------------------------------------------------------------------------------------------------------------------------------------" << "\n";
