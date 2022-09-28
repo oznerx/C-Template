@@ -571,16 +571,19 @@ public:
                 last = last->next; 
                 i++;
             }
-/*
-            if (i == 0) {
-                previous->next = head->next;
-                size--;
-                free(head);
-            }
-*/
+
+
+
             if (i == index) {
 
-                if(i == size - 1 ){
+                if (i == 0) {
+                    tail->next = head->next;
+                    tail = head;
+                    size--;
+                    free(head);
+                }
+
+                else if(i == size - 1 ){
                     previous->next = last->next;
                     head = last->next;
                     size--;
@@ -702,7 +705,7 @@ void readFileCirc(std::string filePath,circularLinkedList <std::string>* lista )
 
 int main()
 {
-/*
+
     std::cout << "------------------------------------------------------------------------------ Lista Ligada ------------------------------------------------------------------------------" << "\n";
 
     //Leyendo el archivo y creando la lista ligada con cada linea 
@@ -735,7 +738,7 @@ int main()
     std::cout << "El nodo en la posición 0 que se va a eliminar tiene la siguiente información: \n";
     lista->read(0);
     lista->del(0);
-    std::cout << "El nodo fue exitosamente eliminado \n";
+    std::cout << "¡El nodo fue exitosamente eliminado! \n";
     std::cout << "Ahora el nodo en la posición 0 es:\n";
     lista->read(0);
     std::cout << "\n";
@@ -772,7 +775,7 @@ int main()
     std::cout << "El nodo en la posición 0 que se va a eliminar tiene la siguiente información: \n";
     listaDoble->read(0);
     listaDoble->del(0);
-    std::cout << "El nodo fue exitosamente eliminado \n";
+    std::cout << "¡El nodo fue exitosamente eliminado! \n";
     std::cout << "Ahora el nodo en la posición 0 es:\n";
     listaDoble->read(0);
     std::cout << "\n";
@@ -780,7 +783,7 @@ int main()
     //Se imprime la información del penúltimo nodo para comprobar que si es una lista doblemente ligada 
     std::cout << "Imprimiendo la información del penúltimo nodo apuntando desde el último para comprobar que si es una lista doblemente ligada: \n";
     listaDoble->test();
-*/
+
 
     std::cout << "------------------------------------------------------------------------------ Lista Circularmente Ligada ------------------------------------------------------------------------------" << "\n";
 
@@ -808,18 +811,19 @@ int main()
     listaCircular->read(3);
     std::cout << "¡Actualización exitosa! \n\n";
 
-    //Eliminando un nodo dentro de la estructura
-    std::cout << "La posicón del nodo que se va a eliminar es: listaCircular->size-1 \n";
-    std::cout << "El nodo en la posición listaCircular->size-1 que se va a eliminar tiene la siguiente información: \n";
+    //Eliminando un nodo dentro de la estructura 
+    std::cout << "La posicón del nodo que se va a eliminar es el último \n";
+    std::cout << "El nodo en la última posición que se va a eliminar tiene la siguiente información: \n";
     listaCircular->read(listaCircular->size-1);
     listaCircular->del(listaCircular->size-1);
-    std::cout << "El nodo fue exitosamente eliminado \n";
-    std::cout << "Ahora el nodo en la posición listaCircular->size-1 es:\n";
+    std::cout << "¡El nodo fue exitosamente eliminado! \n";
+    std::cout << "Ahora el nodo en la última posición  es:\n";
     listaCircular->read(listaCircular->size-1);
     std::cout << "\n";
 
     //Se imprime la información del penúltimo nodo para comprobar que si es una lista doblemente ligada 
     std::cout << "Imprimiendo la información del nodo en la posición 0 apuntando desde el último para comprobar que si es una lista circularmente ligada: \n";
     listaCircular->test();
+    std::cout << "------------------------------------------------------------------------------------------------------------------------------------------------------------" << "\n";
 
 }
