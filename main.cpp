@@ -742,7 +742,7 @@ int main()
     std::cout << "\n";
 
     //Actualizando un nodo dentro de la estructura 
-    std::cout << "La posicón del nodo que se va a actualizar es: 2 \n";
+    std::cout << "La posición del nodo que se va a actualizar es: 2 \n";
     std::cout << "Informacion del nodo a actualizar: ";
     lista->read(2);
     std::cout << "El nodo actualizado tiene la siguiente información: ";
@@ -751,7 +751,7 @@ int main()
     std::cout << "¡Actualización exitosa! \n\n";
 
     //Eliminando un nodo dentro de la estructura
-    std::cout << "La posicón del nodo que se va a eliminar es: 5 \n";
+    std::cout << "La posición del nodo que se va a eliminar es: 5 \n";
     std::cout << "El nodo en la posición 5 que se va a eliminar tiene la siguiente información: ";
     lista->read(5);
     lista->del(5);
@@ -782,7 +782,7 @@ int main()
     std::cout << "\n";
 
     //Actualizando un nodo dentro de la estructura 
-    std::cout << "La posicón del nodo que se va a actualizar es: 2 \n";
+    std::cout << "La posición del nodo que se va a actualizar es: 2 \n";
     std::cout << "Informacion del nodo a actualizar: ";
     listaDoble->read(2);
     std::cout << "El nodo actualizado tiene la siguiente información: ";
@@ -791,7 +791,7 @@ int main()
     std::cout << "¡Actualización exitosa! \n\n";
 
     //Eliminando un nodo dentro de la estructura
-    std::cout << "La posicón del nodo que se va a eliminar es: 0 \n";
+    std::cout << "La posición del nodo que se va a eliminar es: 0 \n";
     std::cout << "El nodo en la posición 0 que se va a eliminar tiene la siguiente información: ";
     listaDoble->read(0);
     listaDoble->del(0);
@@ -802,7 +802,7 @@ int main()
 
     //Se imprime la información del penúltimo nodo para comprobar que si es una lista doblemente ligada 
     std::cout << "Imprimiendo la información del penúltimo nodo apuntando desde el último para comprobar que si es una lista doblemente ligada: \n";
-    listaDoble->test();
+    listaDoble->test(); //recuerde que anteriormente se agregó un nodo al final (linea 774)
 
 
     std::cout << "------------------------------------------------------------------------------ Lista Circularmente Ligada ------------------------------------------------------------------------------" << "\n";
@@ -823,7 +823,7 @@ int main()
     std::cout << "\n";
 
     //Actualizando un nodo dentro de la estructura 
-    std::cout << "La posicón del nodo que se va a actualizar es: 3 \n";
+    std::cout << "La posición del nodo que se va a actualizar es: 3 \n";
     std::cout << "Informacion del nodo a actualizar: ";
     listaCircular->read(3);
     std::cout << "El nodo actualizado tiene la siguiente información: ";
@@ -832,7 +832,7 @@ int main()
     std::cout << "¡Actualización exitosa! \n\n";
 
     //Eliminando un nodo dentro de la estructura 
-    std::cout << "La posicón del nodo que se va a eliminar es la última \n";
+    std::cout << "La posición del nodo que se va a eliminar es la última \n";
     std::cout << "El nodo en la última posición que se va a eliminar tiene la siguiente información: ";
     listaCircular->read(listaCircular->size-1);
     listaCircular->del(listaCircular->size-1);
