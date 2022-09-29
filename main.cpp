@@ -1,849 +1,738 @@
-#include <cstdlib>
-#include <stdio.h>
-#include <stdlib.h>
-#include <iostream>
-#include <fstream>
-
 /*
-Ozner Axel Leyva Mariscal
-A01742377
-28 de septiembre del 2022
-En este código se crerá una lista ligada, una doblemente ligada y una circularmente ligada a partir de un archivo de texto
-en el cual podremos usar métodos CRUD (create, read, update y del).
+Este programa utiliza tres estructuras de datos lineales: listas 
+ligadas, listas doblemente ligadas y listas circulares,
+que contienen información del archivo bitácora.txt, para realizar
+pruebas con las operaciones básicas CRUD (create, read, update y delete).
+Hecho por Juan Carlos Hernández Ríos, A01740821
+Hecho el 27 de septiembre de 2022
 */
 
+#include <iostream>
+#include <fstream>
+#include <stdio.h>
+#include <stdlib.h>
+#include <malloc.h>
+
+/*
+Es la entidad básica de las estructuras de datos. Se puede contener 
+cualquier tipo de datos en ella.
+*/
 template <class T>
-class Node
-{
-public:
+class node{
+  T data;
+  public:
+    node<T>* next;
+    node<T>* prev;
 
-    T data;
-    Node<T>* next; 
-
-    Node(T dataValue) {
-        data = dataValue;  
-        next = nullptr; 
+    /* Constructor de un nodo. El nodo siguiente y anterior son
+    nodos nulos.
+    Param: Nada.
+    Return: Nada.
+    */
+    node(){
+      next = nullptr;
+      prev = nullptr;
     }
 
+    /* Establece el dato del nodo.
+    Param: T nuevo dato del nodo.
+    Return: Nada.
+    */
+    void setData(T newData){
+      data = newData;
+    }
+
+    /* Regresa el dato del nodo.
+    Param: Nada.
+    Return: T dato del nodo.
+    */
+    T getData(){
+      return data;
+    }
 };
 
+/*
+Esta clase es la base de la lista ligada. Contiene todas las operaciones
+CRUD.
+Cada nodo, excepto la cola, apunta hacia el siguiente nodo.
+*/
 template <class T>
-class DNode
-{
-public:
+class linkedList{
+  node<T>* head;
+  node<T>* tail;  
+  node<T>* current;
+  int size = 0;
+  public:
 
-    T data;
-    DNode<T>* next; 
-    DNode<T>* prev; 
-
-    DNode(T dataValue) {
-        data = dataValue;  
-        next = nullptr; 
-        prev = nullptr; 
-    }
-
-};
-
-
-template <class T>
-class linkedList {
-private:
-
-    Node<T>* head;
-
-public:
-    int size = 0; 
-    linkedList() {
-        head = nullptr; 
-    }
-
-    /*
-    Agrega un elemento T a la estructura de datos en la ultima posición
-    @Param: (T value) elemento añadir del tipo T 
-    Complejidad de tiempo: O(n)
-    Complejidad de espacio: O(1)
+    /* Constructor de la lista ligada. El nodo cabeza y cola son nulos.
+    Param: Nada.
+    Return: Nada.
     */
-    void create(T value) {
-
-        size++;
-        Node<T>* new_node = new Node<T>(value); 
-
-        if (head == nullptr) { 
-            head = new_node; 
-        }
-
-        else { 
-
-            Node<T>* current = head; 
-            while (current->next != nullptr) { 
-                current = current->next;
-            }
-            current->next = new_node;  
-
-        }
-
+    linkedList(){
+      head = nullptr;
+      tail = nullptr;
     }
 
-    /*
-    Busca e imprime un elemento T en la posicion indicada dentro de la estructura de datos  
-    @Param: (int index) indice en el cual se encuentra el dato T 
-    Complejidad de tiempo: O(n) 
-    Complejidad de espacio: O(1)
-    */
-    void read(int index)
-    {
-        if (index < 0) { 
-            std::cout << "no existe un elemento con posicion negativa";
-        }
-
-        Node<T>* last = head; 
-        Node<T>* previous = nullptr;
-
-        if (head == nullptr) { 
-            std::cout << "la lista no existe";
-        }
-
-        else {
-
-            int i = 0;
-            while (i < index && last->next != nullptr) { 
-                previous = last; 
-                last = last->next;
-                i++;
-            }
-
-            if (i == index) {
-                std::cout << last->data << "\n"; 
-            }
-
-        }
-
-    }
-
-    /*
-    Actualiza un elemento T dentro de la estructura de datos en una posicion determinada 
-    @Param: (int) indice en el cual se desea modificar el dato T, (T newData) nuevo dato   
-    Complejidad de tiempo: O(n)
-    Complejidad de espacio: O(1)
-    */
-    void update(int index, T newData){
-
-        if (index < 0) { 
-            std::cout << "No existe una posición negativa" ;
-        }
-
-        Node<T>* last = head; 
-        Node<T>* previous = nullptr;
-
-        if (head == nullptr) { 
-            std::cout << "Error";
-        }
-
-        else {
-
-            int i = 0;
-
-            while (i < index && last->next != nullptr) {   
-                previous = last; 
-                last = last->next;
-                i++;
-            }
-
-            if (i == index) { 
-                last->data = newData; 
-            }
-
-        }
-
-    }
-
-    /*
-    Elimina un elemento dentro de la estructura de datos en una posicion indicada 
-    @Param: (int index) indice en el cual se eliminara el dato T  
-    Complejidad de tiempo: O(n)
-    Complejidad de espacio: O(1)
-    */
-    void del(int index){
-
-        if (index < 0) {  
-            return;
-        }
-
-        Node<T>* last = head; 
-        Node<T>* previous = nullptr;
-        
-        if (head == nullptr) {  
-            return;
-        }
-
-        else { 
-
-            int i = 0;
-            while (i < index && last->next != NULL) {   
-                previous = last;
-                last = last->next; 
-                i++;
-            }
-
-            if (i == 0) {
-                head = last->next; 
-                free(last);  
-                size--;
-                return;
-            }
-
-            else if (i == index) {
-                previous->next = last->next; 
-                size--;
-                free(last); 
-            }
-
-        }
-
-    }
-
-    /*
-    Imprime el valor que se encuentra en la posición 1 de la estructura apuntando desde la posición 0 para comprobar que es una lista ligada 
-    @Param: nada 
-    Complejidad de tiempo: O(n)
-    Complejidad de espacio: O(1)
-    */
-    void test(){
-
-        Node<T>* last = head; 
-        std::cout << last->next->data << "\n"; 
-
-    }
-
-};
-
-template <class T>
-class doubleLinkedList { 
-private:
-
-    DNode<T>* head;
-
-public:
-
-    int size = 0; 
-
-    doubleLinkedList() {
-        head = nullptr;
-    }
-
-    /*
-    Agrega un elemento T a la estructura de datos en la ultima posición
-    @Param: (T value) elemento añadir del tipo T 
-    Complejidad de tiempo: O(n)
-    Complejidad de espacio: O(1)
-    */
-    void createAtEnd(T value) {
-
-        size++;
-        DNode<T>* new_node = new DNode<T>(value); 
-
-        if (head == nullptr) { 
-            head = new_node; 
-        }
-
-        else { 
-
-            DNode<T>* current = head; 
-            while (current->next != nullptr) { 
-                current = current->next;
-            }
-            current->next = new_node; 
-            new_node->prev = current; 
-
-        }
-
-    }
-
-    /*
-    Agrega un elemento T a la estructura de datos en la primera posición
-    @Param: (T value) elemento añadir del tipo T 
-    Complejidad de tiempo: O(n)
-    Complejidad de espacio: O(1)
-    */
-    void createAtFront(T value) {
-
-        size++;
-        DNode<T>* new_node = new DNode<T>(value); 
-
-        if (head == nullptr) { 
-            head = new_node; 
-        }
-
-        else { 
-
-            new_node->next = head;
-            head->prev = new_node;
-            head = new_node; 
-
-        }
-
-    }
-
-    /*
-    Busca e imprime un elemento T en la posicion indicada dentro de la estructura de datos  
-    @Param T value: (int index) indice en el cual se encuentra el dato T 
-    Complejidad de tiempo: O(n) 
-    Complejidad de espacio: O(1)
-    */
-    void read(int index)
-    {
-        if (index < 0) { 
-            std::cout << "no existe un elemento con posicion negativa";
-        }
-
-        DNode<T>* last = head; 
-        DNode<T>* previous = nullptr;
-
-        if (head == nullptr) { 
-            std::cout << "la lista no existe";
-        }
-
-        else {
-
-            int i = 0;
-            while (i < index && last->next != nullptr) { 
-                previous = last; 
-                last = last->next;
-                i++;
-            }
-
-            if (i == index) {
-                std::cout << last->data << "\n"; 
-            }
-
-        }
-
-    }
-
-    /*
-    Actualiza un elemento T dentro de la estructura de datos en una posicion determinada 
-    @Param: (int index) indice en el cual se desea modificar el dato T , (T newData) nuevo dato   
-    Complejidad de tiempo: O(n)
-    Complejidad de espacio: O(1)
-    */
-    void update(int index, T newData){
-
-        if (index < 0) { 
-            std::cout << "No existe una posición negativa" ;
-        }
-
-        DNode<T>* last = head; 
-        DNode<T>* previous = nullptr;
-
-        if (head == nullptr) { 
-            std::cout << "Error";
-        }
-
-        else {
-
-            int i = 0;
-
-            while (i < index && last->next != nullptr) {   
-                previous = last; 
-                last = last->next;
-                i++;
-            }
-
-            if (i == index) { 
-                last->data = newData; 
-            }
-
-        }
-
-    }
-
-    /*
-    Elimina un elemento dentro de la estructura de datos en una posicion indicada 
-    @Param: (int index) indice en el cual se eliminara el dato T  
-    Complejidad de tiempo: O(n)
-    Complejidad de espacio: O(1)
-    */
-    void del(int index){
-
-        if (index < 0) {  
-            return;
-        }
-
-        DNode<T>* last = head; 
-        DNode<T>* previous = nullptr;
-        
-        if (head == nullptr) {  
-            return;
-        }
-
-        else { 
-
-            int i = 0;
-            while (i < index && last->next != NULL) {   
-                previous = last;
-                last = last->next; 
-                i++;
-            }
-
-            if (i == 0) {
-                head = last->next; 
-                free(last);  
-                size--;
-                return;
-            }
-
-            else if (i == index) {
-                previous->next = last->next; 
-                previous->prev = last->prev;
-                size--;
-                free(last); 
-            }
-
-        }
-
-    }
-
-    /*
-    Imprime el penúltimo valor de la estructura para comprobar que es una lista doblemente ligada 
-    @Param: nada 
-    Complejidad de tiempo: O(n)
-    Complejidad de espacio: O(1)
-    */
-    void test(){
-
-        DNode<T>* last = head; 
-        DNode<T>* previous = nullptr;
-
-        int i = 0;
-        while (i < size - 1  && last->next != nullptr) { 
-            previous = last; 
-            last = last->next;
-            last->prev = previous;
-            i++;
-        }
-
-        if (i == size-1) {
-            std::cout << last->prev->data << "\n"; 
-        }
-
-    }
-
-};
-
-template <class T>
-class circularLinkedList { //No comentado todavia 
-private:
-
-Node<T>* head;
-Node<T>* tail;
-Node<T>* next;
-
-public:
-
-    int size = 0; 
-
-    circularLinkedList() {
-        head = nullptr;
-        tail = nullptr;
-        next = nullptr;
-    }
-
-    /*
-    Agrega un elemento T a la estructura de datos en la ultima posición
-    @Param: (T value) elemento añadir del tipo T 
+    /* Operación crear. Inserta un nodo en la estructura de datos.
+    Param: T dato del nuevo nodo.
+    Return: Nada.
     Complejidad de tiempo: O(1)
     Complejidad de espacio: O(1)
     */
-    void create(T value) {
-
+    void create(T data){
+      node<T>* new_node = new node<T>();
+      new_node->setData(data);
+      
+      if(head == nullptr){
+        head = new_node;
+        tail = new_node;
         size++;
-
-        Node<T>* new_node = new Node<T>(value); 
-
-        new_node->data = value;
-
-        if (head == nullptr) {
-
-            head = new_node;
-            head->next = head;
-            tail = head;
-
-        }
-
-        else{
-
-            tail->next = new_node;
-            new_node->next = head;
-            tail = new_node; 
-            
-        }
-    
+      }
+      
+      else{
+        tail->next = new_node;
+        tail = new_node;
+        size++;
+      }
     }
 
-
-    /*
-    Busca e imprime un elemento T en la posicion indicada dentro de la estructura de datos  
-    @Param: (int index) indice en el cual se encuentra el dato T 
-    Complejidad de tiempo: O(n) 
+    /* Operación leer. Imprime el dato del nodo indicado.
+    Param: int índice del nodo a imprimir.
+    Return: Nada.
+    Complejidad de tiempo: O(n)
     Complejidad de espacio: O(1)
     */
-    void read(int index)
-    {
-        if (index < 0) { 
-            std::cout << "no existe un elemento con posicion negativa";
+    void read(int index){
+      if(head != nullptr && (size > index && index >= 0)){
+        current = head;
+        
+        for(int i = 1; i<=index; i++){
+          current = current->next;
         }
+        
+        std::cout<<"El nodo en la posición "<<index<<" contiene: "<<current->getData()<<std::endl;
+        std::cout<<std::endl;
+      }
+      
+      else if(head == nullptr){
+        std::cout<<"Error. La lista está vacia.\n"<<std::endl;
+      }
 
-        Node<T>* current = head; 
-
-        if (head == nullptr) { 
-            std::cout << "la lista no existe";
-        }
-
-        else {
-
-            int i = 0 ;
-            Node<T>* last = head; 
-            Node<T>* previous = nullptr;
-
-            while( i < index ) { 
-                previous = last; 
-                last = last->next;
-                i++; 
-            }
-
-            if (i == index) {
-                std::cout << last->data << "\n"; 
-            }
-
-        }
-
+      else{
+        std::cout<<"Error. Índice incorrecto.\n"<<std::endl;
+      }
     }
 
-    /*
-    Actualiza un elemento T dentro de la estructura de datos en una posicion determinada 
-    @Param: (int index) indice en el cual se desea modificar el dato T, (T newData) nuevo dato  
+    /* Operación actualizar. Actualiza el dato del nodo indicado.
+    Param: int índice del nodo a modificar. T nuevo dato del nodo.
+    Return: Nada.
     Complejidad de tiempo: O(n)
     Complejidad de espacio: O(1)
     */
     void update(int index, T newData){
-
-        if (index < 0) { 
-            std::cout << "No existe una posición negativa" ;
+      if(head != nullptr && (size > index && index >= 0)){
+        current = head;
+        
+        for(int i = 1; i<=index; i++){
+          current = current->next;
         }
+        
+        current->setData(newData);
+      }
+      
+      else if(head == nullptr){
+        std::cout<<"Error. La lista está vacia.\n"<<std::endl;
+      }
 
-        Node<T>* last = head; 
-        Node<T>* previous = nullptr;
-
-        if (head == nullptr) { 
-            std::cout << "Error";
-        }
-
-        else {
-
-            int i = 0;
-
-            while (i < index && last->next != nullptr) {   
-                previous = last; 
-                last = last->next;
-                i++;
-            }
-
-            if (i == index) { 
-                last->data = newData; 
-            }
-
-        }
-
+      else{
+        std::cout<<"Error. Índice incorrecto.\n"<<std::endl;
+      }
     }
 
-    /*
-    Elimina un elemento dentro de la estructura de datos en una posicion indicada 
-    @Param: (int index) indice en el cual se eliminara el dato T  
+    /* Operación eliminar. Elimina el nodo indicado.
+    Param: int índice del nodo a eliminar.
+    Return: Nada.
     Complejidad de tiempo: O(n)
     Complejidad de espacio: O(1)
     */
     void del(int index){
-
-        if (index < 0) {  
-            return;
-        }
-
-        Node<T>* last = head; 
-        Node<T>* previous = nullptr;
+      if(head != nullptr && (size > index && index >= 0)){
+        node<T>* previous = nullptr;
+        current = head;
         
-        if (head == nullptr) {  
-            return;
+        if(index == 0){
+          head = current->next;
+          free(current);
+          size--;
         }
-
-        else { 
-
-            int i = 0;
-
-            while (i < index && last->next != NULL) {   
-                previous = last;
-                last = last->next; 
-                i++;
-            }
-
-
-
-            if (i == index) {
-
-                if (i == 0) {
-                    tail->next = head->next;
-                    tail = head;
-                    size--;
-                    free(head);
-                }
-
-                else if(i == size - 1 ){
-                    previous->next = last->next;
-                    head = last->next;
-                    size--;
-                    free(last); 
-                }
-
-                else{
-                    previous->next = last->next;
-                    previous = last; 
-                    size--;
-                    free(last); 
-                }
-
-            }
-
-        }
-
-    }
-
-
-    /*Imprime los valores de toda la lista
-    @Param: nada  
-    Complejidad de tiempo: O(n)
-    Complejidad de espacio: O(1)
-    */
-    void printList()
-    {
-        Node<T>* current = head; 
-
-        if(head != nullptr){
-
-            for(int i = 0 ; i < size - 1 ; i++){
-                std::cout << current->data << "\n";
-                current = current->next;
-            }
-
-        }
-
+          
         else{
-            std::cout << "Lista vacia" << "\n";
+          for(int i = 1; i<=index; i++){
+            previous = current;
+            current = current->next;
+            if(i == size-1){
+              tail = previous;
+            }
+          }
+          
+          previous->next = current->next;
+          free(current);
+          size--;
         }
+      }
+      
+      else if(head == nullptr){
+        std::cout<<"Error. La lista está vacia.\n"<<std::endl;
+      }
 
+      else{
+        std::cout<<"Error. Índice incorrecto.\n"<<std::endl;
+      }
     }
 
-
-    /*
-    Imprime el primer valor de la estructura referenciado desde el último nodo para comprobar que es una lista circular 
-    @Param: nada  
-    Complejidad de tiempo: O(n)
-    Complejidad de espacio: O(1)
+    /* Imprime todos los datos de la lista.
+    Param: Nada.
+    Return: Nada.
     */
-    void test(){
-
-        Node<T>* last = head; 
-        Node<T>* previous = nullptr;
-
-        int i = 0;
-
-        while (i < size - 1 && last->next != nullptr) { 
-            previous = last; 
-            last = last->next;
-            i++;
-        }
-
-        if (i == size - 1 ) {
-            std::cout << last->next->data << "\n"; 
-        }
-
+    void printNodes(){
+      current = head;
+      
+      while(current != nullptr){
+        std::cout<<current->getData()<<std::endl;
+        current = current->next;
+      }
     }
 
+    /* Regresa el tamaño de la lista.
+    Param: Nada.
+    Return: int tamaño de la lista.
+    */
+    int getSize(){
+      return size - 1;
+    }
 };
 
 /*
-Lee el archivo indicado y por cada linea se es creado un nuevo nodo en la lista ligada 
-@Param: (string) archivo a leer, (LinkedList <std::string>) estructura de datos   
-Complejidad de tiempo: O(n)
-Complejidad de espacio: O(1)
+Esta clase es la base de la lista doblemente ligada. 
+Contiene todas las operaciones CRUD y una operación especial.
+Cada nodo, excepto la cabeza y la cola, apunta hacia el siguiente
+nodo y el anterior.
 */
-void readFile(std::string filePath,linkedList <std::string>* lista ){
+template <class T>
+class doubleLinkedList{
+  node<T>* head;
+  node<T>* tail;  
+  node<T>* current;
+  int size = 0;
+  int i;
+  public:
 
-    std::ifstream inputFile(filePath);
-    std::string line;
-
-    while (getline (inputFile , line)) {
-        lista->create(line);
+    /* Constructor de la lista doblemente ligada. 
+    El nodo cabeza y cola son nulos.
+    Param: Nada.
+    Return: Nada.
+    */
+    doubleLinkedList(){
+      head = nullptr;
+      tail = nullptr;
     }
 
-}
+    /* Operación crear. Inserta un nodo en la estructura de datos.
+    Param: T dato del nuevo nodo.
+    Return: Nada.
+    Complejidad de tiempo: O(1)
+    Complejidad de espacio: O(1)
+    */
+    void create(T data){
+      node<T>* new_node = new node<T>();
+      new_node->setData(data);
+      
+      if(head == nullptr){
+        head = new_node;
+        tail = new_node;
+        size++;
+      }
+      
+      else{
+        new_node->prev = tail;
+        tail->next = new_node;
+        tail = new_node;
+        size++;
+      }
+    }
+
+    /* Operación leer. Imprime el dato del nodo indicado.
+    Param: int índice del nodo a imprimir.
+    Return: Nada.
+    Complejidad de tiempo: O(n)
+    Complejidad de espacio: O(1)
+    */
+    void read(int index){
+      if(head != nullptr && (size > index && index >= 0)){
+        current = head;
+        
+        for(int i = 1; i<=index; i++){
+          current = current->next;
+        }
+        
+        std::cout<<"El nodo en la posición "<<index<<" contiene: "<<current->getData()<<std::endl;
+        std::cout<<std::endl;
+      }
+      
+      else if(head == nullptr){
+        std::cout<<"Error. La lista está vacia.\n"<<std::endl;
+      }
+
+      else{
+        std::cout<<"Error. Índice incorrecto.\n"<<std::endl;
+      }
+    }
+
+    /* Operación actualizar. Actualiza el dato del nodo indicado.
+    Param: int índice del nodo a modificar. T nuevo dato del nodo.
+    Return: Nada.
+    Complejidad de tiempo: O(n)
+    Complejidad de espacio: O(1)
+    */
+    void update(int index, T newData){
+      if(head != nullptr && (size > index && index >= 0)){
+        current = head;
+        
+        for(int i = 1; i<=index; i++){
+          current = current->next;
+        }
+        
+        current->setData(newData);
+      }
+      
+      else if(head == nullptr){
+        std::cout<<"Error. La lista está vacia.\n"<<std::endl;
+      }
+
+      else{
+        std::cout<<"Error. Índice incorrecto.\n"<<std::endl;
+      }
+    }
+
+    /* Operación eliminar. Elimina el nodo indicado.
+    Param: int índice del nodo a eliminar.
+    Return: Nada.
+    Complejidad de tiempo: O(n)
+    Complejidad de espacio: O(1)
+    */
+    void del(int index){
+      if(head != nullptr && (size > index && index >= 0)){
+        node<T>* previous = nullptr;
+        current = head;
+        
+        if(index == 0){
+          head = current->next;
+          free(current);
+          size--;
+        }
+        
+        else{
+          
+          for(int i = 1; i<=index; i++){
+            previous = current;
+            current = current->next;
+            
+            /* Caso especial de las listas doblemente ligadas 
+            cuando la cola se quiere eliminar*/
+            if(i == size - 1){
+              tail = previous;
+              free(current);
+              size--;
+              return;
+            }
+          }
+          
+          previous->next = current->next;
+          current->next->prev = previous;
+          free(current);
+          size--;
+        }
+      }
+            
+      else if(head == nullptr){
+        std::cout<<"Error. La lista está vacia.\n"<<std::endl;
+      }
+
+      else{
+        std::cout<<"Error. Índice incorrecto.\n"<<std::endl;
+      }
+    }
+
+    /* Imprime todos los datos de la lista.
+    Param: Nada.
+    Return: Nada.
+    */
+    void printNodes(){
+      current = head;
+      
+      while(current != nullptr){
+        std::cout<<current->getData()<<std::endl;
+        current = current->next;
+      }
+    }
+
+    /* Regresa el tamaño de la lista.
+    Param: Nada.
+    Return: int tamaño de la lista.
+    */
+    int getSize(){
+      return size - 1;
+    }
+
+    /* Función especial de la lista doblemente ligada para comprobar
+    su funcionalidad. Lee desde la cola de lista.
+    Param: int índice (empezando desde la cola) del nodo a imprimir.
+    Return: Nada.
+    Complejidad de tiempo: O(n)
+    Complejidad de espacio: O(1)*/
+    void readBackwards(int index){
+      if(head != nullptr && (size > index && index >= 0)){
+        current = tail;
+        
+        for(i = 1; i<=index; i++){
+          current = current->prev;
+        }
+        
+        std::cout<<"El nodo en la posición "<<size - index - 1<<" contiene: "<<current->getData()<<std::endl;
+        std::cout<<std::endl;
+      }
+      
+      else if(head == nullptr){
+        std::cout<<"Error. La lista está vacia.\n"<<std::endl;
+      }
+
+      else{
+        std::cout<<"Error. Índice incorrecto.\n"<<std::endl;
+      }
+    }
+};
 
 /*
-Lee el archivo indicado y por cada linea se es creado un nuevo nodo en la lista doblemente ligada   
-@Param: (string) archivo a leer, (LinkedList <std::string>) estructura de datos   
-Complejidad de tiempo: O(n)
-Complejidad de espacio: O(1)
+Esta clase es la base de la lista circular. 
+Contiene todas las operaciones CRUD y una operación especial.
+Cada nodo apunta hacia el siguiente nodo. El último nodo apunta hacia la
+cabeza.
 */
-void readFile2(std::string filePath,doubleLinkedList <std::string>* lista ){
+template <class T>
+class circularList{
+  node<T>* head;
+  node<T>* tail;  
+  node<T>* current;
+  int size = 0;
+  public:
 
-    std::ifstream inputFile(filePath);
-    std::string line;
-
-    while (getline (inputFile , line)) {
-        lista->createAtEnd(line);
+    /* Constructor de la lista circular. 
+    El nodo cabeza y cola son nulos.
+    Param: Nada.
+    Return: Nada.
+    */
+    circularList(){
+      head = nullptr;
+      tail = nullptr;
     }
 
-}
-
-/*
-Lee el archivo indicado y por cada linea se es creado un nuevo nodo en la lista ligada circularmente   
-@Param: (string) archivo a leer, (LinkedList <std::string>) estructura de datos   
-Complejidad de tiempo: O(n)
-Complejidad de espacio: O(1)
-*/
-void readFileCirc(std::string filePath,circularLinkedList <std::string>* lista ){
-
-    std::ifstream inputFile(filePath);
-    std::string line;
-
-    while (getline (inputFile , line)) {
-        lista->create(line);
+    /* Operación crear. Inserta un nodo en la estructura de datos.
+    Param: T dato del nuevo nodo.
+    Return: Nada.
+    Complejidad de tiempo: O(1)
+    Complejidad de espacio: O(1)
+    */
+    void create(T data){
+      node<T>* new_node = new node<T>();
+      new_node->setData(data);
+      
+      if(head == nullptr){
+        head = new_node;
+        tail = new_node;
+        size++;
+      }
+      
+      else{
+        tail->next = new_node;
+        tail = new_node;
+        size++;
+      }
+      
+      tail->next = head;
     }
 
-}
+    /* Operación leer. Imprime el dato del nodo indicado.
+    Param: int índice del nodo a imprimir.
+    Return: Nada.
+    Complejidad de tiempo: O(n)
+    Complejidad de espacio: O(1)
+    */
+    void read(int index){
+      if(head != nullptr && (size > index && index >= 0)){
+        current = head;
+        
+        for(int i = 1; i<=index; i++){
+          current = current->next;
+        }
+        
+        std::cout<<"El nodo en la posición "<<index<<" contiene: "<<current->getData()<<std::endl;
+        std::cout<<std::endl;
+      }
+      
+      else if(head == nullptr){
+        std::cout<<"Error. La lista está vacia.\n"<<std::endl;
+      }
 
-int main()
-{
+      else{
+        std::cout<<"Error. Índice incorrecto.\n"<<std::endl;
+      }
+    }
 
-    std::cout << "------------------------------------------------------------------------------ Lista Ligada ------------------------------------------------------------------------------" << "\n";
+    /* Operación actualizar. Actualiza el dato del nodo indicado.
+    Param: int índice del nodo a modificar. T nuevo dato del nodo.
+    Return: Nada.
+    Complejidad de tiempo: O(n)
+    Complejidad de espacio: O(1)
+    */
+    void update(int index, T newData){
+      if(head != nullptr && (size > index && index >= 0)){
+        current = head;
+        
+        for(int i = 1; i<=index; i++){
+          current = current->next;
+        }
+        
+        current->setData(newData);
+      }
+      
+      else if(head == nullptr){
+        std::cout<<"Error. La lista está vacia.\n"<<std::endl;
+      }
 
-    //Leyendo el archivo y creando la lista ligada con cada linea 
-    linkedList <std::string>* lista = new linkedList<std::string>();
-    readFile("bitacora.txt", lista);
-   
-    //Agrega un nuevo nodo a la estructura de datos
-    std::cout << "A continuación se agregará un nodo en la ultima posición" << "\n";
-    lista->create("Nuevo Nodo");
-    std::cout << "El nodo agregado tiene la siguiente informacion: ";
-    lista->read(lista->size - 1);
-    std::cout << "\n";
-    
-    //Buscando un elemento dentro de la estructura de datos 
-    std::cout << "El nodo en la posición 4 tiene la siguiente información: \n";
-    lista->read(4);
-    std::cout << "\n";
+      else{
+        std::cout<<"Error. Índice incorrecto.\n"<<std::endl;
+      }
+    }
 
-    //Actualizando un nodo dentro de la estructura 
-    std::cout << "La posición del nodo que se va a actualizar es: 2 \n";
-    std::cout << "Informacion del nodo a actualizar: ";
-    lista->read(2);
-    std::cout << "El nodo actualizado tiene la siguiente información: ";
-    lista->update(2, "Nodo Actualizado");
-    lista->read(2);
-    std::cout << "¡Actualización exitosa! \n\n";
+    /* Operación eliminar. Elimina el nodo indicado.
+    Param: int índice del nodo a eliminar.
+    Return: Nada.
+    Complejidad de tiempo: O(n)
+    Complejidad de espacio: O(1)
+    */
+    void del(int index){
+      if(head != nullptr && (size > index && index >= 0)){
+        node<T>* previous = nullptr;
+        current = head;
+        
+        if(index == 0){
+          head = current->next;
+          tail->next = head;
+          free(current);
+          size--;
+        }
+        
+        else{
+          for(int i = 1; i<=index; i++){
+            previous = current;
+            current = current->next;
+            if(i == size-1){
+              tail = previous;
+            }
+          }
+          
+          previous->next = current->next;
+          free(current);
+          size--;
+        }
+      }
+      
+      else if(head == nullptr){
+        std::cout<<"Error. La lista está vacia.\n"<<std::endl;
+      }
 
-    //Eliminando un nodo dentro de la estructura
-    std::cout << "La posición del nodo que se va a eliminar es: 5 \n";
-    std::cout << "El nodo en la posición 5 que se va a eliminar tiene la siguiente información: ";
-    lista->read(5);
-    lista->del(5);
-    std::cout << "¡El nodo fue exitosamente eliminado! \n";
-    std::cout << "Ahora el nodo en la posición 5 es: ";
-    lista->read(5);
-    std::cout << "\n";
+      else{
+        std::cout<<"Error. Índice incorrecto.\n"<<std::endl;
+      }
+    }
 
-    //Se imprime el valor que se encuentra en la posición 1 de la estructura apuntando desde la posición 0 para comprobar que es una lista ligada  
-    std::cout << "Imprimiendo el valor que se encuentra en la posición 1 de la estructura apuntando desde la posición 0 para comprobar que es una lista ligada: \n";
-    lista->test();
+    /* Imprime todos los datos de la lista.
+    Param: Nada.
+    Return: Nada.
+    */
+    void printNodes(){
+      current = head;
+      
+      while(current != nullptr){
+        std::cout<<current->getData()<<std::endl;
+        current = current->next;
+      }
+    }
 
-    std::cout << "------------------------------------------------------------------------------ Lista Doblemente Ligada ------------------------------------------------------------------------------" << "\n";
+    /* Regresa el tamaño de la lista.
+    Param: Nada.
+    Return: int tamaño de la lista.
+    */
+    int getSize(){
+      return size - 1;
+    }
 
-    doubleLinkedList <std::string>* listaDoble = new doubleLinkedList<std::string>();
-    readFile2("bitacora.txt", listaDoble);
+    /* Función especial de la lista circular para comprobar
+    su funcionalidad. 
+    Después de llegar al nodo del índice indicado, recorre la lista
+    el número de nodos indicado por la variable spaces.
+    Al recorrer la lista, el nodo del final conecta al nodo del inicio.
+    Param: int índice del nodo a imprimir. int número de espacios a 
+    recorrer en la lista.
+    Return: Nada.
+    Complejidad de tiempo: O(n)
+    Complejidad de espacio: O(1)*/
+    void spin(int index, int spaces){
+      if(head != nullptr && (size > index && index >= 0)){
+        int count = 0;
+        current = head;
+        
+        for(int i = 1; i<=index; i++){
+          current = current->next;
+          count++;
+        }
+        
+        for(int j = 0; j<spaces; j++){
+          current = current->next;
+          count++;
+          
+          if(count>=size){
+            count = 0;
+          }
+        }
+        
+        std::cout<<"Después de moverse "<<spaces<<" espacios desde la posición "<<index<<", el nodo "<<count<<" contiene lo siguiente: "<<current->getData()<<std::endl;
+        std::cout<<std::endl;
+      }
+      
+      else if(head == nullptr){
+        std::cout<<"Error. La lista está vacia.\n"<<std::endl;
+      }
 
-    //Agrega un nuevo nodo a la estructura de datos en la ultima posición
-    std::cout << "A continuación se agregará un nodo en la ultima posición" << "\n";
-    listaDoble->createAtEnd("Nuevo Nodo");
-    std::cout << "El nodo agregado tiene la siguiente informacion: ";
-    listaDoble->read(listaDoble->size - 1);
-    std::cout << "\n";
-    
-    //Buscando un elemento dentro de la estructura de datos 
-    std::cout << "El nodo en la posición 4 tiene la siguiente información: \n";
-    listaDoble->read(4);
-    std::cout << "\n";
-
-    //Actualizando un nodo dentro de la estructura 
-    std::cout << "La posición del nodo que se va a actualizar es: 2 \n";
-    std::cout << "Informacion del nodo a actualizar: ";
-    listaDoble->read(2);
-    std::cout << "El nodo actualizado tiene la siguiente información: ";
-    listaDoble->update(2, "Nodo Actualizado");
-    listaDoble->read(2);
-    std::cout << "¡Actualización exitosa! \n\n";
-
-    //Eliminando un nodo dentro de la estructura
-    std::cout << "La posición del nodo que se va a eliminar es: 0 \n";
-    std::cout << "El nodo en la posición 0 que se va a eliminar tiene la siguiente información: ";
-    listaDoble->read(0);
-    listaDoble->del(0);
-    std::cout << "¡El nodo fue exitosamente eliminado! \n";
-    std::cout << "Ahora el nodo en la posición 0 es:\n";
-    listaDoble->read(0);
-    std::cout << "\n";
-
-    //Se imprime la información del penúltimo nodo para comprobar que si es una lista doblemente ligada 
-    std::cout << "Imprimiendo la información del penúltimo nodo apuntando desde el último para comprobar que si es una lista doblemente ligada: \n";
-    listaDoble->test(); //recuerde que anteriormente se agregó un nodo al final (linea 774)
+      else{
+        std::cout<<"Error. Índice incorrecto.\n"<<std::endl;
+      }
+    }
+};
 
 
-    std::cout << "------------------------------------------------------------------------------ Lista Circularmente Ligada ------------------------------------------------------------------------------" << "\n";
 
-    circularLinkedList <std::string>* listaCircular = new circularLinkedList<std::string>();
-    readFileCirc("bitacora.txt", listaCircular);
+int main() {
+  std::string str;
+  int size;
+  linkedList<std::string> list, list2;
+  doubleLinkedList<std::string> dList, dList2;
+  circularList<std::string> cList, cList2;
+  std::ifstream file("bitacora.txt");
+  
+  while(std::getline(file, str)){
+    list.create(str);
+    dList.create(str);
+    cList.create(str);
+  }
+  
+  std::cout<<"Lista ligada\n"<<std::endl;
+  std::cout<<"Prueba del operador Update\n"<<std::endl;
+  list.read(50);
+  list.update(50, "Nuevo string");
+  list.read(50);
+  
+  std::cout<<"Prueba 1 del operador Delete (en la cabeza de la lista)\n"<<std::endl;
+  list.read(0);
+  list.del(0);
+  list.read(0);
+  
+  std::cout<<"Prueba 2 del operador Delete (en la cola de la lista)\n"<<std::endl;
+  size = list.getSize();
+  list.read(size);
+  list.del(size);
+  size = list.getSize();
+  list.read(size);
 
-    //Agrega un nuevo nodo a la estructura de datos en la ultima posición
-    std::cout << "A continuación se agregará un nodo en la ultima posición" << "\n";
-    listaCircular->create("Nuevo Nodo");
-    std::cout << "El nodo agregado tiene la siguiente informacion: ";
-    listaCircular->read(listaCircular->size - 1);
-    std::cout << "\n";
-    
-    //Buscando un elemento dentro de la estructura de datos 
-    std::cout << "El nodo en la posición 4 tiene la siguiente información: \n";
-    listaCircular->read(4);
-    std::cout << "\n";
+  std::cout<<"Prueba 3 del operador Delete\n"<<std::endl;
+  list.read(49);
+  list.del(49);
+  list.read(49);
 
-    //Actualizando un nodo dentro de la estructura 
-    std::cout << "La posición del nodo que se va a actualizar es: 3 \n";
-    std::cout << "Informacion del nodo a actualizar: ";
-    listaCircular->read(3);
-    std::cout << "El nodo actualizado tiene la siguiente información: ";
-    listaCircular->update(3, "Nodo Actualizado");
-    listaCircular->read(3);
-    std::cout << "¡Actualización exitosa! \n\n";
+  std::cout<<"Prueba de errores\n"<<std::endl;
+  std::cout<<"Índice superior al tamaño del arreglo"<<std::endl;
+  size = list.getSize();
+  list.read(size);
+  list.read(size + 1);
+  std::cout<<"Índice negativo"<<std::endl;
+  list.update(-1, "Hallo");
+  std::cout<<"Leer lista vacia"<<std::endl;
+  list2.del(0);
+  
+  std::cout<<"Lista doblemente ligada\n"<<std::endl;
+  std::cout<<"Prueba del operador Update\n"<<std::endl;
+  dList.read(0);
+  dList.update(0, "Prueba 2");
+  dList.read(0);
+  
+  std::cout<<"Prueba del operador especial ReadBackwards de lista doblemente ligada\n"<<std::endl;
+  size = dList.getSize();
+  dList.read(size);
+  dList.readBackwards(0);
+  
+  std::cout<<"Prueba 2 del operador especial ReadBackwards de lista doblemente ligada\n"<<std::endl;
+  dList.del(size);
+  dList.readBackwards(0);
+  dList.readBackwards(1);
+  
+  std::cout<<"Prueba 3 del operador especial ReadBackwards de lista doblemente ligada\n"<<std::endl;
+  size = dList.getSize();
+  dList.del(size-1);
+  dList.readBackwards(0);
+  dList.readBackwards(1);
+  dList.readBackwards(2);
 
-    //Eliminando un nodo dentro de la estructura 
-    std::cout << "La posición del nodo que se va a eliminar es la última \n";
-    std::cout << "El nodo en la última posición que se va a eliminar tiene la siguiente información: ";
-    listaCircular->read(listaCircular->size-1);
-    listaCircular->del(listaCircular->size-1);
-    std::cout << "¡El nodo fue exitosamente eliminado! \n";
-    std::cout << "Ahora el nodo en la última posición es:\n";
-    listaCircular->read(listaCircular->size-1);
-    std::cout << "\n";
+  std::cout<<"Prueba de errores\n"<<std::endl;
+  std::cout<<"Índice superior al tamaño del arreglo"<<std::endl;
+  size = dList.getSize();
+  dList.read(size);
+  dList.read(size + 1);
+  std::cout<<"Índice negativo"<<std::endl;
+  dList.update(-1, "Hallo");
+  dList.readBackwards(-1);
+  std::cout<<"Leer lista vacia"<<std::endl;
+  dList2.del(0);
+  
+  std::cout<<"Lista circular\n";
+  std::cout<<"Prueba del operador Update\n"<<std::endl;
+  cList.read(60);
+  cList.update(60, "Prueba 3");
+  cList.read(60);
+  
+  std::cout<<"Prueba 1 del operador especial Spin de lista circular\n"<<std::endl;
+  size = cList.getSize();
+  cList.spin(size - 2, 5);
+  
+  std::cout<<"Prueba 2 del operador especial Spin de lista circular\n"<<std::endl;
+  cList.del(size);
+  size = cList.getSize();
+  cList.spin(size, 1);
+  
+  std::cout<<"Prueba 3 del operador especial Spin de lista circular\n"<<std::endl;
+  cList.del(0);
+  size = cList.getSize();
+  cList.spin(size, 1);
 
-    //Se imprime la información del nodo en la posición 0 apuntando desde el último para comprobar que si es una lista ligada circular 
-    std::cout << "Imprimiendo la información del nodo en la posición 0 apuntando desde el último para comprobar que si es una lista circularmente ligada: \n";
-    listaCircular->test();
-    std::cout << "------------------------------------------------------------------------------------------------------------------------------------------------------------" << "\n";
-
+  std::cout<<"Prueba de errores\n"<<std::endl;
+  std::cout<<"Índice superior al tamaño del arreglo"<<std::endl;
+  size = cList.getSize();
+  cList.read(size);
+  cList.read(size + 1);
+  std::cout<<"Índice negativo"<<std::endl;
+  cList.update(-1, "Hallo");
+  cList.spin(-1, 10);
+  std::cout<<"Leer lista vacia"<<std::endl;
+  cList2.del(0);
+  
+  return 0;
 }
