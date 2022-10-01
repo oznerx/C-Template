@@ -4,7 +4,7 @@
 #include <locale.h>
 #include <string>
 
-#define MAX = 10;
+int MAX = 7;
 
 /*
 Ozner Axel Leyva Mariscal
@@ -31,7 +31,7 @@ template <class T>
 class Stack{
 private:
 
-    T datos[7];
+    T *nodesData = new T[MAX];
     int tope;
 
 public:
@@ -41,28 +41,57 @@ public:
     }
 
     void create(T value){
-        Node<T>* new_node = new Node<T>(value); 
-        tope++;
-        datos[tope] = new_node->data;
+
+        if (!isFull()){
+            Node<T>* new_node = new Node<T>(value); 
+            tope++;
+            nodesData[tope] = new_node->data;
+        }
+
+        else {
+            std::cout << "No es posible igresar el dato, el arreglo ya esta lleno\n";
+        }
+
     }
 
     void read(){
-        std::cout << datos[tope];
+        std::cout << nodesData[tope] << "\n";
+    }
+
+    void update(T newData){
+        nodesData[tope] = newData; 
     }
 
     void del(){
-        datos[tope] = nullptr;
+
+        if(tope==MAX-1) {
+            MAX-=1;
+        }
+
+        else {
+
+            MAX-=1;
+            for (int i = tope; i < MAX; i++) {
+                nodesData[i]=nodesData[i+1];
+            }
+
+        }
+
     }
 
     bool isEmpty(){
         return (tope == -1);
-        std::cout << "El stack esta vacio\n";
     }
 
     bool isFull(){
-        return (tope == 7-1);
-        std::cout << "El stack esta lleno\n";
+        return (tope == MAX-1);
     }
+
+    void print(){
+        for (int i = 0 ; i < MAX ; i++ ){
+            std::cout << nodesData[i] << "\n";
+        }
+    } 
 
 };
 
@@ -87,13 +116,14 @@ public:
 
 
 template <class T>
-class PriorityQueue {
+class PriorityQueue { // Agregar comentarios y de ser posible optimizar la busqueda en el update  
 private:
 
     PNode<T>* head;
     PNode<T>* tail;
 
 public:
+
     int size = 0;
 
     PriorityQueue() {
@@ -117,9 +147,12 @@ public:
         PNode<T> *new_node = new PNode<T>(data, p);
 
         if(head == nullptr){
+
             new_node->next = head;
             head = new_node;
+            tail = head;
             size++;
+            
         }
 
         else {
@@ -133,6 +166,7 @@ public:
             if (current->next == nullptr){
                 current->next = new_node; 
                 new_node->previous = current;
+                tail = new_node;
                 size++;
             }
 
@@ -151,7 +185,7 @@ public:
     void read(){
 
         if (head == nullptr) {
-            std::cout << "Error\n";
+            std::cout << "La lista esta vacia\n";
         }
 
         else {
@@ -166,8 +200,6 @@ public:
             std::cout << "No existe una posición negativa" ;
         }
 
-        PNode<T>* last = head; 
-        PNode<T>* previous = nullptr;
 
         if (head == nullptr) { 
             std::cout << "Error";
@@ -175,19 +207,47 @@ public:
 
         else {
 
-            int i = 0;
+            PNode<T>* last = head; 
+            PNode<T>* previous = nullptr;
 
-            while (i < index && last->next != nullptr) {   
-                previous = last; 
-                last = last->next;
-                i++;
+            if (index <= size/2){
+
+                int i = 0;
+
+                while (i < index && last->next != nullptr) {   
+                    previous = last; 
+                    last = last->next;
+                    i++;
+                }
+
+                if (i == index) { 
+                    last->data = newData; 
+                }
+
             }
 
-            if (i == index) { 
-                last->data = newData; 
+            else {
+
+                PNode<T>* last = tail; 
+                PNode<T>* prev = nullptr;
+
+                int i = size-1;
+
+                while (i > index && last->previous != nullptr){   
+                    previous = last; 
+                    last = last->previous;
+                    i--;
+                }
+
+                if (i == index){ 
+                    last->data = newData; 
+                }
+
             }
+
 
         }
+
     }
 
     void del(){ 
@@ -202,11 +262,14 @@ public:
     void printList()
     {
         PNode<T>* current = head;
+
         while (current != NULL) {
             std::cout << current->data << " ";
             current = current->next;
         }
+
         std::cout << "\n";
+
     }
 
     void test(){
@@ -216,7 +279,8 @@ public:
         }
 
         else {
-            std::cout <<  head->next->data << "\n";
+            //std::cout <<  head->next->next->next->previous->data << "\n";
+            std::cout <<  tail->previous->data << "\n";
         }
 
     }
@@ -227,6 +291,23 @@ public:
 
 int main()
 {
+
+
+Stack<std::string>* stack = new Stack <std::string>();
+
+stack->create("valor 1 ");
+stack->create("valor 2 ");
+stack->create("valor 3 ");
+stack->create("valor 4 ");
+stack->create("valor 5 ");
+stack->create("valor 6 ");
+stack->create("valor 7 ");
+stack->print(); 
+stack->create("valor 9 ");
+stack->del();
+stack->print(); 
+
+
 /*
 Prioridades en la lista 
 1: VIP
@@ -234,38 +315,22 @@ Prioridades en la lista
 3: Regular 
 4: Mala
 */
-
 PriorityQueue<std::string>* listaPriorizada = new PriorityQueue<std::string>();
-/*
-Stack<std::string>* stack = new Stack <std::string>();
 
-stack->create("valor 1 ");
-stack->create("valor 1 ");
-stack->create("valor 1 ");
-stack->create("valor 1 ");
-stack->create("valor 1 ");
-stack->create("valor 1 ");
-stack->create("valor 1 ");
-stack->create("valor 1 ");
-stack->read();
-//stack->isFull();
-*/
-
-listaPriorizada->create("Persona 1", 1);
-listaPriorizada->create("Persona 2", 2);
-listaPriorizada->create("Persona 3", 3);
-listaPriorizada->create("Persona 4", 4);
-listaPriorizada->create("Persona 2.1", 2);
-listaPriorizada->create("Persona 3.1", 3);
+listaPriorizada->create("Juan", 1);
+listaPriorizada->create("Eduardo", 2);
+listaPriorizada->create("Cristian", 3);
+listaPriorizada->create("Pedro", 4);
+listaPriorizada->create("Miguel", 2);
+listaPriorizada->create("Sam", 3);
 listaPriorizada->printList();
+/*
 listaPriorizada->del();
 listaPriorizada->printList();
 listaPriorizada->read();
-listaPriorizada->update(0 , "Nueva persona 1");
+*/
+listaPriorizada->update(5 , "NewPerson");
 listaPriorizada->printList();
 listaPriorizada->test();
-
-
-
 
 }
