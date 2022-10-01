@@ -102,11 +102,13 @@ public:
     }
 
     ~PriorityQueue() {
+
         while (head != NULL) {
             PNode<T>* temp = head;
             head = head->next;
             delete temp;
         }
+
         tail = NULL;
     }
  
@@ -147,52 +149,54 @@ public:
     }
 
     void read(){
-        /* No se si cuente como read el peek */
-    }
 
-    void update(){
-        /* Por prioridad?, el primero?, el ultimo? */
-    }
-
-    void del(int index){ 
-        PNode<T>* previous = nullptr;
-        PNode<T>* current = head;
-
-        if(index == 0){
-          head = current->next;
-          tail->next = head;
-          delete(current);
-          size--;
+        if (head == nullptr) {
+            std::cout << "Error\n";
         }
-        
-        else{
 
-          for(int i = 0; i < index ; i++){
-            previous = current;
-            current = current->next;
+        else {
+            std::cout <<  head->data << "\n";
+        }
 
-            if(i == size-1){
-              tail = previous;
+    }
+
+    void update(int index , T newData){
+
+        if (index < 0) { 
+            std::cout << "No existe una posición negativa" ;
+        }
+
+        PNode<T>* last = head; 
+        PNode<T>* previous = nullptr;
+
+        if (head == nullptr) { 
+            std::cout << "Error";
+        }
+
+        else {
+
+            int i = 0;
+
+            while (i < index && last->next != nullptr) {   
+                previous = last; 
+                last = last->next;
+                i++;
             }
 
-          }
-          
-          previous->next = current->next;
-          delete(current);
-          size--;
+            if (i == index) { 
+                last->data = newData; 
+            }
 
         }
-
     }
 
-    T peek()
-    {
-        if (head == nullptr) {
-            return NULL;
-        }
-        else {
-            return head->data;
-        }
+    void del(){ 
+
+        PNode<T>* temp = head;
+        head = temp->next; 
+        delete(temp);  
+        size--;
+
     }
 
     void printList()
@@ -203,6 +207,18 @@ public:
             current = current->next;
         }
         std::cout << "\n";
+    }
+
+    void test(){
+
+        if (head == nullptr) {
+            std::cout << "Error\n";
+        }
+
+        else {
+            std::cout <<  head->next->data << "\n";
+        }
+
     }
 
 };
@@ -220,6 +236,7 @@ Prioridades en la lista
 */
 
 PriorityQueue<std::string>* listaPriorizada = new PriorityQueue<std::string>();
+/*
 Stack<std::string>* stack = new Stack <std::string>();
 
 stack->create("valor 1 ");
@@ -232,8 +249,8 @@ stack->create("valor 1 ");
 stack->create("valor 1 ");
 stack->read();
 //stack->isFull();
+*/
 
-/*
 listaPriorizada->create("Persona 1", 1);
 listaPriorizada->create("Persona 2", 2);
 listaPriorizada->create("Persona 3", 3);
@@ -241,9 +258,14 @@ listaPriorizada->create("Persona 4", 4);
 listaPriorizada->create("Persona 2.1", 2);
 listaPriorizada->create("Persona 3.1", 3);
 listaPriorizada->printList();
-listaPriorizada->del(1);
+listaPriorizada->del();
 listaPriorizada->printList();
-*/
+listaPriorizada->read();
+listaPriorizada->update(0 , "Nueva persona 1");
+listaPriorizada->printList();
+listaPriorizada->test();
+
+
 
 
 }
