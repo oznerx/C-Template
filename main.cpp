@@ -115,6 +115,7 @@ private:
 
 
 public:
+    int size = 0;
 
     PriorityQueue() {
         head = nullptr;
@@ -137,6 +138,7 @@ public:
         if(head == nullptr){
             new_node->next = head;
             head = new_node;
+            size++;
         }
 
         else {
@@ -150,6 +152,7 @@ public:
             if (current->next == nullptr){
                 current->next = new_node; 
                 new_node->previous = current;
+                size++;
             }
 
             else {
@@ -157,18 +160,46 @@ public:
                 current->next->previous = new_node;
                 current->next = new_node;
                 new_node->previous = current;
+                size++;
             }
              
         }
 
     }
 
-    void remove()
-    {
-    }
-
     void read(){
         /* No se si cuente como read el peek */
+    }
+
+    void del(int index){ 
+        PNode<T>* previous = nullptr;
+        PNode<T>* current = head;
+
+        if(index == 0){
+          head = current->next;
+          tail->next = head;
+          delete(current);
+          size--;
+        }
+        
+        else{
+
+          for(int i = 0; i < index ; i++){
+            previous = current;
+            current = current->next;
+
+            if(i == size-1){
+              tail = previous;
+            }
+
+          }
+          
+          previous->next = current->next;
+          delete(current);
+          size--;
+
+        }
+
     }
 
     T peek()
@@ -203,6 +234,7 @@ Prioridades en la lista
 1: VIP
 2: Express
 3: Regular 
+4: Mala
 */
 
 PriorityQueue<std::string>* listaPriorizada = new PriorityQueue<std::string>();
@@ -214,6 +246,9 @@ listaPriorizada->create("Persona 4", 4);
 listaPriorizada->create("Persona 2.1", 2);
 listaPriorizada->create("Persona 3.1", 3);
 listaPriorizada->printList();
+listaPriorizada->del(1);
+listaPriorizada->printList();
+
 
 
 }
