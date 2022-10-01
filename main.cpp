@@ -2,7 +2,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <locale.h>
+#include <string>
 
+#define MAX = 10;
 
 /*
 Ozner Axel Leyva Mariscal
@@ -10,91 +12,70 @@ Se utilizará una estructura de datos lineal de una Fila Priorizada y un Stack.
 
 
 */
-
-/*
 template <class T>
 class Node
 {
 public:
+
     T data;
     Node<T>* next;
-    Node(T dataValue) {
-        data = dataValue;
+    
+    Node(T value) {
+        data = value;
         next = nullptr;
-    }
+    }  
 
 };
 
 template <class T>
-class Queue
-{
+class Stack{
+private:
+
+    T datos[7];
+    int tope;
+
 public:
 
-    Node<T>* head;
-    Node<T>* tail;
-
-    int size = 0;
-    Queue() {
-        head = nullptr;
-        tail = nullptr;
-        size = 0;
+    Stack(){
+        tope = -1;
     }
 
-    int isEmpty() {
-        if (head == nullptr)
-            return 1;
-        return 0;
-
+    void create(T value){
+        Node<T>* new_node = new Node<T>(value); 
+        tope++;
+        datos[tope] = new_node->data;
     }
 
-    T getHead()
-    {
-        if (size == 0) {
-            return NULL;
-        }
-
-        if (head == nullptr) {
-            return NULL;
-        }
-        else {
-
-            return  head->data;
-        }
+    void read(){
+        std::cout << datos[tope];
     }
 
-    T getTail()
-    {
-        if (size == 0) {
-            return NULL;
-        }
-        return tail->data;
-
-
-     
+    void del(){
+        datos[tope] = nullptr;
     }
 
- 
-    void printQueue()
-    {
-        Node<T>* current = head;
-        while (current != NULL) {
-            std::cout << current->data << "\n";
-            current = current->next;
-        }
-        std::cout << "\n";
+    bool isEmpty(){
+        return (tope == -1);
+        std::cout << "El stack esta vacio\n";
     }
 
+    bool isFull(){
+        return (tope == 7-1);
+        std::cout << "El stack esta lleno\n";
+    }
 
 };
-*/
+
 template <class T>
 class PNode
 {
 public:
+
     T data;
     int priority=0;
     PNode<T>* next;
     PNode<T>* previous;
+
     PNode(T dataValue,int p) {
         data = dataValue;
         priority = p;
@@ -111,8 +92,6 @@ private:
 
     PNode<T>* head;
     PNode<T>* tail;
-
-
 
 public:
     int size = 0;
@@ -171,6 +150,10 @@ public:
         /* No se si cuente como read el peek */
     }
 
+    void update(){
+        /* Por prioridad?, el primero?, el ultimo? */
+    }
+
     void del(int index){ 
         PNode<T>* previous = nullptr;
         PNode<T>* current = head;
@@ -222,7 +205,6 @@ public:
         std::cout << "\n";
     }
 
-
 };
 
 
@@ -238,7 +220,20 @@ Prioridades en la lista
 */
 
 PriorityQueue<std::string>* listaPriorizada = new PriorityQueue<std::string>();
+Stack<std::string>* stack = new Stack <std::string>();
 
+stack->create("valor 1 ");
+stack->create("valor 1 ");
+stack->create("valor 1 ");
+stack->create("valor 1 ");
+stack->create("valor 1 ");
+stack->create("valor 1 ");
+stack->create("valor 1 ");
+stack->create("valor 1 ");
+stack->read();
+//stack->isFull();
+
+/*
 listaPriorizada->create("Persona 1", 1);
 listaPriorizada->create("Persona 2", 2);
 listaPriorizada->create("Persona 3", 3);
@@ -248,7 +243,7 @@ listaPriorizada->create("Persona 3.1", 3);
 listaPriorizada->printList();
 listaPriorizada->del(1);
 listaPriorizada->printList();
-
+*/
 
 
 }
