@@ -389,10 +389,10 @@ public:
 int main()
 {
 
-
 Stack<std::string>* stack = new Stack <std::string>();
 
 std::cout << "------------------------------------------------------- Stack -------------------------------------------------------" << "\n\n";
+
 std::cout << "A continuación se agregarán y mostrarán todos los valores en el stack: \n";
 stack->create("valor 1 ");
 stack->create("valor 2 ");
@@ -420,9 +420,6 @@ stack->del();
 std::cout << "El stack ahora tiene el siguiente orden: \n";
 stack->print(); 
 std::cout << "\n";
-
-
-
 
 std::cout << "------------------------------------------------------- Lista Priorizada -------------------------------------------------------" << "\n\n";
 
