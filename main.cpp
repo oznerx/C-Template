@@ -47,15 +47,19 @@ public:
         Node<T>* new_node = new Node<T>(value);
 
         if(head == nullptr){
+
             head = new_node;
             tail = new_node;
             size++;
+
         }
       
         else{
+
             tail->next = new_node;
             tail = new_node;
             size++;
+
         }
 
     }
@@ -90,12 +94,9 @@ public:
                     previous = curr;
                     curr = curr->next;
 
-                    if(i == size-1){
-                        tail = previous;
-                    }
-
                 }
-                
+
+                tail = previous;
                 previous->next = curr->next;
                 delete(curr);
                 size--;
@@ -331,6 +332,8 @@ stack->create("valor 9 ");
 stack->print(); 
 stack->del();
 stack->print(); 
+stack->update("new");
+stack->print();
 
 
 /*
