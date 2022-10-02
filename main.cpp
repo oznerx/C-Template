@@ -4,8 +4,6 @@
 #include <locale.h>
 #include <string>
 
-int MAX = 7;
-
 /*
 Ozner Axel Leyva Mariscal
 Se utilizará una estructura de datos lineal de una Fila Priorizada y un Stack.
@@ -31,66 +29,94 @@ template <class T>
 class Stack{
 private:
 
-    T *nodesData = new T[MAX];
-    int tope;
+    Node<T>* head;
+    Node<T>* tail; 
+
 
 public:
 
+    int size = 0;
+
     Stack(){
-        tope = -1;
+        head = nullptr;
+        tail = nullptr;
     }
 
     void create(T value){
 
-        if (!isFull()){
-            Node<T>* new_node = new Node<T>(value); 
-            tope++;
-            nodesData[tope] = new_node->data;
-        }
+        Node<T>* new_node = new Node<T>(value);
 
-        else {
-            std::cout << "No es posible igresar el dato, el arreglo ya esta lleno\n";
+        if(head == nullptr){
+            head = new_node;
+            tail = new_node;
+            size++;
+        }
+      
+        else{
+            tail->next = new_node;
+            tail = new_node;
+            size++;
         }
 
     }
 
     void read(){
-        std::cout << nodesData[tope] << "\n";
+        std::cout << tail->data << "\n";
     }
 
     void update(T newData){
-        nodesData[tope] = newData; 
+        tail->data = newData; 
     }
 
     void del(){
 
-        if(tope==MAX-1) {
-            MAX-=1;
-        }
+        if(head != nullptr){
 
-        else {
+            Node<T>* previous = nullptr;
+            Node<T>* curr = head;
+            
+            if(size-1 == 0){
 
-            MAX-=1;
-            for (int i = tope; i < MAX; i++) {
-                nodesData[i]=nodesData[i+1];
+                head = curr->next;
+                delete(curr);
+                size--;
+
+            }
+            
+            else{
+
+                for(int i = 0 ; i<size-1 ; i++){
+
+                    previous = curr;
+                    curr = curr->next;
+
+                    if(i == size-1){
+                        tail = previous;
+                    }
+
+                }
+                
+                previous->next = curr->next;
+                delete(curr);
+                size--;
+
             }
 
-        }
-
+        }   
+        
     }
-
-    bool isEmpty(){
-        return (tope == -1);
-    }
-
-    bool isFull(){
-        return (tope == MAX-1);
-    }
+        
 
     void print(){
-        for (int i = 0 ; i < MAX ; i++ ){
-            std::cout << nodesData[i] << "\n";
+
+        Node<T>* current = head;
+
+        while (current != NULL) {
+            std::cout << current->data << " ";
+            current = current->next;
         }
+
+        std::cout << "\n";
     } 
 
 };
@@ -229,7 +255,6 @@ public:
             else {
 
                 PNode<T>* last = tail; 
-                PNode<T>* prev = nullptr;
 
                 int i = size-1;
 
@@ -302,8 +327,8 @@ stack->create("valor 4 ");
 stack->create("valor 5 ");
 stack->create("valor 6 ");
 stack->create("valor 7 ");
-stack->print(); 
 stack->create("valor 9 ");
+stack->print(); 
 stack->del();
 stack->print(); 
 
@@ -314,7 +339,7 @@ Prioridades en la lista
 2: Express
 3: Regular 
 4: Mala
-*/
+
 PriorityQueue<std::string>* listaPriorizada = new PriorityQueue<std::string>();
 
 listaPriorizada->create("Juan", 1);
@@ -324,13 +349,13 @@ listaPriorizada->create("Pedro", 4);
 listaPriorizada->create("Miguel", 2);
 listaPriorizada->create("Sam", 3);
 listaPriorizada->printList();
-/*
+
 listaPriorizada->del();
 listaPriorizada->printList();
 listaPriorizada->read();
-*/
+
 listaPriorizada->update(5 , "NewPerson");
 listaPriorizada->printList();
 listaPriorizada->test();
-
+*/
 }
