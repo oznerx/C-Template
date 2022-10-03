@@ -81,7 +81,13 @@ public:
     Complejidad de espacio: O(1)
     */
     void read(){
-        std::cout << top->data << "\n";
+        if (head != nullptr){
+            std::cout << top->data << "\n";
+        }
+
+        else {
+            std::cout<<"Lista vacia.\n"<<std::endl;
+        }
     }
 
     /*
@@ -91,7 +97,15 @@ public:
     Complejidad de espacio: O(1)
     */
     void update(T newData){
-        top->data = newData; 
+
+        if (head != nullptr){
+            top->data = newData; 
+        }
+
+        else {
+            std::cout<<"Lista vacia.\n"<<std::endl;
+        }
+
     }
 
     /* 
@@ -122,6 +136,10 @@ public:
             }
             
         }   
+
+        else {
+            std::cout<<"Lista vacia.\n"<<std::endl;
+        }
         
     }
         
@@ -210,7 +228,6 @@ public:
 
         if(head == nullptr){
 
-            //new_node->next = head;
             head = new_node;
             tail = new_node;
             size++;
@@ -220,7 +237,7 @@ public:
         else {
 
             PNode<T>* current = head;
-
+            
             while (current->next != nullptr && current->next->priority <= new_node->priority) {
                 current = current->next;
             }
@@ -276,7 +293,7 @@ public:
 
 
         if (head == nullptr) { 
-            std::cout << "Error";
+            std::cout << "Lista vacia";
         }
 
         else {
@@ -331,10 +348,16 @@ public:
     */
     void del(){ 
 
-        PNode<T>* temp = head;
-        head = temp->next; 
-        delete(temp);  
-        size--;
+        if (head == nullptr) { 
+            std::cout << "Lista vacia";
+        }
+
+        else{
+            PNode<T>* temp = head;
+            head = temp->next; 
+            delete(temp);  
+            size--;
+        }
 
     }
 
