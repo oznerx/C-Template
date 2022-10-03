@@ -19,10 +19,12 @@ public:
 
     T data;
     Node<T>* next;
-    
+    Node<T>* previous;
+
     Node(T value) {
         data = value;
         next = nullptr;
+        previous = nullptr;
     }  
 
 };
@@ -63,6 +65,7 @@ public:
       
         else{
 
+            new_node->previous = top;
             top->next = new_node;
             top = new_node;
             size++;
@@ -94,40 +97,30 @@ public:
     /* 
     Elimina el nodo que se encuentre en el tope de la estructura de datos
     @Param: nada 
-    Complejidad de tiempo: O(n)
+    Complejidad de tiempo: O(1)
     Complejidad de espacio: O(1)
     */
     void del(){
 
         if(head != nullptr){
 
-            Node<T>* previous = nullptr;
-            Node<T>* curr = head;
-            
-            if(size-1 == 0){
+            if(head == top){
 
-                head = curr->next;
-                delete(curr);
+                head = nullptr;
+                top = nullptr;
                 size--;
 
             }
-            
+
             else{
 
-                for(int i = 0 ; i<size-1 ; i++){
-
-                    previous = curr;
-                    curr = curr->next;
-
-                }
-
-                top = previous;
-                previous->next = curr->next;
-                delete(curr);
+                top = top->previous;
+                top->next = nullptr;
+                delete (top->next);
                 size--;
 
             }
-
+            
         }   
         
     }
@@ -142,7 +135,7 @@ public:
 
         Node<T>* current = head;
 
-        while (current != NULL) {
+        while (current != nullptr) {
             std::cout << current->data << "   ";
             current = current->next;
         }
