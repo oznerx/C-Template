@@ -224,39 +224,54 @@ public:
     */
     void create(T data, int p){
 
-        PNode<T> *new_node = new PNode<T>(data, p);
+        PNode<T>* new_node = new PNode<T>(data,p);
+        PNode<T>* current = head;        
+        size++;
+        
+        if(head != nullptr){
 
-        if(head == nullptr){
+            current = tail;
 
-            head = new_node;
-            tail = new_node;
-            size++;
-            
-        }
+            while(new_node->priority < current->priority){
 
-        else {
+                if(current->previous == nullptr){
 
-            PNode<T>* current = head;
-            
-            while (current->next != nullptr && current->next->priority <= new_node->priority) {
-                current = current->next;
+                    new_node->next = head;
+                    head->previous = new_node;
+                    head = new_node;
+                    return;
+
+                }
+
+                current = current->previous;
+                
             }
 
-            if (current->next == nullptr){
-                current->next = new_node; 
-                new_node->previous = current;
+            if(current == tail){
+
+                tail->next = new_node;
+                new_node->previous = tail;
                 tail = new_node;
-                size++;
+                return;
+
             }
 
-            else {
+            else{
+
                 new_node->next = current->next;
                 current->next->previous = new_node;
                 current->next = new_node;
                 new_node->previous = current;
-                size++;
+
             }
-             
+
+        }
+        
+        else{
+
+            head = new_node;
+            tail = new_node;
+
         }
 
     }
@@ -441,7 +456,7 @@ delete (stack);
 
 std::cout << "------------------------------------------------------- Lista Priorizada -------------------------------------------------------" << "\n\n";
 
-// Prioridades en la lista:  1: VIP       2: Express     3: Regular      4: Mala 
+// Prioridades en la lista:  0: MegaVIP      1: VIP       2: Express     3: Regular      4: Mala 
 
 PriorityQueue<std::string>* listaPriorizada = new PriorityQueue<std::string>();
 
@@ -454,6 +469,11 @@ listaPriorizada->create("Sam", 3);
 listaPriorizada->create("Brizeth", 1);
 listaPriorizada->create("Kraken", 4);
 listaPriorizada->create("Eduardo", 2);
+listaPriorizada->print();
+std::cout << "\n";
+
+std::cout << "A continuación se agregaráun nodo con prioridad MegaVip: \n";
+listaPriorizada->create("MegaVip", 0);
 listaPriorizada->print();
 std::cout << "\n";
 
