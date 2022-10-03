@@ -210,9 +210,9 @@ public:
 
         if(head == nullptr){
 
-            new_node->next = head;
+            //new_node->next = head;
             head = new_node;
-            tail = head;
+            tail = new_node;
             size++;
             
         }
@@ -414,6 +414,8 @@ std::cout << "El stack ahora tiene el siguiente orden: \n";
 stack->print(); 
 std::cout << "\n";
 
+delete (stack);
+
 std::cout << "------------------------------------------------------- Lista Priorizada -------------------------------------------------------" << "\n\n";
 
 // Prioridades en la lista:  1: VIP       2: Express     3: Regular      4: Mala 
@@ -451,5 +453,7 @@ std::cout << "A continuación se Imprimirá el penúltimo valor de la estructura
 std::cout << "para comprobar que es una lista doblemente ligada\n";
 listaPriorizada->test();
 std::cout << "\n";
+
+delete (listaPriorizada);
 
 }
