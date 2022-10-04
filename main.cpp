@@ -67,14 +67,17 @@ public:
     }
 
 
-    void read(){
+    char read(){
+
         if (head != nullptr){
-            std::cout << top->data << "\n";
+            return top->data ;
         }
 
         else {
             std::cout<<"Lista vacia.\n"<<std::endl;
         }
+
+        return 0;
     }
 
     
@@ -134,43 +137,76 @@ public:
 
 };
 
+//"                           (aaaadddes)/*((99999999*/sssss()()[{}]                                     "
+
+void validate(std::string lineToValidate){
+
+    Stack<char>* stack = new Stack <char>();
+    bool isValid = true;
+
+    for (int i = 0 ; i < lineToValidate.length() ; i++ ){
+
+        if (lineToValidate[i] == '(' || lineToValidate[i] == '{' || lineToValidate[i] == '[' || 
+            lineToValidate[i] == '/' && lineToValidate[i+1] == '*'){
+            
+            if (lineToValidate[i] == '/' && lineToValidate[i+1] == '*'){
+                stack->create('+');
+            }
+
+            else{
+                stack->create(lineToValidate[i]);
+            }
+
+            continue;
+
+        }
+
+        else{
+
+            if (lineToValidate[i] == ')' || lineToValidate[i] == '}' || lineToValidate[i] == ']' ||
+                lineToValidate[i] == '*' && lineToValidate[i+1] == '/'){
+
+                if (stack->size == 0){
+                    isValid = false;
+                    break;
+                }
+
+                char value = stack->read();
+
+                if(!((value == '(' && lineToValidate[i] == ')') || 
+                    (value == '{' && lineToValidate[i] == '}') ||
+                    (value == '[' && lineToValidate[i] == ']') || 
+                    (value == '*' && lineToValidate[i] == '/'))){
+                    isValid = false; 
+                    break;
+                }
+
+                stack->del();
+
+            }
+
+        }
+
+    }
+
+    if (isValid){
+        std::cout << "Es valido" ; 
+    }
+
+    else{
+        std::cout << "NO es valido" ; 
+    }
+    
+
+}
 
 
 int main()
 {
 
-Stack<std::string>* stack = new Stack <std::string>();
+std::string lineToValidate = "(aaaadddes)/*((99999999*/sssss()()[{}]";
+std::cout << lineToValidate << "\n";
 
-std::cout << "------------------------------------------------------- Stack -------------------------------------------------------" << "\n\n";
-
-std::cout << "A continuación se agregarán y mostrarán todos los valores en el stack: \n";
-stack->create("valor 1 ");
-stack->create("valor 2 ");
-stack->create("valor 3 ");
-stack->create("valor 4 ");
-stack->create("valor 5 ");
-stack->create("valor 6 ");
-stack->create("valor 7 ");
-stack->create("valor 8 ");
-stack->print(); 
-std::cout << "\n";
-
-std::cout << "El valor del nodo que se encuentre en el tope del stack es: \n";
-stack->read();
-std::cout << "\n";
-
-std::cout << "A continuación se modificará el nodo que se encuentra en el tope del stack\n";
-stack->update("New");
-std::cout << "El stack ahora tiene los siguientes elementos: \n";
-stack->print(); 
-std::cout << "\n";
-
-std::cout << "A continuación se borrará el nodo que se encuentre en el tope del stack\n";
-stack->del();
-std::cout << "El stack ahora tiene el siguiente orden: \n";
-stack->print(); 
-std::cout << "\n";
-
-delete (stack);
+validate(lineToValidate);
 
 }
