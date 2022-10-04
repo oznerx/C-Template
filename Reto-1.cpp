@@ -164,8 +164,12 @@ public:
 
 };
 
-//"                           (aaaadddes)/*((99999999*/sssss()()[{}]                                     "
-
+/*    
+Valida una cadena de texto para saber si los corechetes, comentarios y parentesis cierran correctamente
+@Param: (string lineToValidate) La linea a validar
+Complejidad de tiempo: O(n)
+Complejidad de espacio: O(1)
+*/
 void validate(std::string lineToValidate){
 
     Stack<char>* stack = new Stack <char>();
