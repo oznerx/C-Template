@@ -66,7 +66,6 @@ public:
         else{
 
             new_node->previous = top;
-            top->next = new_node;
             top = new_node;
             size++;
 
@@ -128,9 +127,9 @@ public:
 
             else{
 
+                Node<T>* temp = top;
                 top = top->previous;
-                top->next = nullptr;
-                delete (top->next);
+                delete (temp); 
                 size--;
 
             }
@@ -149,13 +148,14 @@ public:
     Complejidad de tiempo: O(n)
     Complejidad de espacio: O(1)
     */
+
     void print(){
 
-        Node<T>* current = head;
+        Node<T>* current = top;
 
         while (current != nullptr) {
             std::cout << current->data << "   ";
-            current = current->next;
+            current = current->previous;
         }
 
         std::cout << "\n";
@@ -423,7 +423,7 @@ int main()
 Stack<std::string>* stack = new Stack <std::string>();
 
 std::cout << "------------------------------------------------------- Stack -------------------------------------------------------" << "\n\n";
-
+std::cout << "(Último que entra, primero que se imprime)\n";
 std::cout << "A continuación se agregarán y mostrarán todos los valores en el stack: \n";
 stack->create("valor 1 ");
 stack->create("valor 2 ");
