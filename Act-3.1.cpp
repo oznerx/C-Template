@@ -45,7 +45,7 @@ void ancestors (int data){
 
 /*
 Regresará un entero que indica el nivel en que se encuentra un dato, 
-o -1 en caso de que no se encuentre en el BST
+regresa -1 en caso de que no se encuentre en el BST
 @Param: (int data) El dato a buscar su nivel
 Salida: (int level) Entero indicando el nivel del dato en el BST, o -1 si no se encuentra
 Complejidad de tiempo: O()
