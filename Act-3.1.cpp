@@ -1,5 +1,6 @@
 #include <iostream>
 #include <vector>
+#include <queue>
 
 /*
 Ozner Axel Leyva Mariscal
@@ -71,7 +72,6 @@ public:
 
         if (root == nullptr){
             root = newNode;
-            std::cout << "root\n";
         }
 
         else{
@@ -81,17 +81,14 @@ public:
                 father = current;
                 
                 if(value == current->data){
-                    std::cout << "error";
                 }
 
                 else if(value < current->data){
                     current = current->left;
-                    std::cout << "left\n";
                 }
 
                 else{
                     current = current->right;
-                    std::cout << "right\n";
                 }
 
             }
@@ -99,39 +96,160 @@ public:
             if( value < father->data ){
                 father->left = newNode;
             }
+
             else{
                 father->right = newNode;
             }
 
         }
 
-    } 
+    }
+
+    void preorder(Node<T>* r){
+
+        if (r != nullptr) {
+            std::cout << r->data << " ";
+            preorder(r->left);
+            preorder(r->right);
+        }
+
+    }
+
+    void inorder(Node<T>* r){ 
+
+        if ( r != nullptr){ 
+            inorder (r->left);
+            std::cout << r->data << " ";
+            inorder (r->right);
+        }
+
+    }
+
+    void postorder(Node<T>* r){ 
+
+        if ( r != nullptr){
+            postorder (r->left);
+            postorder (r->right);
+            std::cout << r->data << " ";
+        }
+
+    }
+
+    void levelByLevel(Node<T>* r){
+        
+        if(r == nullptr){
+            return;
+        }
+
+        std::queue<Node<T>*> que;
+        que.push(r);
+
+        while(!que.empty()){
+
+            r = que.front();
+            que.pop();
+            std::cout << r->data << " ";
+
+            if(r->left != nullptr){
+                que.push(r->left);
+            }
+
+            if(r->right != nullptr){
+                que.push(r->right);
+            }
+
+        }
+
+    }
+
+    /*
+    Desplegará cada uno de los datos almacenados en el BST dependiendo del parámetro en entrada
+    @Param:(int opc) opción del orden en el que se quiere desplegar los datos 
+    Salida: nada
+    Complejidad de tiempo: O()
+    Complejidad de espacio: O()
+    */
+    void visit (int opc){
+
+        if (root == nullptr) {
+            std::cout << "El árbol no existe\n";
+        }
+
+        else {
+            
+            if (opc == 1){
+                preorder(root);
+                std::cout << "\n";
+            }
+            
+            else if (opc == 2){
+                inorder(root);
+                std::cout << "\n";
+            }
+
+            else if (opc == 3){
+                postorder(root);
+                std::cout << "\n";
+            }
+
+            else if (opc == 4){
+                levelByLevel(root);
+                std::cout << "\n";
+            }
+
+            else {
+                std::cout << "Opción invalida\n";
+            }
+
+        }
+
+    }
+
+    int getHeight(Node<T>* node){
+
+        int heightLeft = 0;
+        int heightRight = 0;
+
+        if (node->left!=nullptr) {
+            heightLeft = getHeight(node->left);
+        }
+            
+        if (node->right!=nullptr) {
+            heightRight = getHeight(node->right);
+        }
+            
+        if (heightLeft > heightRight) {
+            return heightLeft+1;
+        }
+
+        else {
+            return heightRight+1;
+        }
+
+    }
+
+    /*
+    Regresará la altura del BST
+    @Param: nada
+    Salida: (int height) altura del BST
+    Complejidad de tiempo: O()
+    Complejidad de espacio: O()
+    */
+    int height (){
+
+        if (root == nullptr) {
+            std::cout << "El árbol no existe\n";
+        }
+        
+        return getHeight(root);
+        
+    }
+
 };
 
-/*
-Desplegará cada uno de los datos almacenados en el BST dependiendo del parámetro en entrada
-@Param:(int opc) opción del orden en el que se quiere desplegar los datos 
-Salida: nada
-Complejidad de tiempo: O()
-Complejidad de espacio: O()
-*/
-void visit (int opc){
-    //validar si es un BST válido
 
-}
 
-/*
-Regresará la altura del BST
-@Param: nada
-Salida: (int height) altura del BST
-Complejidad de tiempo: O()
-Complejidad de espacio: O()
-*/
-int height (){
-    //validar si es un BST válido
-    int height;
-    return height;
-}
+
 
 /*
 Desplegará los ancestros de un dato
@@ -161,19 +279,30 @@ int whatlevelamI (int data){
 
 int main()
 {
-    std::vector <int> numbers = {30,21,33,32,41,43};
+    std::vector <int> numbers = {12, 7, 4, 2, 9, 8, 11, 21, 16, 19, 25};
     BST<int>* binarySearchTree = new BST<int>();
 
     for( int i = 0 ; i < numbers.size() ; i++ ){
         binarySearchTree->create(numbers[i]);
     };
 
-    if (binarySearchTree->search(43)){
-        std::cout << "Si\n";
+    if (binarySearchTree->search(19)){
+        std::cout << "Existe\n";
     }
 
     else{
-        std::cout << "No\n";
+        std::cout << "No existe\n";
     }
 
+    binarySearchTree->visit(4);
+
+    std::cout << binarySearchTree->height();
+
 }
+
+/*
+Referencias:
+
+    https://www.youtube.com/watch?v=YJN-r6qjdQU    
+
+*/
