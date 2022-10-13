@@ -44,18 +44,18 @@ public:
         root = nullptr;
     }; 
 
-    bool search(int valor){
+    bool search(int value){
 
         Node<T> *current = root;
 
         while (current != nullptr){ 
 
-            if (current->data == valor){
+            if (current->data == value){
                 return true;
             }
 
             else{
-                current = ( current->data > valor ? current->left : current->right);
+                current = ( current->data > value ? current->left : current->right);
             }
 
         }
@@ -169,7 +169,7 @@ public:
     Complejidad de tiempo: O()
     Complejidad de espacio: O()
     */
-    void visit (int opc){
+    void visit(int opc){
 
         if (root == nullptr) {
             std::cout << "El árbol no existe\n";
@@ -235,15 +235,54 @@ public:
     Complejidad de tiempo: O()
     Complejidad de espacio: O()
     */
-    int height (){
+    int height(){
 
         if (root == nullptr) {
             std::cout << "El árbol no existe\n";
         }
         
         return getHeight(root);
+
+    }
+
+    /*
+    Desplegará los ancestros de un dato
+    @Param: (int data) El dato del cual se desea conocer los ancestros
+    Salida: nada
+    Complejidad de tiempo: O()
+    Complejidad de espacio: O()
+    */
+    void ancestors(int value){
+        
+        if (root == nullptr) {
+            std::cout << "El árbol no existe\n";
+        }
+
+        else {
+            
+            Node<T>* current = root;
+
+            while (current != nullptr && current->data != value ){
+
+                std::cout << current->data << " ";
+
+                if (value < current->data) {
+                    current = current->left;
+                }
+
+                else {
+                    current = current->right;
+                }
+
+            }
+
+            std::cout << "\n";
+
+        }
         
     }
+
+
 
 };
 
@@ -251,16 +290,7 @@ public:
 
 
 
-/*
-Desplegará los ancestros de un dato
-@Param: (int data) El dato del cual se desea conocer los ancestros
-Salida: nada
-Complejidad de tiempo: O()
-Complejidad de espacio: O()
-*/
-void ancestors (int data){
-    //validar si es un BST válido
-}
+
 
 /*
 Regresará un entero que indica el nivel en que se encuentra un dato, 
@@ -297,6 +327,9 @@ int main()
     binarySearchTree->visit(4);
 
     std::cout << binarySearchTree->height();
+    std::cout << "\n";
+
+    binarySearchTree->ancestors(11);
 
 }
 
@@ -304,5 +337,6 @@ int main()
 Referencias:
 
     https://www.youtube.com/watch?v=YJN-r6qjdQU    
-
+    https://stackoverflow.com/questions/2597637/finding-height-in-binary-search-tree
+    
 */
