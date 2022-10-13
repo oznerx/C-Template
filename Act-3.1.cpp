@@ -1,4 +1,5 @@
 #include <iostream>
+#include <vector>
 
 /*
 Ozner Axel Leyva Mariscal
@@ -7,6 +8,105 @@ A01742377
 En este código se implementarán y agregarán las funcionalidades avanzadas 
 al ADT de un BST con las funcionalidades fundamentales
 */
+
+template <class T>
+class Node { 
+public:
+
+    T data;
+    Node *left;
+    Node *right;
+
+    Node(){ 
+        left = nullptr;
+        right= nullptr; 
+    }
+
+    Node(T value){
+        data = value; 
+        left = nullptr;
+        right= nullptr; 
+    }
+
+};
+
+template <class T>
+class BST
+{
+private:
+
+    Node<T> *root;
+
+public:
+
+    BST(){
+        root = nullptr;
+    }; 
+
+    bool search(int valor){
+
+        Node<T> *current = root;
+
+        while (current != nullptr){ 
+
+            if (current->data == valor){
+                return true;
+            }
+
+            else{
+                current = ( current->data > valor ? current->left : current->right);
+            }
+
+        }
+
+        return false;
+
+    }
+
+    void create(T value){
+        
+        Node<T>* newNode = new Node<T>(value);
+        Node<T>* current = root;
+        Node<T>* father = nullptr;
+
+        if (root == nullptr){
+            root = newNode;
+            std::cout << "root\n";
+        }
+
+        else{
+
+            while(current != nullptr){
+                
+                father = current;
+                
+                if(value == current->data){
+                    std::cout << "error";
+                }
+
+                else if(value < current->data){
+                    current = current->left;
+                    std::cout << "left\n";
+                }
+
+                else{
+                    current = current->right;
+                    std::cout << "right\n";
+                }
+
+            }
+
+            if( value < father->data ){
+                father->left = newNode;
+            }
+            else{
+                father->right = newNode;
+            }
+
+        }
+
+    } 
+};
 
 /*
 Desplegará cada uno de los datos almacenados en el BST dependiendo del parámetro en entrada
@@ -17,6 +117,7 @@ Complejidad de espacio: O()
 */
 void visit (int opc){
     //validar si es un BST válido
+
 }
 
 /*
@@ -60,5 +161,19 @@ int whatlevelamI (int data){
 
 int main()
 {
-    std::cout << "Árboles\n";
+    std::vector <int> numbers = {30,21,33,32,41,43};
+    BST<int>* binarySearchTree = new BST<int>();
+
+    for( int i = 0 ; i < numbers.size() ; i++ ){
+        binarySearchTree->create(numbers[i]);
+    };
+
+    if (binarySearchTree->search(43)){
+        std::cout << "Si\n";
+    }
+
+    else{
+        std::cout << "No\n";
+    }
+
 }
