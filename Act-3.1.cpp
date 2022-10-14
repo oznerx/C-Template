@@ -207,23 +207,31 @@ public:
 
     int getHeight(Node<T>* node){
 
-        int heightLeft = 0;
-        int heightRight = 0;
-
-        if (node->left!=nullptr) {
-            heightLeft = getHeight(node->left);
-        }
-            
-        if (node->right!=nullptr) {
-            heightRight = getHeight(node->right);
-        }
-            
-        if (heightLeft > heightRight) {
-            return heightLeft+1;
+        if (node == nullptr) {
+            return -1;
         }
 
         else {
-            return heightRight+1;
+            
+            int heightLeft = getHeight(node->left);
+            int heightRight = getHeight(node->right);
+
+            if (node->left!=nullptr) {
+                heightLeft = getHeight(node->left);
+            }
+                
+            if (node->right!=nullptr) {
+                heightRight = getHeight(node->right);
+            }
+                
+            if (heightLeft > heightRight) {
+                return heightLeft + 1;
+            }
+
+            else {
+                return heightRight + 1;
+            }
+
         }
 
     }
@@ -262,7 +270,7 @@ public:
             
             Node<T>* current = root;
 
-            while (current != nullptr && current->data != value ){
+            while (current != nullptr && current->data != value ) {
 
                 std::cout << current->data << " ";
 
@@ -282,7 +290,46 @@ public:
         
     }
 
+    /*
+    Regresará un entero que indica el nivel en que se encuentra un dato, 
+    regresa -1 en caso de que no se encuentre en el BST
+    @Param: (int data) El dato a buscar su nivel
+    Salida: (int level) Entero indicando el nivel del dato en el BST, o -1 si no se encuentra
+    Complejidad de tiempo: O()
+    Complejidad de espacio: O()
+    */
+    int whatlevelamI (int value){
+        
+        if (root == nullptr) {
+            return -1;
+        }
 
+        else {
+
+            int level; // retorna -1 si no se encuentra 
+            Node<T>* current = root;
+
+            while (current != nullptr && current->data != value ) {
+
+                if (value < current->data) {
+                    current = current->left;
+                }
+
+                else {
+                    current = current->right;
+                }
+
+                level++;
+
+            }
+
+            std::cout << level << "\n";
+
+        }
+
+        return -1;
+
+    }
 
 };
 
@@ -292,19 +339,7 @@ public:
 
 
 
-/*
-Regresará un entero que indica el nivel en que se encuentra un dato, 
-regresa -1 en caso de que no se encuentre en el BST
-@Param: (int data) El dato a buscar su nivel
-Salida: (int level) Entero indicando el nivel del dato en el BST, o -1 si no se encuentra
-Complejidad de tiempo: O()
-Complejidad de espacio: O()
-*/
-int whatlevelamI (int data){
-    //validar si es un BST válido
-    int level; // retorna -1 si no se encuentra 
-    return level;
-}
+
 
 
 int main()
@@ -330,6 +365,8 @@ int main()
     std::cout << "\n";
 
     binarySearchTree->ancestors(11);
+
+    binarySearchTree->whatlevelamI(8);
 
 }
 
