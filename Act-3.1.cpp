@@ -46,21 +46,29 @@ public:
 
     bool search(int value){
 
-        Node<T> *current = root;
-
-        while (current != nullptr){ 
-
-            if (current->data == value){
-                return true;
-            }
-
-            else{
-                current = ( current->data > value ? current->left : current->right);
-            }
-
+        if (root == nullptr) {
+            return false;
         }
 
-        return false;
+        else {
+            Node<T> *current = root;
+
+            while (current != nullptr){ 
+
+                if (current->data == value){
+                    return true;
+                }
+
+                else{
+                    current = ( current->data > value ? current->left : current->right);
+                }
+
+            }
+
+            return false;
+        }
+
+
 
     }
 
@@ -266,7 +274,7 @@ public:
             std::cout << "El árbol no existe\n";
         }
 
-        else {
+        else if (search(value)) {
             
             Node<T>* current = root;
 
@@ -287,6 +295,10 @@ public:
             std::cout << "\n";
 
         }
+
+        else {
+            std::cout << "El dato no existe en el árbol\n";
+        }
         
     }
 
@@ -300,11 +312,7 @@ public:
     */
     int whatlevelamI (int value){
         
-        if (root == nullptr) {
-            return -1;
-        }
-        
-        else if (!search(value)) {
+        if (root == nullptr || !search(value)) {
             return -1;
         }
 
@@ -337,37 +345,81 @@ public:
 
 int main()
 {
+    std::cout << "\n-------- Funciones de con un árbol binario de busqueda BST --------\n\n";
+
+    std::cout << "Creando árbol...\n\n";
     std::vector <int> numbers = {12, 7, 4, 2, 9, 8, 11, 21, 16, 19, 25};
     BST<int>* binarySearchTree = new BST<int>();
-
     for( int i = 0 ; i < numbers.size() ; i++ ){
         binarySearchTree->create(numbers[i]);
     };
+    
+    std::cout << "Desplegando datos en Preorder: ";
+    binarySearchTree->visit(1);
+    std::cout << "\n";
 
-    if (binarySearchTree->search(19)){
-        std::cout << "Existe\n";
-    }
+    std::cout << "Desplegando datos Inorder: ";
+    binarySearchTree->visit(2);
+    std::cout << "\n";
 
-    else{
-        std::cout << "No existe\n";
-    }
+    std::cout << "Desplegando datos en Postorder: ";
+    binarySearchTree->visit(3);
+    std::cout << "\n";
 
+    std::cout << "Desplegando datos Level by Level: ";
     binarySearchTree->visit(4);
+    std::cout << "\n";
 
+    std::cout << "La altura del árbol es de: ";
     std::cout << binarySearchTree->height();
-    std::cout << "\n";
+    std::cout << "\n\n";
 
+    std::cout << "Desplegando todos los ancestros del dato 11: ";
     binarySearchTree->ancestors(11);
-
-    std::cout << binarySearchTree->whatlevelamI(19);
     std::cout << "\n";
+
+    std::cout << "Nivel en el que se encuentra el dato 16: ";
+    std::cout << binarySearchTree->whatlevelamI(16);
+    std::cout << "\n\n";
+
+    std::cout << "------------------------ Prueba de errores ------------------------\n\n";
+
+    BST<int>* emptyBinarySearchTree = new BST<int>();
+
+
+    std::cout << "Ingresando un BST no válido al desplegar datos: ";
+    emptyBinarySearchTree->visit(1);
+    std::cout << "\n";
+
+    std::cout << "Ingresando una opción incorrecta para desplegar datos: ";
+    binarySearchTree->visit(0);
+    std::cout << "\n";
+
+    std::cout << "Ingresando un BST no válido para desplegar la altura: ";
+    emptyBinarySearchTree->height();
+    std::cout << "\n";
+
+    std::cout << "Ingresando un BST no válido para desplegar los ancestros: ";
+    emptyBinarySearchTree->ancestors(1);
+    std::cout << "\n";
+
+    std::cout << "El dato no se encuentra en el árbol para desplegar los ancestros: ";
+    binarySearchTree->ancestors(1);
+    std::cout << "\n";
+
+    std::cout << "Ingresando un BST no válido para desplegar el nivel: ";
+    std::cout << emptyBinarySearchTree->whatlevelamI(0);
+    std::cout << "\n\n";
+
+    std::cout << "El dato no se encuentra en el árbol para desplegar el nivel: ";
+    std::cout << binarySearchTree->whatlevelamI(1);
+    std::cout << "\n\n";
 
 }
 
 /*
 Referencias:
 
-    https://www.youtube.com/watch?v=YJN-r6qjdQU    
-    https://stackoverflow.com/questions/2597637/finding-height-in-binary-search-tree
-    
+    CppNuts. (2021, 11 de mayo). Level Order Traversal Of Binary Tree - BFS [video]. YouTube. https://www.youtube.com/watch?v=YJN-r6qjdQU   
+        
 */
