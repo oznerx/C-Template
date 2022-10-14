@@ -303,6 +303,10 @@ public:
         if (root == nullptr) {
             return -1;
         }
+        
+        else if (!search(value)) {
+            return -1;
+        }
 
         else {
 
@@ -323,24 +327,13 @@ public:
 
             }
 
-            std::cout << level << "\n";
+            return level;
 
         }
-
-        return -1;
 
     }
 
 };
-
-
-
-
-
-
-
-
-
 
 int main()
 {
@@ -366,7 +359,8 @@ int main()
 
     binarySearchTree->ancestors(11);
 
-    binarySearchTree->whatlevelamI(8);
+    std::cout << binarySearchTree->whatlevelamI(19);
+    std::cout << "\n";
 
 }
 
