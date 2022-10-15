@@ -330,24 +330,32 @@ public:
         }
 
         else if (search(value)) {
-            
-            Node<T>* current = root;
-
-            while (current != nullptr && current->data != value ) {
-
-                std::cout << current->data << " ";
-
-                if (value < current->data) {
-                    current = current->left;
-                }
-
-                else {
-                    current = current->right;
-                }
-
+                    
+            if (root->data == value) {
+                std::cout << "El dato no tiene ancestros, es el nodo raíz\n";
             }
 
-            std::cout << "\n";
+            else {
+
+                Node<T>* current = root;
+
+                while (current != nullptr && current->data != value ) {
+
+                    std::cout << current->data << " ";
+
+                    if (value < current->data) {
+                        current = current->left;
+                    }
+
+                    else {
+                        current = current->right;
+                    }
+
+                }
+
+                std::cout << "\n";
+
+            }
 
         }
 
@@ -400,11 +408,13 @@ public:
 
 int main()
 {
+    
     std::cout << "\n-------- Funciones de con un árbol binario de busqueda BST --------\n\n";
 
     std::cout << "Creando árbol...\n\n";
     std::vector <int> numbers = {12, 7, 4, 2, 9, 8, 11, 21, 16, 19, 25};
     BST<int>* binarySearchTree = new BST<int>();
+
     for( int i = 0 ; i < numbers.size() ; i++ ){
         binarySearchTree->create(numbers[i]);
     };
@@ -433,8 +443,32 @@ int main()
     binarySearchTree->ancestors(11);
     std::cout << "\n";
 
+    std::cout << "Desplegando todos los ancestros del dato 4: ";
+    binarySearchTree->ancestors(4);
+    std::cout << "\n";
+
+    std::cout << "Desplegando todos los ancestros del dato 21: ";
+    binarySearchTree->ancestors(21);
+    std::cout << "\n";
+
+    std::cout << "Desplegando todos los ancestros del dato 19: ";
+    binarySearchTree->ancestors(19);
+    std::cout << "\n";
+
     std::cout << "Nivel en el que se encuentra el dato 16: ";
     std::cout << binarySearchTree->whatlevelamI(16);
+    std::cout << "\n\n";
+
+    std::cout << "Nivel en el que se encuentra el dato 2: ";
+    std::cout << binarySearchTree->whatlevelamI(2);
+    std::cout << "\n\n";
+
+    std::cout << "Nivel en el que se encuentra el dato 8: ";
+    std::cout << binarySearchTree->whatlevelamI(8);
+    std::cout << "\n\n";
+
+    std::cout << "Nivel en el que se encuentra el dato 25: ";
+    std::cout << binarySearchTree->whatlevelamI(25);
     std::cout << "\n\n";
 
     std::cout << "------------------------ Prueba de errores ------------------------\n\n";
@@ -455,6 +489,10 @@ int main()
 
     std::cout << "Ingresando un BST no válido para desplegar los ancestros: ";
     emptyBinarySearchTree->ancestors(1);
+    std::cout << "\n";
+
+    std::cout << "Ingresando el nodo raíz con valor de 12 para desplegar los ancestros: ";
+    binarySearchTree->ancestors(12);
     std::cout << "\n";
 
     std::cout << "El dato no se encuentra en el árbol para desplegar los ancestros: ";
