@@ -44,6 +44,13 @@ public:
         root = nullptr;
     }; 
 
+    /*
+    Retornará verdadero o falso dependiendo si se encuentra el dato buscado
+    @Param: (int value) datos que se quiere buscar  
+    Salida: (bool) si se encontró es verdadero, si no, es falso
+    Complejidad de tiempo: O(n)
+    Complejidad de espacio: O(1)
+    */
     bool search(int value){
 
         if (root == nullptr) {
@@ -51,6 +58,7 @@ public:
         }
 
         else {
+
             Node<T> *current = root;
 
             while (current != nullptr){ 
@@ -66,12 +74,18 @@ public:
             }
 
             return false;
+
         }
-
-
 
     }
 
+    /*
+    Agrega datos al árbol 
+    @Param: (T value) datos que se quiere agregar   
+    Salida: nada
+    Complejidad de tiempo: O(n)
+    Complejidad de espacio: O(1)
+    */
     void create(T value){
         
         Node<T>* newNode = new Node<T>(value);
@@ -113,6 +127,13 @@ public:
 
     }
 
+    /*
+    Imprime los datos del árbol en preorder  
+    @Param: (Node<T>* r) raíz del arbol a imprimir    
+    Salida: nada
+    Complejidad de tiempo: O(n)
+    Complejidad de espacio: O(n)
+    */
     void preorder(Node<T>* r){
 
         if (r != nullptr) {
@@ -123,6 +144,13 @@ public:
 
     }
 
+    /*
+    Imprime los datos del árbol en inorder  
+    @Param: (Node<T>* r) raíz del arbol a imprimir    
+    Salida: nada
+    Complejidad de tiempo: O(n)
+    Complejidad de espacio: O(n)
+    */
     void inorder(Node<T>* r){ 
 
         if ( r != nullptr){ 
@@ -133,6 +161,13 @@ public:
 
     }
 
+    /*
+    Imprime los datos del árbol en postorder  
+    @Param: (Node<T>* r) raíz del arbol a imprimir    
+    Salida: nada
+    Complejidad de tiempo: O(n)
+    Complejidad de espacio: O(n)
+    */
     void postorder(Node<T>* r){ 
 
         if ( r != nullptr){
@@ -143,6 +178,13 @@ public:
 
     }
 
+    /*
+    Imprime los datos del árbol nivel por nivel  
+    @Param: (Node<T>* r) raíz del arbol a imprimir    
+    Salida: nada
+    Complejidad de tiempo: O(n)
+    Complejidad de espacio: O(1)
+    */
     void levelByLevel(Node<T>* r){
         
         if(r == nullptr){
@@ -174,8 +216,14 @@ public:
     Desplegará cada uno de los datos almacenados en el BST dependiendo del parámetro en entrada
     @Param:(int opc) opción del orden en el que se quiere desplegar los datos 
     Salida: nada
-    Complejidad de tiempo: O()
-    Complejidad de espacio: O()
+    --- Depende la opción es la complejidad ---
+    opción de 1-3:
+        Complejidad de tiempo: O(n)
+        Complejidad de espacio: O(n)
+
+    opción 4:
+        Complejidad de tiempo: O(n)
+        Complejidad de espacio: O(1)  
     */
     void visit(int opc){
 
@@ -213,6 +261,13 @@ public:
 
     }
 
+    /*
+    Retornará la altura del árbol
+    @Param: (Node<T>* node) raíz del arbol   
+    Salida: (int) altura del árbol
+    Complejidad de tiempo: O(log n)
+    Complejidad de espacio: O(log n)
+    */
     int getHeight(Node<T>* node){
 
         if (node == nullptr) {
@@ -245,11 +300,11 @@ public:
     }
 
     /*
-    Regresará la altura del BST
+    Retornará la altura del BST
     @Param: nada
     Salida: (int height) altura del BST
-    Complejidad de tiempo: O()
-    Complejidad de espacio: O()
+    Complejidad de tiempo: O(log n)
+    Complejidad de espacio: O(log n)
     */
     int height(){
 
@@ -263,10 +318,10 @@ public:
 
     /*
     Desplegará los ancestros de un dato
-    @Param: (int data) El dato del cual se desea conocer los ancestros
+    @Param: (int value) El dato del cual se desea conocer los ancestros
     Salida: nada
-    Complejidad de tiempo: O()
-    Complejidad de espacio: O()
+    Complejidad de tiempo: O(n)
+    Complejidad de espacio: O(1)
     */
     void ancestors(int value){
         
@@ -305,10 +360,10 @@ public:
     /*
     Regresará un entero que indica el nivel en que se encuentra un dato, 
     regresa -1 en caso de que no se encuentre en el BST
-    @Param: (int data) El dato a buscar su nivel
+    @Param: (int value) El dato a buscar su nivel
     Salida: (int level) Entero indicando el nivel del dato en el BST, o -1 si no se encuentra
-    Complejidad de tiempo: O()
-    Complejidad de espacio: O()
+    Complejidad de tiempo: O(n)
+    Complejidad de espacio: O(1)
     */
     int whatlevelamI (int value){
         
@@ -318,7 +373,7 @@ public:
 
         else {
 
-            int level; // retorna -1 si no se encuentra 
+            int level;
             Node<T>* current = root;
 
             while (current != nullptr && current->data != value ) {
@@ -386,7 +441,6 @@ int main()
 
     BST<int>* emptyBinarySearchTree = new BST<int>();
 
-
     std::cout << "Ingresando un BST no válido al desplegar datos: ";
     emptyBinarySearchTree->visit(1);
     std::cout << "\n";
@@ -420,6 +474,6 @@ int main()
 /*
 Referencias:
 
-    CppNuts. (2021, 11 de mayo). Level Order Traversal Of Binary Tree - BFS [video]. YouTube. https://www.youtube.com/watch?v=YJN-r6qjdQU   
+    CppNuts. (2021, 11 de mayo). Level Order Traversal Of Binary Tree - BFS [video]. YouTube. https://www.youtube.com/watch?v=YJN-r6qjdQU
         
 */
