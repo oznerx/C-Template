@@ -32,7 +32,7 @@ public:
 };
 
 template <class T>
-class BST
+class Bst
 {
 private:
 
@@ -40,7 +40,7 @@ private:
 
 public:
 
-    BST(){
+    Bst(){
         root = nullptr;
     }; 
 
@@ -259,8 +259,8 @@ public:
     Retornará la altura del árbol
     @Param: (Node<T>* node) raíz del arbol   
     Salida: (int) altura del árbol
-    Complejidad de tiempo: O(log n)
-    Complejidad de espacio: O(log n)
+    Complejidad de tiempo: O(n)
+    Complejidad de espacio: O(n)
     */
     int getHeight(Node<T>* node){
 
@@ -315,7 +315,9 @@ public:
     @Param: (int value) El dato del cual se desea conocer los ancestros
     Salida: nada
     Complejidad de tiempo: O(n)
-    Complejidad de espacio: O(1), 
+    Complejidad de espacio: O(1) 
+    Nota: no se usa stack para no tener una complejidad de O(n), 
+    es por ello que se imprimen los datos de raiz hasta el valor deseado y no viceversa 
     */
     void ancestors(int value){
         
@@ -407,7 +409,7 @@ int main()
 
     std::cout << "Creando árbol...\n\n";
     std::vector <int> numbers = {12, 7, 4, 2, 9, 8, 11, 21, 16, 19, 25};
-    BST<int>* binarySearchTree = new BST<int>();
+    Bst<int>* binarySearchTree = new Bst<int>();
 
     for( int i = 0 ; i < numbers.size() ; i++ ){
         binarySearchTree->create(numbers[i]);
@@ -467,7 +469,7 @@ int main()
 
     std::cout << "------------------------ Prueba de errores ------------------------\n\n";
 
-    BST<int>* emptyBinarySearchTree = new BST<int>();
+    Bst<int>* emptyBinarySearchTree = new Bst<int>();
 
     std::cout << "Ingresando un BST no válido al desplegar datos: ";
     emptyBinarySearchTree->visit(1);
