@@ -316,7 +316,7 @@ public:
     Salida: nada
     Complejidad de tiempo: O(n)
     Complejidad de espacio: O(1) 
-    Nota: no se usa stack para no tener una complejidad de O(n), 
+    Nota: no se usa stack para no tener una complejidad de espacio de O(n), 
     es por ello que se imprimen los datos de raiz hasta el valor deseado y no viceversa 
     */
     void ancestors(int value){
@@ -411,7 +411,7 @@ int main()
     std::vector <int> numbers = {12, 7, 4, 2, 9, 8, 11, 21, 16, 19, 25};
     Bst<int>* binarySearchTree = new Bst<int>();
 
-    for( int i = 0 ; i < numbers.size() ; i++ ){
+    for (int i = 0 ; i < numbers.size() ; i++) {
         binarySearchTree->create(numbers[i]);
     };
     
