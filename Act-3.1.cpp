@@ -183,7 +183,7 @@ public:
     @Param: (Node<T>* r) raíz del arbol a imprimir    
     Salida: nada
     Complejidad de tiempo: O(n)
-    Complejidad de espacio: O(1)
+    Complejidad de espacio: O(n)
     */
     void levelByLevel(Node<T>* r){
         
@@ -216,14 +216,8 @@ public:
     Desplegará cada uno de los datos almacenados en el BST dependiendo del parámetro en entrada
     @Param:(int opc) opción del orden en el que se quiere desplegar los datos 
     Salida: nada
-    --- Depende la opción es la complejidad ---
-    opción de 1-3:
-        Complejidad de tiempo: O(n)
-        Complejidad de espacio: O(n)
-
-    opción 4:
-        Complejidad de tiempo: O(n)
-        Complejidad de espacio: O(1)  
+    Complejidad de tiempo: O(n)
+    Complejidad de espacio: O(n)
     */
     void visit(int opc){
 
@@ -321,7 +315,7 @@ public:
     @Param: (int value) El dato del cual se desea conocer los ancestros
     Salida: nada
     Complejidad de tiempo: O(n)
-    Complejidad de espacio: O(1)
+    Complejidad de espacio: O(1), 
     */
     void ancestors(int value){
         
