@@ -24,12 +24,12 @@ public:
     Agrega un dato a la fila priorizada
     @Param: (int value) valor que se desea agregar a la fila priorizada  
     Salida: nada
-    Complejidad de tiempo: O(1)
-    Complejidad de espacio: O(1)
+    Complejidad de tiempo: O(log n)
+    Complejidad de espacio: O(n)
     */
     void push(int value) {
 
-        heapArray[s] = value;
+        heapArray[s] = value; // n space
         s++;
 
         if (s > 1) {
@@ -118,7 +118,13 @@ public:
 
     }
 
-
+    /*
+    I  
+    @Param: nada  
+    Salida: nada
+    Complejidad de tiempo: O(log n)
+    Complejidad de espacio: O(n)
+    */
     void swiftUp(int rootIndex) {
         
         int max = rootIndex;
@@ -140,6 +146,13 @@ public:
 
     }
 
+    /*
+    I  
+    @Param: nada  
+    Salida: nada
+    Complejidad de tiempo: O(log n)
+    Complejidad de espacio: O(n)
+    */
     void  swiftDown(int rootIndex) {
 
         int max = rootIndex;
