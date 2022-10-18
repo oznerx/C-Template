@@ -119,7 +119,7 @@ public:
     }
 
     /*
-    I  
+    Reacomoda elementos de abajo hacia arriba para colocar el nuevo valor en una posición dependiendo su prioridad  
     @Param: nada  
     Salida: nada
     Complejidad de tiempo: O(log n)
@@ -147,7 +147,7 @@ public:
     }
 
     /*
-    I  
+    Reacomoda elementos de arriba hacia abajo cuando se elimina la raíz 
     @Param: nada  
     Salida: nada
     Complejidad de tiempo: O(log n)
