@@ -25,7 +25,7 @@ public:
     @Param: (int value) valor que se desea agregar a la fila priorizada  
     Salida: nada
     Complejidad de tiempo: O(log n)
-    Complejidad de espacio: O(n)
+    Complejidad de espacio: O(log n)
     */
     void push(int value) {
 
@@ -47,7 +47,7 @@ public:
     */
     void pop() {
         
-        int temp = heapArray[s - 1];
+        int temp = heapArray[s-1];
         heapArray[s-1] = heapArray[0];
         heapArray[0] = temp;
         s--;
@@ -123,7 +123,7 @@ public:
     @Param: nada  
     Salida: nada
     Complejidad de tiempo: O(log n)
-    Complejidad de espacio: O(n)
+    Complejidad de espacio: O(log n)
     */
     void swiftUp(int rootIndex) {
         
@@ -151,9 +151,9 @@ public:
     @Param: nada  
     Salida: nada
     Complejidad de tiempo: O(log n)
-    Complejidad de espacio: O(n)
+    Complejidad de espacio: O(log n)
     */
-    void  swiftDown(int rootIndex) {
+    void swiftDown(int rootIndex) {
 
         int max = rootIndex;
         int left = (2 * rootIndex) + 1;
