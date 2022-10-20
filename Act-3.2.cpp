@@ -42,8 +42,8 @@ public:
     Saca de la fila priorizada el dato que tiene mayor prioridad
     @Param: nada  
     Salida: nada
-    Complejidad de tiempo: O(1)
-    Complejidad de espacio: O(1)
+    Complejidad de tiempo: O(log n)
+    Complejidad de espacio: O(log n)
     */
     void pop() {
         
