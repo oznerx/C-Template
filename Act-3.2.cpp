@@ -29,7 +29,7 @@ public:
     */
     void push(int value) {
 
-        heapArray[s] = value; // n space
+        heapArray[s] = value;
         s++;
 
         if (s > 1) {
@@ -120,7 +120,7 @@ public:
 
     /*
     Reacomoda elementos de abajo hacia arriba para colocar el nuevo valor en una posición dependiendo su prioridad  
-    @Param: nada  
+    @Param: (int rootIndex) indice del valor a rotar hacia arriba
     Salida: nada
     Complejidad de tiempo: O(log n)
     Complejidad de espacio: O(log n)
@@ -148,7 +148,7 @@ public:
 
     /*
     Reacomoda elementos de arriba hacia abajo cuando se elimina la raíz 
-    @Param: nada  
+    @Param: (int rootIndex) indice del valor a rotar hacia abajo  
     Salida: nada
     Complejidad de tiempo: O(log n)
     Complejidad de espacio: O(log n)
@@ -222,14 +222,12 @@ int main()
     cout << "\nVerificando que la lista está vacía...\n\n";
 
     if (heap->empty()) {
-        cout << "La fila está vacía\n\n";
+        cout << "El Heap está vacío\n\n";
     }
 
     else {
-        cout << "La fila contiene elementos\n\n";
+        cout << "El Heap contiene elementos\n\n";
     }  
-
-
 
     cout << "Insertando valores a la fila con el método push...\n\n";
 
