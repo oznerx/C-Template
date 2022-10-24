@@ -342,6 +342,13 @@ public:
 
     }
 
+    /*
+    Agrega un dato al Splay Tree
+    @Param: (long long key) valor que se desea agregar al Splay Tree  
+    Salida: nada
+    Complejidad de tiempo: O(log n)
+    Complejidad de espacio: O(1)
+    */
     void insert(long long key) {
 
         s++;
