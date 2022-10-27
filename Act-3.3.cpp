@@ -9,6 +9,7 @@ Referencias: http://algorithmtutor.com/ip-Structures/Tree/Splay-Trees/
 #include <iostream>
 #include <locale.h>
 #include <stack>
+#include <vector>
 using namespace std;
 
 class Nodo {
@@ -534,17 +535,15 @@ int main() {
     setlocale(LC_ALL, "es_ES.UTF-8");
 
     ArbolBiselado bst;
-    bst.insert(333333333);
-    bst.insert(44);
-    bst.insert(64444447);
-    bst.insert(62222229);
-    bst.insert(4294967295);
-    bst.insert(2);
-    bst.insert(89);
-    bst.insert(41);
-    bst.insert(98);
-    bst.insert(1);
-    bst.imprimeArbol();
+    vector <long long int> numbers = {333333333, 44, 64444447, 62222229, 4294967295, 2, 89, 41, 98, 1};
+
+    cout << "Creando árbol...\n"; 
+    for (int i = 0; i < numbers.size(); i++) {
+        bst.insert(numbers[i]);  
+    }
+
+    /*  
+    cout << "Buscando la ip \n"; 
     bst.find(4294967295);
     bst.imprimeArbol();
     bst.find(44);
@@ -557,10 +556,12 @@ int main() {
     bst.del(1);
     bst.del(44);
     bst.imprimeArbol();
+    */
 
-    cout << bst.size() << "\n";
-    bst.print();
-
-    return 0;
+    for (int i = 0; i < numbers.size(); i++) {
+        bst.del(numbers[i]);
+        bst.print();
+        cout << bst.size() << "\n";
+    }
 
 }
