@@ -9,6 +9,7 @@ Referencias: http://algorithmtutor.com/ip-Structures/Tree/Splay-Trees/
 #include <iostream>
 #include <locale.h>
 #include <stack>
+#include <string>
 #include <vector>
 using namespace std;
 
@@ -38,6 +39,13 @@ private:
     NodoPtr raiz;
     int s = 0;
 
+    /*
+    Encuentra un dato del Splay Tree
+    @Param: (NodoPtr nodo) nodo a partir de donde se quiere buscar, (long long ip) dato que se desea buscar en el Splay Tree  
+    Salida: (NodoPtr x) nodo buscado
+    Complejidad de tiempo: O(log n)
+    Complejidad de espacio: O(1) (sin tomar en cuenta la multiplicacion de complejidades con "biselar")
+    */
     NodoPtr find(NodoPtr nodo, long long ip) {
 
         if (nodo == nullptr || ip == nodo->ip) {
@@ -369,20 +377,21 @@ public:
     /*
     Encuentra un dato del Splay Tree
     @Param: (long long k) dato que se desea buscar en el Splay Tree  
-    Salida: (NodoPtr x) nodo buscado
+    Salida: (bool) valor que indica si se encontró el dato en el árbol, true si se encontra, false si no se encuentra    
     Complejidad de tiempo: O(log n)
     Complejidad de espacio: O(1) (sin tomar en cuenta la multiplicacion de complejidades con "biselar")
     */
-    NodoPtr find(long long  k) {
+    bool find(long long k) {
 
         NodoPtr x = find(this->raiz, k);
 
         if (x) {
             x->accesos++;
             biselar(x);
+            return true;
         }
 
-        return x;
+        return false; 
         
     }
 
@@ -537,31 +546,38 @@ int main() {
     ArbolBiselado bst;
     vector <long long int> numbers = {333333333, 44, 64444447, 62222229, 4294967295, 2, 89, 41, 98, 1};
 
-    cout << "Creando árbol...\n"; 
+    cout << "\nCreando árbol...\n";
     for (int i = 0; i < numbers.size(); i++) {
         bst.insert(numbers[i]);  
     }
 
-    /*  
-    cout << "Buscando la ip \n"; 
-    bst.find(4294967295);
-    bst.imprimeArbol();
-    bst.find(44);
-    bst.imprimeArbol();
-    bst.del(333333333);
-    bst.imprimeArbol();
-    bst.del(41);
-    bst.imprimeArbol();
-    bst.del(98);
-    bst.del(1);
-    bst.del(44);
-    bst.imprimeArbol();
-    */
+    cout << "Elementos del árbol:\n";
+    bst.print();
+    cout << "El tamaño del árbol es de: ";
+    cout << bst.size() << "\n\n";
 
-    for (int i = 0; i < numbers.size(); i++) {
+    for (int i = 0; i < numbers.size()/2; i++) {
+
+        cout << "Verificando que se encuentre el elemento " + to_string(numbers[i+i]) + " en el árbol: ";
+
+        if ( bst.find(numbers[i+i]) ) {
+            cout << "Si se encontró el dato en el árbol";
+        }
+
+        else {
+            cout << "NO se encontró el dato en el árbol";
+        }
+
+        cout << "\n\n";
+
+    } 
+
+    cout << "Eliminando elementos del árbol...\n"; 
+    for (int i = 0; i < numbers.size()-1; i++) {
         bst.del(numbers[i]);
         bst.print();
-        cout << bst.size() << "\n";
+        cout << "El tamaño del árbol es de: ";
+        cout << bst.size() << "\n\n";
     }
 
 }
