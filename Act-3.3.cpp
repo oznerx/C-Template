@@ -69,42 +69,50 @@ private:
     */
     void del(NodoPtr nodo, long long ip) {
 
-        NodoPtr eliminado = nullptr;
-        NodoPtr t, s;
-
-        while (nodo != nullptr) {
-
-            if (nodo->ip == ip) {
-                eliminado = nodo;
-            }
-
-            if (nodo->ip <= ip) {
-                nodo = nodo->derecho;
-            }
-
-            else {
-                nodo = nodo->izquierdo;
-            }
-
+        if (!this->raiz) {
+            cout << "El árbol está vacío\n\n";
         }
 
-        if (eliminado == nullptr) {
-            cout << "No se encontró la IP" << endl;
-            return;
+        else {
+
+            NodoPtr eliminado = nullptr;
+            NodoPtr t, s;
+
+            while (nodo != nullptr) {
+
+                if (nodo->ip == ip) {
+                    eliminado = nodo;
+                }
+
+                if (nodo->ip <= ip) {
+                    nodo = nodo->derecho;
+                }
+
+                else {
+                    nodo = nodo->izquierdo;
+                }
+
+            }
+
+            if (eliminado == nullptr) {
+                cout << "No se encontró la IP\n" << endl;
+                return;
+            }
+
+            divide(eliminado, s, t);
+
+            if (s->izquierdo) { // elimina el nodo
+                s->izquierdo->progenitore = nullptr;
+            }
+
+            //une los dos subárboles
+            raiz = une(s->izquierdo, t);
+
+            //libera memoria
+            delete(s);
+            s = nullptr;
+
         }
-
-        divide(eliminado, s, t);
-
-        if (s->izquierdo) { // elimina el nodo
-            s->izquierdo->progenitore = nullptr;
-        }
-
-        //une los dos subárboles
-        raiz = une(s->izquierdo, t);
-
-        //libera memoria
-        delete(s);
-        s = nullptr;
 
     }
 
@@ -383,6 +391,10 @@ public:
     */
     bool find(long long k) {
 
+        if (!this->raiz) {
+            cout << "El árbol está vacío\n\n";
+        }
+
         NodoPtr x = find(this->raiz, k);
 
         if (x) {
@@ -522,8 +534,16 @@ public:
     Complejidad de espacio: O(n) 
     */
     void print() {
-        inorder(this->raiz);
-        cout << "\n";
+
+        if (!this->raiz) {
+            cout << "El árbol está vacío\n\n";
+        }
+
+        else {
+            inorder(this->raiz);
+            cout << "\n";
+        }
+
     }
 
     /*
@@ -534,6 +554,7 @@ public:
     Complejidad de espacio: O(1) 
     */
     int size() {
+
         return s;
     }
 
@@ -544,9 +565,12 @@ int main() {
     setlocale(LC_ALL, "es_ES.UTF-8");
 
     ArbolBiselado bst;
+    ArbolBiselado arbolvacio;
+
     vector <long long int> numbers = {333333333, 44, 64444447, 62222229, 4294967295, 2, 89, 41, 98, 1};
 
     cout << "\nCreando árbol...\n";
+
     for (int i = 0; i < numbers.size(); i++) {
         bst.insert(numbers[i]);  
     }
@@ -557,27 +581,48 @@ int main() {
     cout << bst.size() << "\n\n";
 
     for (int i = 0; i < numbers.size()/2; i++) {
-
         cout << "Verificando que se encuentre el elemento " + to_string(numbers[i+i]) + " en el árbol: ";
 
         if ( bst.find(numbers[i+i]) ) {
-            cout << "Si se encontró el dato en el árbol";
+            cout << "Si se encontró el dato en el árbol\n\n";
         }
 
         else {
-            cout << "NO se encontró el dato en el árbol";
+            cout << "NO se encontró el dato en el árbol\n\n";
         }
-
-        cout << "\n\n";
 
     } 
 
     cout << "Eliminando elementos del árbol...\n"; 
+
     for (int i = 0; i < numbers.size()-1; i++) {
         bst.del(numbers[i]);
         bst.print();
         cout << "El tamaño del árbol es de: ";
         cout << bst.size() << "\n\n";
     }
+
+    cout << "Eliminando un dato que no se encuentra en el árbol: ";
+    bst.del(43);
+
+    cout << "Buscando un dato que no se encuentra en el árbol: ";
+    bst.find(68);
+    if ( bst.find(numbers[68]) ) {
+        cout << "Si se encontró el dato en el árbol\n\n";
+    }
+
+    else {
+        cout << "NO se encontró el dato en el árbol\n\n";
+    }
+
+    cout << "Eliminando un dato en un árbol vacío: ";
+    arbolvacio.del(21);
+
+    cout << "Buscando un dato en un árbol vacío: ";
+    arbolvacio.find(15);
+
+    cout << "Imprimiendo datos de un árbol vacío: ";
+    arbolvacio.print();
+
 
 }
