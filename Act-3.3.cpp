@@ -43,8 +43,12 @@ private:
     Encuentra un dato del Splay Tree
     @Param: (NodoPtr nodo) nodo a partir de donde se quiere buscar, (long long ip) dato que se desea buscar en el Splay Tree  
     Salida: (NodoPtr x) nodo buscado
+    Mejor de los casos:
     Complejidad de tiempo: O(log n)
-    Complejidad de espacio: O(1) (sin tomar en cuenta la multiplicacion de complejidades con "biselar")
+    Complejidad de espacio: O(1) 
+    Peor de los casos:
+    Complejidad de tiempo: O(h)
+    Complejidad de espacio: O(1) 
     */
     NodoPtr find(NodoPtr nodo, long long ip) {
 
@@ -64,8 +68,12 @@ private:
     Elimina un dato del Splay Tree
     @Param: (long long ip) dato que se desea borrar del Splay Tree , (NodoPtr nodo) nodo raíz del árbol
     Salida: nada
+    Mejor de los casos:
     Complejidad de tiempo: O(log n)
-    Complejidad de espacio: O(n) ?????
+    Complejidad de espacio: O(1)
+    Peor de los casos:
+    Complejidad de tiempo: O(h)
+    Complejidad de espacio: O(1) 
     */
     void del(NodoPtr nodo, long long ip) {
 
@@ -121,7 +129,7 @@ private:
     @Param: (long long value) valor del nodo que se desea imprimir 
     Salida: nada
     Complejidad de tiempo: O(n)
-    Complejidad de espacio: O(n)
+    Complejidad de espacio: O(1)
     */
     void imprimeIp(long long value) {
 
@@ -164,7 +172,7 @@ private:
     @Param: (NodoPtr raiz) nodo raíz, (string relleno) caracteres especiales para la estructura, (bool ultimo) bandera para identificar el último elemento 
     Salida: nada
     Complejidad de tiempo: O(n)
-    Complejidad de espacio: O(n)
+    Complejidad de espacio: O(1)
     */
     void imprime(NodoPtr raiz, string rellleno, bool ultimo) {
 
@@ -196,8 +204,8 @@ private:
     Rota los elemntos del árbol hacia la izquierda 
     @Param: (NodoPtr nodo) nodo progenitor del cual se va a rotar 
     Salida: nada
-    Complejidad de tiempo: O(log n)
-    Complejidad de espacio: O(log n)
+    Complejidad de tiempo: O(1)
+    Complejidad de espacio: O(1)
     */
     void rotarIzquierda(NodoPtr nodo) {
 
@@ -231,8 +239,8 @@ private:
     Rota los elemntos del árbol hacia la derecha 
     @Param: (NodoPtr nodo) nodo progenitor del cual se va a rotar 
     Salida: nada
-    Complejidad de tiempo: O(log n)
-    Complejidad de espacio: O(log n)
+    Complejidad de tiempo: O(1)
+    Complejidad de espacio: O(1)
     */
     void rotarDerecha(NodoPtr nodo) {
 
@@ -276,8 +284,12 @@ private:
     Hace el biselado en el árbol
     @Param: (NodoPtr nodo) nodo progenitor del cual se va a rotar para el biselado
     Salida: nada
+    Mejor de los casos:
     Complejidad de tiempo: O(log n)
-    Complejidad de espacio: O(log n)
+    Complejidad de espacio: O(1)
+    Peor de los casos:
+    Complejidad de tiempo: O(h)
+    Complejidad de espacio: O(1) 
     */
     void biselar(NodoPtr nodo) {
 
@@ -329,8 +341,8 @@ private:
     Une las dos secciones del árbol dividido
     @Param: (NodoPtr s) parte izquierda del árbol , (NodoPtr t) parte derecha del árbol
     Salida: nada
-    Complejidad de tiempo: O(log n)
-    Complejidad de espacio: O(log n)
+    Complejidad de tiempo: O(h)
+    Complejidad de espacio: O(1)
     */
     NodoPtr une(NodoPtr s, NodoPtr t) {
 
@@ -354,8 +366,8 @@ private:
     Divide en dos secciones el árbol 
     @Param: (NodoPtr x) progenitor , (NodoPtr s) parte izquierda del árbol , (NodoPtr t) parte derecha del árbol
     Salida: nada
-    Complejidad de tiempo: O(log n)
-    Complejidad de espacio: O(log n)
+    Complejidad de tiempo: O(h)
+    Complejidad de espacio: O(1)
     */
     void divide(NodoPtr& x, NodoPtr& s, NodoPtr& t) {
 
@@ -386,8 +398,12 @@ public:
     Encuentra un dato del Splay Tree
     @Param: (long long k) dato que se desea buscar en el Splay Tree  
     Salida: (bool) valor que indica si se encontró el dato en el árbol, true si se encontra, false si no se encuentra    
+    Mejor de los casos:
     Complejidad de tiempo: O(log n)
-    Complejidad de espacio: O(1) (sin tomar en cuenta la multiplicacion de complejidades con "biselar")
+    Complejidad de espacio: O(1)
+    Peor de los casos:
+    Complejidad de tiempo: O(h)
+    Complejidad de espacio: O(1) 
     */
     bool find(long long k) {
 
@@ -445,8 +461,12 @@ public:
     Agrega un dato al Splay Tree
     @Param: (long long key) valor que se desea agregar al Splay Tree  
     Salida: nada
+    Mejor de los casos:
     Complejidad de tiempo: O(log n)
-    Complejidad de espacio: O(1) (sin tomar en cuenta la multiplicacion de complejidades con "biselar")
+    Complejidad de espacio: O(1)
+    Peor de los casos:
+    Complejidad de tiempo: O(h)
+    Complejidad de espacio: O(1) 
     */
     void insert(long long key) {
 
@@ -497,14 +517,25 @@ public:
     Elimina un dato del Splay Tree
     @Param: (long long key) dato que se desea borrar del Splay Tree  
     Salida: nada
+    Mejor de los casos:
     Complejidad de tiempo: O(log n)
-    Complejidad de espacio: O(n) ?????
+    Complejidad de espacio: O(1)
+    Peor de los casos:
+    Complejidad de tiempo: O(h)
+    Complejidad de espacio: O(1) 
     */ 
     void del(long long ip) {
         s--;
         del(this->raiz, ip);
     }
 
+    /*
+    Imprime una simulación de un árbol
+    @Param: nada
+    Salida: nada
+    Complejidad de tiempo: O(n)
+    Complejidad de espacio: O(1)
+    */
     void imprimeArbol() {
         imprime(this->raiz, "", true);
     }
@@ -513,7 +544,7 @@ public:
     Imprime los datos del árbol en inorder  
     @Param: (Node<T>* r) raíz del arbol a imprimir    
     Salida: nada
-    Complejidad de tiempo: O(n) (sin tomar en cuenta la multiplicación de imprimir los datos)
+    Complejidad de tiempo: O(n) 
     Complejidad de espacio: O(n) 
     */
     void inorder(NodoPtr r){ 
@@ -554,7 +585,6 @@ public:
     Complejidad de espacio: O(1) 
     */
     int size() {
-
         return s;
     }
 
@@ -623,6 +653,5 @@ int main() {
 
     cout << "Imprimiendo datos de un árbol vacío: ";
     arbolvacio.print();
-
 
 }
