@@ -515,7 +515,7 @@ public:
 
     /*
     Elimina un dato del Splay Tree
-    @Param: (long long key) dato que se desea borrar del Splay Tree  
+    @Param: (long long ip) dato que se desea borrar del Splay Tree  
     Salida: nada
     Mejor de los casos:
     Complejidad de tiempo: O(log n)
