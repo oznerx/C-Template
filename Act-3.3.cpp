@@ -45,10 +45,10 @@ private:
     Salida: (NodoPtr x) nodo buscado
     Mejor de los casos:
     Complejidad de tiempo: O(log n)
-    Complejidad de espacio: O(1) 
+    Complejidad de espacio: O(log n) 
     Peor de los casos:
-    Complejidad de tiempo: O(h)
-    Complejidad de espacio: O(1) 
+    Complejidad de tiempo: O(n)
+    Complejidad de espacio: O(n) 
     */
     NodoPtr find(NodoPtr nodo, long long ip) {
 
@@ -72,7 +72,7 @@ private:
     Complejidad de tiempo: O(log n)
     Complejidad de espacio: O(1)
     Peor de los casos:
-    Complejidad de tiempo: O(h)
+    Complejidad de tiempo: O(n)
     Complejidad de espacio: O(1) 
     */
     void del(NodoPtr nodo, long long ip) {
@@ -172,7 +172,7 @@ private:
     @Param: (NodoPtr raiz) nodo raíz, (string relleno) caracteres especiales para la estructura, (bool ultimo) bandera para identificar el último elemento 
     Salida: nada
     Complejidad de tiempo: O(n)
-    Complejidad de espacio: O(1)
+    Complejidad de espacio: O(n)
     */
     void imprime(NodoPtr raiz, string rellleno, bool ultimo) {
 
@@ -288,7 +288,7 @@ private:
     Complejidad de tiempo: O(log n)
     Complejidad de espacio: O(1)
     Peor de los casos:
-    Complejidad de tiempo: O(h)
+    Complejidad de tiempo: O(n)
     Complejidad de espacio: O(1) 
     */
     void biselar(NodoPtr nodo) {
@@ -341,7 +341,7 @@ private:
     Une las dos secciones del árbol dividido
     @Param: (NodoPtr s) parte izquierda del árbol , (NodoPtr t) parte derecha del árbol
     Salida: nada
-    Complejidad de tiempo: O(h)
+    Complejidad de tiempo: O(n)
     Complejidad de espacio: O(1)
     */
     NodoPtr une(NodoPtr s, NodoPtr t) {
@@ -366,7 +366,7 @@ private:
     Divide en dos secciones el árbol 
     @Param: (NodoPtr x) progenitor , (NodoPtr s) parte izquierda del árbol , (NodoPtr t) parte derecha del árbol
     Salida: nada
-    Complejidad de tiempo: O(h)
+    Complejidad de tiempo: O(n)
     Complejidad de espacio: O(1)
     */
     void divide(NodoPtr& x, NodoPtr& s, NodoPtr& t) {
@@ -402,7 +402,7 @@ public:
     Complejidad de tiempo: O(log n)
     Complejidad de espacio: O(1)
     Peor de los casos:
-    Complejidad de tiempo: O(h)
+    Complejidad de tiempo: O(n)
     Complejidad de espacio: O(1) 
     */
     bool find(long long k) {
@@ -465,7 +465,7 @@ public:
     Complejidad de tiempo: O(log n)
     Complejidad de espacio: O(1)
     Peor de los casos:
-    Complejidad de tiempo: O(h)
+    Complejidad de tiempo: O(n)
     Complejidad de espacio: O(1) 
     */
     void insert(long long key) {
@@ -481,6 +481,10 @@ public:
 
         while (x != nullptr) {
 
+            if (x->ip == key) {
+                cout << "Dato duplicado\n\n";
+            }
+        
             y = x;
 
             if (nodo->ip < x->ip) {
@@ -521,7 +525,7 @@ public:
     Complejidad de tiempo: O(log n)
     Complejidad de espacio: O(1)
     Peor de los casos:
-    Complejidad de tiempo: O(h)
+    Complejidad de tiempo: O(n)
     Complejidad de espacio: O(1) 
     */ 
     void del(long long ip) {
@@ -654,4 +658,7 @@ int main() {
     cout << "Imprimiendo datos de un árbol vacío: ";
     arbolvacio.print();
 
+    cout << "Insertando dato duplicado: ";
+    bst.insert(1);
+    
 }
