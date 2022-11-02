@@ -1,664 +1,616 @@
 /*
-Ozner Axel Leyva Mariscal
-A01742377
-3 de Noviembre del 2022
-En este código se implementará un splay tree y sus funcionalidades como insert, delete, find, print y size. 
-Referencias: http://algorithmtutor.com/ip-Structures/Tree/Splay-Trees/
+Programa que realiza operaciones básicas de un Árbol Biselado o Splay tree, 
+cumpliendo con las condiciones especiales de la estructura de datos.
+Hecho por Juan Carlos Hernández Ríos, A01740821
+Hecho el 01 de noviembre de 2022
 */
 
 #include <iostream>
 #include <locale.h>
-#include <stack>
-#include <string>
 #include <vector>
-using namespace std;
 
-class Nodo {
-public:
-
-    Nodo(long long valor ) {
-        accesos = 0;
-        ip = valor;
-        progenitore = NULL;
-        izquierdo = NULL;
-        derecho = NULL;
+/*
+Entidad básica de las estructuras de datos. Es especial para los 
+árboles biselados, debido a que están conectadas a nodos padre e hijos 
+izquierdo y derecho, así como contiene el número de veces que se accedió al nodo. 
+Puede contener solamente enteros.
+*/
+class Node{
+  int access;
+  int data;
+  public:
+    Node* father; 
+    Node* left; 
+    Node* right;
+  
+    /* Constructor de un nodo. Los nodos padre e hijos son nulos. 
+    Param: Nada.
+    Return: Nada.
+    */
+    Node(){
+      access = 0;
+      father = nullptr;
+      left = nullptr;
+      right = nullptr;
     }
-
-    long long ip=0; 
-    int accesos = 0; 
-    Nodo* progenitore; 
-    Nodo* izquierdo; 
-    Nodo* derecho; 
-
+  
+    /* Destructor de un nodo.
+    Param: Nada.
+    Return: Nada.
+    */
+    ~Node(){
+      father = nullptr;
+      right = nullptr;
+      left = nullptr;
+    }
+  
+    /* Establece el dato del nodo.
+    Param: (int newData) nuevo dato del nodo.
+    Return: Nada.
+    */
+    void setData(int newData){
+      data = newData;
+    }
+  
+    /* Aumenta el número de acceso del nodo
+    Param: Nada.
+    Return: Nada.
+    */
+    void incrementAccess(){
+      access++;
+    }
+  
+    /* Regresa el dato del nodo.
+    Param: Nada.
+    Return: int dato del nodo.
+    */
+    int getData(){
+      return data;
+    }
+  
+    /* Regresa el número de accesos del nodo
+    Param: Nada.
+    Return:int Número de accesos del nodo.
+    */
+    int getAccess(){
+      return access;
+    }
 };
 
-typedef Nodo* NodoPtr;
-class ArbolBiselado {
-private:
+typedef Node* NodePtr;
 
-    NodoPtr raiz;
-    int s = 0;
-
-    /*
-    Encuentra un dato del Splay Tree
-    @Param: (NodoPtr nodo) nodo a partir de donde se quiere buscar, (long long ip) dato que se desea buscar en el Splay Tree  
-    Salida: (NodoPtr x) nodo buscado
-    Mejor de los casos:
-    Complejidad de tiempo: O(log n)
-    Complejidad de espacio: O(log n) 
-    Peor de los casos:
-    Complejidad de tiempo: O(n)
-    Complejidad de espacio: O(n) 
-    */
-    NodoPtr find(NodoPtr nodo, long long ip) {
-
-        if (nodo == nullptr || ip == nodo->ip) {
-            return nodo;
-        }
-
-        if (ip < nodo->ip) {
-            return find(nodo->izquierdo, ip);
-        }
-
-        return find(nodo->derecho, ip);
-
-    }
+/*
+Base del Árbol Biselado (Splay Tree). Contiene las operaciones fundamentales 
+de un Splay Tree.
+*/
+class SplayTree{
+  private:
+    NodePtr root;
+    int amount = 0;
 
     /*
-    Elimina un dato del Splay Tree
-    @Param: (long long ip) dato que se desea borrar del Splay Tree , (NodoPtr nodo) nodo raíz del árbol
-    Salida: nada
-    Mejor de los casos:
-    Complejidad de tiempo: O(log n)
-    Complejidad de espacio: O(1)
-    Peor de los casos:
-    Complejidad de tiempo: O(n)
-    Complejidad de espacio: O(1) 
-    */
-    void del(NodoPtr nodo, long long ip) {
-
-        if (!this->raiz) {
-            cout << "El árbol está vacío\n\n";
-        }
-
-        else {
-
-            NodoPtr eliminado = nullptr;
-            NodoPtr t, s;
-
-            while (nodo != nullptr) {
-
-                if (nodo->ip == ip) {
-                    eliminado = nodo;
-                }
-
-                if (nodo->ip <= ip) {
-                    nodo = nodo->derecho;
-                }
-
-                else {
-                    nodo = nodo->izquierdo;
-                }
-
-            }
-
-            if (eliminado == nullptr) {
-                cout << "No se encontró la IP\n" << endl;
-                return;
-            }
-
-            divide(eliminado, s, t);
-
-            if (s->izquierdo) { // elimina el nodo
-                s->izquierdo->progenitore = nullptr;
-            }
-
-            //une los dos subárboles
-            raiz = une(s->izquierdo, t);
-
-            //libera memoria
-            delete(s);
-            s = nullptr;
-
-        }
-
-    }
-
-    /*
-    Imprime la ip del nodo 
-    @Param: (long long value) valor del nodo que se desea imprimir 
-    Salida: nada
-    Complejidad de tiempo: O(n)
-    Complejidad de espacio: O(1)
-    */
-    void imprimeIp(long long value) {
-
-        string valorAImprimir = "";
-        int contador = 0;
-        stack<int>*s = new stack<int>();
-
-        while (value > 0) {
-            s->push(value % 256);
-            value = value / 256;
-            contador++;
-        }
-
-        int contador2 = contador;
-
-        while (contador < 4) {
-            cout << "0.";
-            contador++;
-        }
-
-        while (!s->empty() ){
-
-            cout << s->top();
-
-            if (contador2 > 1) {
-                cout << ".";
-            }
-
-            s->pop();
-            contador2--;
-
-        }
-        
-        cout << "  ";
-
-    }
-
-    /*
-    Imprime una simulación de un árbol
-    @Param: (NodoPtr raiz) nodo raíz, (string relleno) caracteres especiales para la estructura, (bool ultimo) bandera para identificar el último elemento 
-    Salida: nada
+    Función ayudante de la función principal para encontrar un nodo en el árbol. 
+    Param: (NodePtr current) Nodo actual del recorrido del árbol. 
+    (int data) Información del nodo a buscar.
+    Return: NodePtr Nodo regresado por el árbol para recorrer la estructura del Splay Tree.
+    Caso promedio:
+    Complejidad de tiempo: O(logn)
+    Complejidad de espacio: O(logn)
+    Peor caso:
     Complejidad de tiempo: O(n)
     Complejidad de espacio: O(n)
     */
-    void imprime(NodoPtr raiz, string rellleno, bool ultimo) {
-
-        if (raiz != nullptr) {
-
-            cout << rellleno;
-
-            if (ultimo) {
-                cout << "└────";
-                rellleno += "     ";
-            }
-
-            else {
-                cout << "├────";
-                rellleno += "|    ";
-
-            }
-
-            imprimeIp(raiz->ip);
-            cout <<  "," << raiz->accesos << endl;
-            imprime(raiz->izquierdo, rellleno, false);
-            imprime(raiz->derecho, rellleno, true);
-
-        }
-
+    NodePtr find(NodePtr current, int data){
+      if(current == nullptr || data == current->getData()){
+        return current;
+      }
+    
+      if(data < current->getData()){
+        return find(current->left, data);
+      }
+    
+      return find(current->right, data);
     }
 
     /*
-    Rota los elemntos del árbol hacia la izquierda 
-    @Param: (NodoPtr nodo) nodo progenitor del cual se va a rotar 
-    Salida: nada
-    Complejidad de tiempo: O(1)
-    Complejidad de espacio: O(1)
-    */
-    void rotarIzquierda(NodoPtr nodo) {
-
-        NodoPtr y = nodo->derecho;
-        nodo->derecho = y->izquierdo;
-
-        if (y->izquierdo != nullptr) {
-            y->izquierdo->progenitore = nodo;
-        }
-
-        y->progenitore = nodo->progenitore;
-
-        if (nodo->progenitore == nullptr) {
-            this->raiz = y;
-        }
-
-        else if (nodo == nodo->progenitore->izquierdo) {
-            nodo->progenitore->izquierdo = y;
-        }
-
-        else {
-            nodo->progenitore->derecho = y;
-        }
-
-        y->izquierdo = nodo;
-        nodo->progenitore = y;
-
-    }
-
-    /*
-    Rota los elemntos del árbol hacia la derecha 
-    @Param: (NodoPtr nodo) nodo progenitor del cual se va a rotar 
-    Salida: nada
-    Complejidad de tiempo: O(1)
-    Complejidad de espacio: O(1)
-    */
-    void rotarDerecha(NodoPtr nodo) {
-
-        NodoPtr y = nodo->izquierdo;
-        //y es igual al hijo izquierdo
-
-        nodo->izquierdo = y->derecho;
-        //l izquierdo del nodo rotado apunta al derecho del hijo izquierdo, balanceo
-
-        if (y->derecho != nullptr) {
-            y->derecho->progenitore = nodo;
-        }
-        // si se hizo el balanceo el progenitor es el nuevo padre
-
-        y->progenitore = nodo->progenitore;
-        // si es raiz actualizar raíz
-
-        if (nodo->progenitore == nullptr) {
-            this->raiz = y;
-        }
-
-        else if (nodo == nodo->progenitore->derecho) {
-            // el hijo derecho del padre del nodo es y
-            nodo->progenitore->derecho = y;
-        }
-
-        else {
-            //el  hijo izquierdo del padre del nodo es y
-            nodo->progenitore->izquierdo = y;
-        }
-
-        // establece lado derecho
-        y->derecho = nodo;
-        // establece padre
-
-        nodo->progenitore = y;
-
-    }
-
-    /*
-    Hace el biselado en el árbol
-    @Param: (NodoPtr nodo) nodo progenitor del cual se va a rotar para el biselado
-    Salida: nada
-    Mejor de los casos:
-    Complejidad de tiempo: O(log n)
-    Complejidad de espacio: O(1)
-    Peor de los casos:
-    Complejidad de tiempo: O(n)
-    Complejidad de espacio: O(1) 
-    */
-    void biselar(NodoPtr nodo) {
-
-        while (nodo->progenitore) {
-
-            if (!nodo->progenitore->progenitore) {
-
-                if (nodo == nodo->progenitore->izquierdo) {
-                    // zig
-                    rotarDerecha(nodo->progenitore);
-                }
-
-                else {
-                    // zag 
-                    rotarIzquierda(nodo->progenitore);
-                }
-
-            }
-
-            else if (nodo == nodo->progenitore->izquierdo && nodo->progenitore == nodo->progenitore->progenitore->izquierdo) {
-                // zig-zig 
-                rotarDerecha(nodo->progenitore->progenitore);
-                rotarDerecha(nodo->progenitore);
-            }
-
-            else if (nodo == nodo->progenitore->derecho && nodo->progenitore == nodo->progenitore->progenitore->derecho) {
-                // zag-zag
-                rotarIzquierda(nodo->progenitore->progenitore);
-                rotarIzquierda(nodo->progenitore);
-            }
-
-            else if (nodo == nodo->progenitore->derecho && nodo->progenitore == nodo->progenitore->progenitore->izquierdo) {
-                // zig-zag 
-                rotarIzquierda(nodo->progenitore);
-                rotarDerecha(nodo->progenitore);
-            }
-
-            else {
-                // zag-zig 
-                rotarDerecha(nodo->progenitore);
-                rotarIzquierda(nodo->progenitore);
-            }
-
-        }
-
-    }
-
-    /*
-    Une las dos secciones del árbol dividido
-    @Param: (NodoPtr s) parte izquierda del árbol , (NodoPtr t) parte derecha del árbol
-    Salida: nada
+    Función ayudante de la función principal del para eliminar un nodo del árbol.
+    Param: (NodePtr current) Nodo actual del recorrrido del árbol. 
+    (int data) Información del nodo a buscar.
+    Return: Nada.
     Complejidad de tiempo: O(n)
     Complejidad de espacio: O(1)
     */
-    NodoPtr une(NodoPtr s, NodoPtr t) {
-
-        if (!s) {
-            return t;
+    void del(NodePtr current, int data){
+      NodePtr erased = nullptr;
+      NodePtr t, s;
+      while(current != nullptr){
+        if(current->getData() == data){
+          erased = current;
+          break;
         }
 
-        if (!t) {
-            return s;
+        if(current->getData() < data){
+          current = current->right;
         }
+          
+        else{
+          current = current->left;
+        }
+      }
 
-        NodoPtr x = maximo(s);
-        biselar(x);
-        x->derecho = t;
-        t->progenitore = x;
-        return x;
-
+      if(erased == nullptr){
+        std::cout << "No se encontró el dato." << std::endl;
+        return;
+      }
+    
+      divide(erased, s, t); 
+      if(s->left){ // elimina el nodo
+        s->left->father = nullptr;
+      }
+      
+      //une los dos subárboles
+      root = join(s->left, t);
+      //libera memoria
+      delete s;
+      amount--;
     }
-
-    /*
-    Divide en dos secciones el árbol 
-    @Param: (NodoPtr x) progenitor , (NodoPtr s) parte izquierda del árbol , (NodoPtr t) parte derecha del árbol
-    Salida: nada
-    Complejidad de tiempo: O(n)
-    Complejidad de espacio: O(1)
-    */
-    void divide(NodoPtr& x, NodoPtr& s, NodoPtr& t) {
-
-        biselar(x);
-
-        if (x->derecho) {
-            t = x->derecho;
-            t->progenitore = nullptr;
-        }
-
-        else {
-            t = nullptr;
-        }
-
-        s = x;
-        s->derecho = nullptr;
-        x = nullptr;
-
-    }
-
-public:
-
-    ArbolBiselado() {
-        raiz = nullptr;
-    }
-
-    /*
-    Encuentra un dato del Splay Tree
-    @Param: (long long k) dato que se desea buscar en el Splay Tree  
-    Salida: (bool) valor que indica si se encontró el dato en el árbol, true si se encontra, false si no se encuentra    
-    Mejor de los casos:
-    Complejidad de tiempo: O(log n)
-    Complejidad de espacio: O(1)
-    Peor de los casos:
-    Complejidad de tiempo: O(n)
-    Complejidad de espacio: O(1) 
-    */
-    bool find(long long k) {
-
-        if (!this->raiz) {
-            cout << "El árbol está vacío\n\n";
-        }
-
-        NodoPtr x = find(this->raiz, k);
-
-        if (x) {
-            x->accesos++;
-            biselar(x);
-            return true;
-        }
-
-        return false; 
-        
-    }
-
-    /*
-    Retorna el mínimo nodo del árbol
-    @Param: (NodoPtr nodo) nodo a partir del cual se va a empezar el recorrido  
-    Salida: (NodoPtr nodo) nodo minimo
-    Complejidad de tiempo: O(n)
-    Complejidad de espacio: O(1) 
-    */
-    NodoPtr minimo(NodoPtr nodo) {
-
-        while (nodo->izquierdo != nullptr) {
-            nodo = nodo->izquierdo;
-        }
-
-        return nodo;
-
-    }
-
-    /*
-    Retorna el máximo nodo del árbol
-    @Param: (NodoPtr nodo) nodo a partir del cual se va a empezar el recorrido  
-    Salida: (NodoPtr nodo) nodo máximo
-    Complejidad de tiempo: O(n)
-    Complejidad de espacio: O(1) 
-    */
-    NodoPtr maximo(NodoPtr nodo) {
-
-        while (nodo->derecho != nullptr) {
-            nodo = nodo->derecho;
-        }
-
-        return nodo;
-
-    }
-
-    /*
-    Agrega un dato al Splay Tree
-    @Param: (long long key) valor que se desea agregar al Splay Tree  
-    Salida: nada
-    Mejor de los casos:
-    Complejidad de tiempo: O(log n)
-    Complejidad de espacio: O(1)
-    Peor de los casos:
-    Complejidad de tiempo: O(n)
-    Complejidad de espacio: O(1) 
-    */
-    void insert(long long key) {
-
-        s++;
-        NodoPtr nodo = new Nodo(key);
-        nodo->progenitore = nullptr;
-        nodo->izquierdo = nullptr;
-        nodo->derecho = nullptr;
-        nodo->ip = key;
-        NodoPtr y = nullptr;
-        NodoPtr x = this->raiz;
-
-        while (x != nullptr) {
-
-            if (x->ip == key) {
-                cout << "Dato duplicado\n\n";
-            }
-        
-            y = x;
-
-            if (nodo->ip < x->ip) {
-                x = x->izquierdo;
-            }
-
-            else {
-                x = x->derecho;
-            }
-
-        }
-
-        // si  nunca se asignó y  AB vacío
-        nodo->progenitore = y;
-        
-        if (y == nullptr) {
-            raiz = nodo;
-        }// Si es menor el valor a insertar es hijo izquierdo
-
-        else if (nodo->ip < y->ip) {
-            y->izquierdo = nodo;
-        }// Si es mayor el valor a insertar es hijo derecho
-
-        else {
-            y->derecho = nodo;
-        }
-
-        //Biselar el nodo hasta la raíz
-        biselar(nodo);
-
-    }
-
-    /*
-    Elimina un dato del Splay Tree
-    @Param: (long long ip) dato que se desea borrar del Splay Tree  
-    Salida: nada
-    Mejor de los casos:
-    Complejidad de tiempo: O(log n)
-    Complejidad de espacio: O(1)
-    Peor de los casos:
-    Complejidad de tiempo: O(n)
-    Complejidad de espacio: O(1) 
-    */ 
-    void del(long long ip) {
-        s--;
-        del(this->raiz, ip);
-    }
-
-    /*
-    Imprime una simulación de un árbol
-    @Param: nada
-    Salida: nada
-    Complejidad de tiempo: O(n)
-    Complejidad de espacio: O(1)
-    */
-    void imprimeArbol() {
-        imprime(this->raiz, "", true);
-    }
-
-    /*
-    Imprime los datos del árbol en inorder  
-    @Param: (Node<T>* r) raíz del arbol a imprimir    
-    Salida: nada
+  
+    /* 
+    Función que imprime los datos de los nodos en orden.
+    Param: (NodePtr current) Nodo actual del recorrido por el árbol.
+    Return: Nada.
     Complejidad de tiempo: O(n) 
-    Complejidad de espacio: O(n) 
+    Complejidad de espacio: O(n)
     */
-    void inorder(NodoPtr r){ 
-
-        if ( r != nullptr){ 
-            inorder (r->izquierdo);
-            imprimeIp(r->ip);
-            inorder (r->derecho);
-        }
-
+    void inOrder(NodePtr current){
+      if(current != nullptr && root != nullptr){
+        inOrder(current->left);
+        std::cout<< current->getData() << " ";
+        inOrder(current->right);
+      }
+        
+      else if(root == nullptr){
+        std::cout<<"Árbol vacío.";
+      }
     }
 
     /*
- 	Despliega en orden ascendentemente el contenido del Splay Tree.    
-    @Param: nada  
-    Salida: nada
+    Función ayudante para rotar a la izquierda los elementos de un árbol.
+    Param: (NodePtr node) Nodo a rotar.
+    Return: Nada.
+    Complejidad de tiempo: O(1)
+    Complejidad de espacio: O(1)
+    */
+    void leftRotation(NodePtr node){
+      NodePtr y = node->right;
+      node->right = y->left;
+      
+      if(y->left != nullptr){
+          y->left->father = node;
+      }
+    
+      y->father = node->father;
+      
+      if(node->father == nullptr){
+          root = y;
+      }
+        
+      else if(node == node->father->left){
+          node->father->left = y;
+      }
+        
+      else{
+          node->father->right = y;
+      }
+      
+      y->left = node;
+      node->father = y;
+    }
+
+    /*
+    Función ayudante para rotar a la derecha los elementos de un árbol.
+    Param: (NodePtr node) Nodo a rotar.
+    Return: Nada.
+    Complejidad de tiempo: O(1)
+    Complejidad de espacio: O(1)
+    */
+    void rightRotation(NodePtr node){
+      NodePtr y = node->left;
+      //y es igual al hijo izquierdo
+      node->left = y->right;
+      
+      //el izquierdo del nodo rotado apunta al derecho del hijo izquierdo, balanceo
+      if (y->right != nullptr){
+        y->right->father = node;
+      }
+      // si se hizo el balanceo el progenitor es el nuevo padre
+
+      y->father = node->father;
+      
+      // si es raiz actualizar raíz
+      if(node->father == nullptr){
+        root = y;
+      }
+        
+      else if(node == node->father->right){
+        // el hijo derecho del padre del nodo es y
+        node->father->right = y;
+      }
+        
+      else{
+        //el hijo izquierdo del padre del nodo es y
+        node->father->left = y;
+      }
+      
+      // establece lado derecho
+      y->right = node;
+    
+      // establece padre
+      node->father = y;
+    }
+
+    /*
+    Función para biselar el árbol. Realiza las rotaciones pertinentes de acuerdo
+    a la posición del nodo a biselar.
+    Param: (NodePtr current) Nodo a biselar.
+    Return: Nada.
+    Caso promedio:
+    Complejidad de tiempo: O(logn)
+    Complejidad de espacio: O(1)
+    Peor caso:
     Complejidad de tiempo: O(n)
-    Complejidad de espacio: O(n) 
+    Complejidad de espacio: O(1)
+    */
+    void splay(NodePtr current){
+      while(current->father){
+        if(!current->father->father){
+          if(current == current->father->left){
+              // zig
+              rightRotation(current->father);
+          }
+            
+          else{
+              // zag 
+              leftRotation(current->father);
+          }
+        }
+          
+        else if(current == current->father->left && current->father == current->father->father->left){
+            // zig-zig 
+            rightRotation(current->father->father);
+            rightRotation(current->father);
+        }
+          
+        else if(current == current->father->right && current->father == current->father->father->right){
+            // zag-zag
+            leftRotation(current->father->father);
+            leftRotation(current->father);
+        }
+          
+        else if(current == current->father->right && current->father == current->father->father->left){
+            // zig-zag 
+            leftRotation(current->father);
+            rightRotation(current->father);
+        }
+          
+        else{
+            // zag-zig 
+            rightRotation(current->father);
+            leftRotation(current->father);
+        }
+      }
+    }
+
+    /*
+    Función para unir dos subárboles separados.
+    Param: (NodePtr s) Subárbol izquierdo. (NodePtr t) Subárbol derecho.
+    Return: NodePtr Nodo raíz.
+    Complejidad de tiempo: O(n)
+    Complejidad de espacio: O(1)
+    */
+    NodePtr join(NodePtr s, NodePtr t) {
+      if (!s) {
+        return t;
+      }
+
+      if (!t) {
+        return s;
+      }
+      
+      NodePtr x = max(s);
+      splay(x);
+      x->right = t;
+      t->father = x;
+      return x;
+    }
+
+    /*
+    Función para separar un árbol en dos subárboles.
+    Param: (NodePtr& x) Dirección del nodo pivote (NodePtr& s) Dirección del subárbol izquierdo. (NodePtr& t) Dirección del subárbol derecho.
+    Return: NodePtr Nodo raíz.
+    Complejidad de tiempo: O(n)
+    Complejidad de espacio: O(1)
+    */
+    void divide(NodePtr& x, NodePtr& s, NodePtr& t) {
+      splay(x);
+      
+      if(x->right){
+        t = x->right;
+        t->father = nullptr;
+      }
+        
+      else{
+        t = nullptr;
+      }
+      
+      s = x;
+      s->right = nullptr;
+      x = nullptr;
+    }
+
+  public:
+
+    /*
+    Constructor del árbol biselado. 
+    */
+    SplayTree(){
+      root = nullptr;
+    }
+
+    /*
+    Función para saber si el nodo con el dato buscado se encuentra en el árbol, así como
+    biselar el nodo buscado.
+    Param: (int data) Dato del nodo buscado.
+    Return: bool Comprabación si se encontró el nodo o no.
+    Caso promedio:
+    Complejidad de tiempo: O(logn)
+    Complejidad de espacio: O(logn)
+    Peor caso:
+    Complejidad de tiempo: O(n)
+    Complejidad de espacio: O(n)
+    */
+    bool find(int data){
+      if(root != nullptr){
+        NodePtr x = find(root, data);
+      
+        if(x){
+          x->incrementAccess();
+          splay(x);
+          return true;
+        }
+      
+        return false; 
+      }
+
+      else{
+        std::cout<<"Árbol vacío."<<std::endl<<std::endl;
+        return false;
+      }
+    }
+
+    /*
+    Función para encontrar el mínimo de un árbol.
+    Param: (NodePtr current) Nodo actual del recorrido por el árbol.
+    Return: Nada.
+    Complejidad de tiempo: O(n)
+    Complejidad de espacio: O(1)
+    */
+    NodePtr min(NodePtr current){
+      while(current->left != nullptr){
+        current = current->left;
+      }
+    
+      return current;
+    }
+
+    /*
+    Función para encontrar el máximo de un árbol.
+    Param: (NodePtr current) Nodo actual del recorrido por el árbol.
+    Return: Nada.
+    Complejidad de tiempo: O(n)
+    Complejidad de espacio: O(1)
+    */
+    NodePtr max(NodePtr current){
+      while(current->right != nullptr){
+        current = current->right;
+      }
+      
+      return current;
+    }
+
+    /*
+    Función para insertar un nodo en el árbol.
+    Param: (int data) Dato del nodo a insertar.
+    Return: Nada.
+    Caso promedio:
+    Complejidad de tiempo: O(logn)
+    Complejidad de espacio: O(1)
+    Peor caso:
+    Complejidad de tiempo: O(n)
+    Complejidad de espacio: O(1)
+    */
+    void insert(int data) {   
+      NodePtr previous = nullptr;
+      NodePtr current = root;
+
+      while(current != nullptr) {
+        previous = current;
+
+        if(current->getData() == data) {
+          std::cout<<"Dato duplicado. Intente con otro número."<<std::endl;
+          return;
+        }
+      
+        else if(data < current->getData()) {
+            current = current->left;
+        }
+          
+        else{
+            current = current->right;
+        }
+      }
+
+      NodePtr newNode = new Node();
+      newNode->setData(data);
+      
+      // si nunca se asignó y AB vacío
+      newNode->father = previous;
+      
+      if(previous == nullptr) {
+        root = newNode;
+      }// Si es menor, el valor a insertar es hijo izquierdo
+      
+      else if(newNode->getData() < previous->getData()) {
+        previous->left = newNode;
+      }// Si es mayor, el valor a insertar es hijo derecho
+        
+      else{
+        previous->right = newNode;
+      }
+      //Biselar el nodo hasta la raíz
+      splay(newNode);
+      amount++;
+    }
+
+    /* Función principal para eliminar un nodo del árbol.
+    Param: (int data) Dato del nodo a eliminar.
+    Return: Nada.  
+    Complejidad de tiempo: O(n)
+    Complejidad de espacio: O(1)
+    */
+    void del(int data) {
+      del(root, data);
+    }
+
+    /*
+    Función principal para imprimir los datos de los nodos en orden ascendente.
+    Param: Nada.
+    Return: Nada. 
+    Complejidad de tiempo: O(n)
+    Complejidad de espacio: O(n)
     */
     void print() {
+      if(root != nullptr) {
+        inOrder(root); 
+      }
 
-        if (!this->raiz) {
-            cout << "El árbol está vacío\n\n";
-        }
-
-        else {
-            inorder(this->raiz);
-            cout << "\n";
-        }
-
+      else{
+        std::cout<<"Árbol vacío."<<std::endl<<std::endl;
+      }
     }
 
     /*
-    Regresa la cantidad de datos que tiene el Splay Tree.
-    @Param: nada  
-    Salida: (int s) Un valor que represena la cantidad de datos el Splay Tree.
+    Función que regresa a cantidad de datos en el árbol.
+    Param: Nada.
+    Return: int cantidad de datos en el árbol.
     Complejidad de tiempo: O(1)
-    Complejidad de espacio: O(1) 
+    Complejidad de espacio: O(1)
     */
-    int size() {
-        return s;
+    int size(){
+      return amount;
     }
+
+    /*
+    Función ayudante para imprimir todo el árbol.
+    Param: (NodePtr current) Nodo actual del recorrido por el árbol.
+    (string indent) identación del árbol
+    (bool last) bandera que comprueba si el elemento es el último.
+    Return: Nada.
+    Complejidad de tiempo: O(n)
+    Complejidad de espacio: O(n)
+    */
+    void printHelper(NodePtr current, std::string indent, bool last) {
+      if (current != nullptr) {
+        std::cout<<indent;
+        if (last) {
+          std::cout<<"└────";
+          indent += "     ";
+         }
+        
+        else {
+          std::cout<<"├────";
+          indent += "|    ";
+        }
+      
+        std::cout<< current->getData() <<std::endl;
+      
+        printHelper(current->left, indent, false);
+        printHelper(current->right, indent, true);
+      }
+    }
+
+  /*
+  Función para imprimir todo el árbol de manera bonita.
+  Param: Nada.
+  Return: Nada.
+  Complejidad de tiempo: O(n)
+  Complejidad de espacio: O(n)
+  */
+  void prettyPrint() {
+    printHelper(root, "", true);
+  }
 
 };
 
 int main() {
+  setlocale(LC_ALL, "es_ES.UTF-8");
+  SplayTree* splayTree = new SplayTree();
+  std::vector<int> num = {5, 20, 32, 40, 12, 13, 8, 82, 1, 3, 80, 200, 157, 134, 6};
+  std::vector<int> search = {20, 20, 12, 13, 12, 8, 2, 7, 157, 3};
 
-    setlocale(LC_ALL, "es_ES.UTF-8");
-
-    ArbolBiselado bst;
-    ArbolBiselado arbolvacio;
-
-    vector <long long int> numbers = {333333333, 44, 64444447, 62222229, 4294967295, 2, 89, 41, 98, 1};
-
-    cout << "\nCreando árbol...\n";
-
-    for (int i = 0; i < numbers.size(); i++) {
-        bst.insert(numbers[i]);  
-    }
-
-    cout << "Elementos del árbol:\n";
-    bst.print();
-    cout << "El tamaño del árbol es de: ";
-    cout << bst.size() << "\n\n";
-
-    for (int i = 0; i < numbers.size()/2; i++) {
-        cout << "Verificando que se encuentre el elemento " + to_string(numbers[i+i]) + " en el árbol: ";
-
-        if ( bst.find(numbers[i+i]) ) {
-            cout << "Si se encontró el dato en el árbol\n\n";
-        }
-
-        else {
-            cout << "NO se encontró el dato en el árbol\n\n";
-        }
-
-    } 
-
-    cout << "Eliminando elementos del árbol...\n"; 
-
-    for (int i = 0; i < numbers.size()-1; i++) {
-        bst.del(numbers[i]);
-        bst.print();
-        cout << "El tamaño del árbol es de: ";
-        cout << bst.size() << "\n\n";
-    }
-
-    cout << "Eliminando un dato que no se encuentra en el árbol: ";
-    bst.del(43);
-
-    cout << "Buscando un dato que no se encuentra en el árbol: ";
-    bst.find(68);
-    if ( bst.find(numbers[68]) ) {
-        cout << "Si se encontró el dato en el árbol\n\n";
-    }
-
-    else {
-        cout << "NO se encontró el dato en el árbol\n\n";
-    }
-
-    cout << "Eliminando un dato en un árbol vacío: ";
-    arbolvacio.del(21);
-
-    cout << "Buscando un dato en un árbol vacío: ";
-    arbolvacio.find(15);
-
-    cout << "Imprimiendo datos de un árbol vacío: ";
-    arbolvacio.print();
-
-    cout << "Insertando dato duplicado: ";
-    bst.insert(1);
+  std::cout<<"Prueba de inserción de elementos y otras funciones del Splay Tree. "<<std::endl;
+  for(int i = 0; i < num.size(); i++){
+    splayTree->insert(num[i]);
+    splayTree->prettyPrint();
+    std::cout<<std::endl;
     
+    if(i % 3 == 0){
+      std::cout<<"El árbol contiene "<<splayTree->size()<<" elementos."<<std::endl<<std::endl;
+      std::cout<<"Impresión de elementos ascendentemente."<<std::endl;
+      splayTree->print();
+      std::cout<<std::endl<<std::endl;
+    }
+  }
+  
+  std::cout<<"Prueba de búsqueda de elementos."<<std::endl;
+  for(int i = 0; i < search.size(); i++){
+    if(splayTree->find(search[i])){
+      std::cout<<"Se encontró el dato "<<search[i]<<" en el árbol."<<std::endl;
+    }
+      
+    else{
+      std::cout<<"No se encontró el dato "<<search[i]<<" en el árbol."<<std::endl;
+    }
+    splayTree->prettyPrint();
+    std::cout<<std::endl<<std::endl;
+  }
+
+  std::cout<<"Prueba de eliminación de elementos."<<std::endl;
+  for(int i = 0; i < num.size(); i++){
+    splayTree->del(num[i]);
+    splayTree->prettyPrint();
+    std::cout<<std::endl<<std::endl;
+  }
+
+  std::cout<<"Prueba de errores y casos especiales."<<std::endl;
+  splayTree->del(10);
+  splayTree->find(10);
+  splayTree->insert(5);
+  splayTree->insert(5);
+  splayTree->del(5);
+  std::cout<<"El árbol contiene "<<splayTree->size()<<" elementos."<<std::endl<<std::endl;
+
+  std::cout<<"Probando la inserción de elementos después de borrar todos los elementos de un Splay Tree."<<std::endl;
+  splayTree->insert(50);
+  splayTree->insert(70);
+  splayTree->insert(1);
+  splayTree->insert(42);
+  splayTree->insert(20);
+  splayTree->insert(25);
+  splayTree->insert(80);
+  splayTree->insert(34);
+  splayTree->prettyPrint();
+  
+  return 0;
 }
+
