@@ -619,6 +619,8 @@ int main() {
 
         if ( bst.find(numbers[i+i]) ) {
             cout << "Si se encontró el dato en el árbol\n\n";
+            bst.imprimeArbol();
+            cout << "\n\n";
         }
 
         else {
