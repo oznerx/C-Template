@@ -45,4 +45,11 @@ int main()
     // Close the file
     MyFile.close();
 
+    ofstream MyFile2("just_one_log.txt");
+    for (int i = 0; i < 16807 ;i++) {
+        MyFile2 << "Sep 28 20:29:34 916.7.890.34:4016 Failed password for admin\n";
+    }
+
+    MyFile2.close();
+
 }
