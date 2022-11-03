@@ -830,6 +830,8 @@ public:
 		this->root = NULL;
 	}
 
+
+
 	/* 
 		Searches a node with a specific target data into the tree, and then puts it
 		at the top (using splay)
@@ -840,29 +842,37 @@ public:
 		Param: target data of type T to be searched
 		Return: returns true if found in the tree, or false otherwise
 	*/
-	
-	bool find(T targetData) {
-		SplayBSTNode<T>* current = root;
-	
-		// Do a standard BST search
-		while(current != NULL && current->data != targetData) {
-			if(targetData < current->data) {
-				current = current->left;
-			} else {
-				current = current->right;
-			}
-		}
-		
-		// We want to move the node to the top
-		if(current != NULL) {
-			this->splay(current);
-			current->readCount++;
-			
-			return true;
-		}
-		
-		return false;
-	}
+
+	SplayBSTNode<T>* find(SplayBSTNode<T>* nodo, T targetData) {
+
+        if (nodo == nullptr || targetData == nodo->data) {
+            return nodo;
+        }
+
+        if (targetData < nodo->data) {
+            return find(nodo->left, targetData);
+        }
+
+        return find(nodo->right, targetData);
+
+    }
+
+    bool find(T targetData) {
+
+        if (!this->root) {
+            cout << "El árbol está vacío\n\n";
+        }
+
+        SplayBSTNode<T>* x = find(this->root, targetData);
+
+        if (x) {
+            splay(x);
+            return true;
+        }
+
+        return false; 
+        
+    }
 
 	/* 
 		Inserts a node with a specific data into the tree, and then puts it
@@ -1040,25 +1050,36 @@ void printTreesInfo(BST<Ip> &bst, SplayTree<Ip> &splayTree) {
 	cout << "\n";
 }
 
+
+
 int main() {
-	clock_t start;
-	LogMessagesManager logMessagesManager;
+clock_t start;
+	LogMessagesManager logMessagesManager1;
+  	LogMessagesManager logMessagesManager2;
+  	LogMessagesManager logMessagesManager3;
+	LogMessagesManager logMessagesManager4;
+  	LogMessagesManager logMessagesManager5;
+	LogMessagesManager logMessagesManager6;
+
 
 	// Read all files
-	logMessagesManager.read("unordered_logs.txt");
-	vector<LogMessage> unorderedLogs = logMessagesManager.logMessages;
+	logMessagesManager1.read("unordered_logs.txt");
+	vector<LogMessage> unorderedLogs = logMessagesManager1.logMessages;
 
-	logMessagesManager.read("ordered_logs_asc.txt");
-	vector<LogMessage> orderedLogsAsc = logMessagesManager.logMessages;
+	logMessagesManager2.read("ordered_logs_asc.txt");
+	vector<LogMessage> orderedLogsAsc = logMessagesManager2.logMessages;
 
-	logMessagesManager.read("ordered_logs_desc.txt");
-	vector<LogMessage> orderedLogsDesc = logMessagesManager.logMessages;
+	logMessagesManager3.read("ordered_logs_desc.txt");
+	vector<LogMessage> orderedLogsDesc = logMessagesManager3.logMessages;
 
-	logMessagesManager.read("repeated_logs.txt");
-	vector<LogMessage> repeatedLogs = logMessagesManager.logMessages;
+	logMessagesManager4.read("repeated_logs.txt");
+	vector<LogMessage> repeatedLogs = logMessagesManager4.logMessages;
   
-  logMessagesManager.read("inversed_unordered_logs.txt");
-	vector<LogMessage> inversedUnorderedLogs = logMessagesManager.logMessages;
+  	logMessagesManager5.read("inversed_unordered_logs.txt");
+	vector<LogMessage> inversedUnorderedLogs = logMessagesManager5.logMessages;
+
+  	logMessagesManager6.read("one_repeated_log.txt");
+	vector<LogMessage> oneRepeatedLogs = logMessagesManager6.logMessages;
   
   	BST<Ip> bst;
   	SplayTree<Ip> splayTree1;
@@ -1066,18 +1087,21 @@ int main() {
   	SplayTree<Ip> splayTree3;
     SplayTree<Ip> splayTree4;
   	SplayTree<Ip> splayTree5;
+    SplayTree<Ip> splayTree6;
+
+	cout << "===============Creating BST/SPT====================" << "\n\n";
 
 	start = clock();
 	for(LogMessage logMessage : unorderedLogs) {
 		bst.create(logMessage.getIp());
 	}
-  	cout << "Creating / BST / unordered logs: " << getDuration(start) << "\n";
+  	cout << getDuration(start) << "\n";
 
   	start = clock();
 	for(LogMessage logMessage : unorderedLogs) {
 		splayTree1.insert(logMessage.getIp());
 	}
-  	cout << "Creating / Splay tree / unordered logs: " << getDuration(start) << "\n\n";
+  	cout << getDuration(start) << "\n\n";
 
 	// Creating more copies
 	for(LogMessage logMessage : unorderedLogs) {
@@ -1085,97 +1109,135 @@ int main() {
 		splayTree3.insert(logMessage.getIp());
 		splayTree4.insert(logMessage.getIp());
 		splayTree5.insert(logMessage.getIp());
+    	splayTree6.insert(logMessage.getIp());
 	}
 
-	// Unordered Logs
+
+
+	cout << "===============1-Unordered Logs BST/SPT==============" << "\n\n";
+	
 	printTreesInfo(bst, splayTree1);
 	
     start = clock();
 	for(LogMessage logMessage : unorderedLogs) {
 		bst.find(logMessage.getIp());
 	}
-  	cout << "1 - Searching / BST / unordered logs: " << getDuration(start) << "\n";
+  	cout << getDuration(start) << "\n";
 
     start = clock();
 	for(LogMessage logMessage : unorderedLogs) {
 		splayTree1.find(logMessage.getIp());
 	}
-  	cout << "1 - Searching / Splay tree / unordered logs: " << getDuration(start) << "\n\n";
+  	cout << getDuration(start) << "\n\n";
 	
 	printTreesInfo(bst, splayTree1);
-	cout << "===================================================" << "\n\n";
 
-	// Ordered Logs Ascending
+	cout << "=============2-Ordered Logs Asc BST/SPT=============" << "\n\n";
+
 	printTreesInfo(bst, splayTree2);
 	
     start = clock();
 	for(LogMessage logMessage : orderedLogsAsc) {
 		bst.find(logMessage.getIp());
 	}
-  	cout << "2 - Searching / BST / ordered logs asc: " << getDuration(start) << "\n";
+  	cout << getDuration(start) << "\n";
 
     start = clock();
 	for(LogMessage logMessage : orderedLogsAsc) {
 		splayTree2.find(logMessage.getIp());
 	}
-  	cout << "2 - Searching / Splay tree / ordered logs asc: " << getDuration(start) << "\n\n";
+  	cout << getDuration(start) << "\n\n";
 
 	printTreesInfo(bst, splayTree2);
-	cout << "===================================================" << "\n\n";
 	
-	// Ordered Logs Descending
+	cout << "=============3-Ordered Logs Desc BST/SPT=============" << "\n\n";
+	
 	printTreesInfo(bst, splayTree3);
 	
     start = clock();
 	for(LogMessage logMessage : orderedLogsDesc) {
 		bst.find(logMessage.getIp());
 	}
-  	cout << "3 - Searching / BST / ordered logs desc: " << getDuration(start) << "\n";
+  	cout << getDuration(start) << "\n";
 
     start = clock();
 	for(LogMessage logMessage : orderedLogsDesc) {
 		splayTree3.find(logMessage.getIp());
 	}
-  	cout << "3 - Searching / Splay tree / ordered logs desc: " << getDuration(start) << "\n\n";
+  	cout << getDuration(start) << "\n\n";
 
 	printTreesInfo(bst, splayTree3);
-	cout << "===================================================" << "\n\n";
 	
-	// Repeated Logs
+	cout << "===============4-Repeated Logs BST/SPT===============" << "\n\n";
+	
 	printTreesInfo(bst, splayTree4);
     
 	start = clock();
 	for(LogMessage logMessage : repeatedLogs) {
 		bst.find(logMessage.getIp());
 	}
-  	cout << "4 - Searching / BST / repeated logs: " << getDuration(start) << "\n";
+  	cout << getDuration(start) << "\n";
 
     start = clock();
 	for(LogMessage logMessage : repeatedLogs) {
 		splayTree4.find(logMessage.getIp());
 	}
-  	cout << "4 - Searching / Splay tree / repeated logs: " << getDuration(start) << "\n\n";
+  	cout << getDuration(start) << "\n\n";
 
 	printTreesInfo(bst, splayTree4);
-	cout << "===================================================" << "\n\n";
 	
-	// Inversed Logs
+	cout << "==========5-Inversed Unordered Logs BST/SPT==========" << "\n\n";
+	
 	printTreesInfo(bst, splayTree5);
     
 	start = clock();
-  for(LogMessage logMessage : inversedUnorderedLogs) {
+  	for(LogMessage logMessage : inversedUnorderedLogs) {
 		bst.find(logMessage.getIp());
 	}
-  	cout << "5 - Searching / BST / inversed unordered logs: " << getDuration(start) << "\n";
+  	cout << getDuration(start) << "\n";
   
     start = clock();
 	for(LogMessage logMessage : inversedUnorderedLogs) {
 		splayTree5.find(logMessage.getIp());
 	} 
-  	cout << "5 - Searching / Splay tree / inversed unordered logs: " << getDuration(start) << "\n\n";
+  	cout << getDuration(start) << "\n\n";
   
 	printTreesInfo(bst, splayTree5);
-	cout << "===================================================" << "\n\n";
+	
+	cout << "=============6-One Repeated Log BST/SPT==============" << "\n\n";
+
+	printTreesInfo(bst, splayTree6);
+    
+	int bstCount = 0;
+	int splayCount = 0;
+
+	start = clock();
+	
+  	for(LogMessage logMessage : oneRepeatedLogs) {
+		if (bst.find(logMessage.getIp())) {
+			bstCount++;
+		}
+	}
+
+
+
+
+	cout << "Bst len:" <<bstCount << "\n";
+  	cout << getDuration(start) << "\n";
+  
+    start = clock();
+	
+	for(LogMessage logMessage : oneRepeatedLogs) {
+		if (splayTree6.find(logMessage.getIp())) {
+			splayCount++;
+		}
+	} 
+	
+
+	cout <<  "Splay tree len:"<<splayCount << "\n";
+  	cout << getDuration(start) << "\n\n";
+  
+	printTreesInfo(bst, splayTree6);
 	
 	return 0;
 }
@@ -1196,4 +1258,6 @@ Rooster, H. (2018). C++ copy object. Stack Overflow. Retrieved from: https://sta
 Kostov, B. (2010). How to use clock() in C++. Stack Overflow. https://stackoverflow.com/questions/3220477/how-to-use-clock-in-c
 
 Data structures: Binary Tree. (2014) mycodeschool. Youtube. Retrieved from: https://www.youtube.com/watch?v=H5JubkIy_p8
+
+Ways to copy a vector in C++ (2022). GeeksForGeeks. Retrieved from: https://www.geeksforgeeks.org/ways-copy-vector-c/
 */
