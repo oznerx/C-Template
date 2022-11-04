@@ -94,14 +94,14 @@ class BST {
 				while(current != NULL) {
 					father = current;
 					
-					if(value < current->data) {
+					if(value <= current->data) {
 						current = current->left;
 					} else {
 						current = current->right;
 					}
 				}
 				
-				if(value < father->data) {
+				if(value <= father->data) {
 					father->left = newBSTNode;
 				} else {
 					father->right = newBSTNode;
@@ -214,7 +214,7 @@ class BST {
 			Searches a node with a specific target data into the tree
 	
 			Time complexity: O(h) where h is the height of the tree
-			Space complexity: O(h) where h is the height of the tree
+			Space complexity: O(1)
 			
 			Param: target data of type T to be searched
 			Return: returns true if found in the tree, or false otherwise
@@ -478,6 +478,10 @@ class LogMessagesManager {
 			inputFile.close();
 		}
 
+		void clear() {
+			logMessages.clear();
+		}
+
     	void sort() {
 			quickSort(0, logMessages.size() - 1);
 		}
@@ -501,21 +505,21 @@ class LogMessagesManager {
 			outputFile.close();
 		}
 
-    /*
+    	/*
 			Comparison of the IP's of each of the messages in the log.
 			Putting the data in a vector called results and returning it full of data.
-
+	
 			Time complexity: O(n)
 			Space complexity: O(n)
-		    
+			
 			Param: startIp and endIp delimiters.
 			Return: a vector "results" containing the IP's which are between the given range
 		*/
 		vector<LogMessage> getLogMessagesBetweenIp(Ip startIp, Ip endIp) {
 			vector<LogMessage> results;
-
+	
 			int start = getFirstIndexOfIp(startIp);
-
+	
 			for(int i=start; i < logMessages.size() && logMessages[i].getIp() <= endIp; i++) {
 				results.push_back(logMessages[i]);
 			}
@@ -830,8 +834,6 @@ public:
 		this->root = NULL;
 	}
 
-
-
 	/* 
 		Searches a node with a specific target data into the tree, and then puts it
 		at the top (using splay)
@@ -842,37 +844,29 @@ public:
 		Param: target data of type T to be searched
 		Return: returns true if found in the tree, or false otherwise
 	*/
-
-	SplayBSTNode<T>* find(SplayBSTNode<T>* nodo, T targetData) {
-
-        if (nodo == nullptr || targetData == nodo->data) {
-            return nodo;
-        }
-
-        if (targetData < nodo->data) {
-            return find(nodo->left, targetData);
-        }
-
-        return find(nodo->right, targetData);
-
-    }
-
-    bool find(T targetData) {
-
-        if (!this->root) {
-            cout << "El árbol está vacío\n\n";
-        }
-
-        SplayBSTNode<T>* x = find(this->root, targetData);
-
-        if (x) {
-            splay(x);
-            return true;
-        }
-
-        return false; 
-        
-    }
+	
+	bool find(T targetData) {
+		SplayBSTNode<T>* current = root;
+	
+		// Do a standard BST search
+		while(current != NULL && current->data != targetData) {
+			if(targetData < current->data) {
+				current = current->left;
+			} else {
+				current = current->right;
+			}
+		}
+		
+		// We want to move the node to the top
+		if(current != NULL) {
+			this->splay(current);
+			current->readCount++;
+			
+			return true;
+		}
+		
+		return false;
+	}
 
 	/* 
 		Inserts a node with a specific data into the tree, and then puts it
@@ -1050,36 +1044,34 @@ void printTreesInfo(BST<Ip> &bst, SplayTree<Ip> &splayTree) {
 	cout << "\n";
 }
 
-
-
 int main() {
-clock_t start;
-	LogMessagesManager logMessagesManager1;
-  	LogMessagesManager logMessagesManager2;
-  	LogMessagesManager logMessagesManager3;
-	LogMessagesManager logMessagesManager4;
-  	LogMessagesManager logMessagesManager5;
-	LogMessagesManager logMessagesManager6;
-
+	clock_t start;
+	LogMessagesManager logMessagesManager;
 
 	// Read all files
-	logMessagesManager1.read("unordered_logs.txt");
-	vector<LogMessage> unorderedLogs = logMessagesManager1.logMessages;
+	logMessagesManager.read("unordered_logs.txt");
+	vector<LogMessage> unorderedLogs = logMessagesManager.logMessages;
+	logMessagesManager.clear();
 
-	logMessagesManager2.read("ordered_logs_asc.txt");
-	vector<LogMessage> orderedLogsAsc = logMessagesManager2.logMessages;
+	logMessagesManager.read("ordered_logs_asc.txt");
+	vector<LogMessage> orderedLogsAsc = logMessagesManager.logMessages;
+	logMessagesManager.clear();
 
-	logMessagesManager3.read("ordered_logs_desc.txt");
-	vector<LogMessage> orderedLogsDesc = logMessagesManager3.logMessages;
+	logMessagesManager.read("ordered_logs_desc.txt");
+	vector<LogMessage> orderedLogsDesc = logMessagesManager.logMessages;
+	logMessagesManager.clear();
 
-	logMessagesManager4.read("repeated_logs.txt");
-	vector<LogMessage> repeatedLogs = logMessagesManager4.logMessages;
+	logMessagesManager.read("repeated_logs.txt");
+	vector<LogMessage> repeatedLogs = logMessagesManager.logMessages;
+	logMessagesManager.clear();
   
-  	logMessagesManager5.read("inversed_unordered_logs.txt");
-	vector<LogMessage> inversedUnorderedLogs = logMessagesManager5.logMessages;
+  	logMessagesManager.read("inversed_unordered_logs.txt");
+	vector<LogMessage> inversedUnorderedLogs = logMessagesManager.logMessages;
+	logMessagesManager.clear();
 
-  	logMessagesManager6.read("one_repeated_log.txt");
-	vector<LogMessage> oneRepeatedLogs = logMessagesManager6.logMessages;
+  	logMessagesManager.read("one_repeated_log.txt");
+	vector<LogMessage> oneRepeatedLogs = logMessagesManager.logMessages;
+	logMessagesManager.clear();
   
   	BST<Ip> bst;
   	SplayTree<Ip> splayTree1;
@@ -1111,8 +1103,6 @@ clock_t start;
 		splayTree5.insert(logMessage.getIp());
     	splayTree6.insert(logMessage.getIp());
 	}
-
-
 
 	cout << "===============1-Unordered Logs BST/SPT==============" << "\n\n";
 	
@@ -1208,37 +1198,20 @@ clock_t start;
 
 	printTreesInfo(bst, splayTree6);
     
-	int bstCount = 0;
-	int splayCount = 0;
-
 	start = clock();
-	
   	for(LogMessage logMessage : oneRepeatedLogs) {
-		if (bst.find(logMessage.getIp())) {
-			bstCount++;
-		}
+		bst.find(logMessage.getIp());
 	}
-
-
-
-
-	cout << "Bst len:" <<bstCount << "\n";
   	cout << getDuration(start) << "\n";
   
     start = clock();
-	
 	for(LogMessage logMessage : oneRepeatedLogs) {
-		if (splayTree6.find(logMessage.getIp())) {
-			splayCount++;
-		}
+		splayTree6.find(logMessage.getIp());
 	} 
-	
-
-	cout <<  "Splay tree len:"<<splayCount << "\n";
   	cout << getDuration(start) << "\n\n";
   
 	printTreesInfo(bst, splayTree6);
-	
+  
 	return 0;
 }
 
@@ -1260,4 +1233,11 @@ Kostov, B. (2010). How to use clock() in C++. Stack Overflow. https://stackoverf
 Data structures: Binary Tree. (2014) mycodeschool. Youtube. Retrieved from: https://www.youtube.com/watch?v=H5JubkIy_p8
 
 Ways to copy a vector in C++ (2022). GeeksForGeeks. Retrieved from: https://www.geeksforgeeks.org/ways-copy-vector-c/
+
+López, E. (2022). Árbol Biselado. Canvas. Retrieved from: https://experiencia21.tec.mx/courses/307981/assignments/syllabus
+
+Chen, Z., Chen, Z. y Delis, A. (2006). An Inline Detection and Prevention Framework for Distributed Denial of Service Attacks. The Computer Journal, Oxford Univ. Press, 50(1), 7-40. https://www.alexdelis.eu/Publications/CompJ-05-0121-Camera.pdf
+
+Cloudflare. (2022). ¿Qué es un ataque DDoS? https://www.cloudflare.com/es-es/learning/ddos/what-is-a-ddos-attack/
+
 */
