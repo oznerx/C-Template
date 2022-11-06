@@ -12,33 +12,16 @@ private:
     std::map<int, std::list<int> > adjList;
     int numVertices;
     int numEdges;
+    int currentEdges;
 
     std::map<int, bool> visited;
-    
 
-public:
+        void loadMatrix(int n) {
 
-    Graph() {
-        bool** adjMatrix;
-        int numVertices;
-        std::vector<std::vector<int>> adjList;
-    }
-
-    ~Graph() {
-        for (int i = 0; i < numVertices; i++) {
-            delete[] adjMatrix[i];
-            delete[] adjMatrix;
-        }
-    }
-
-    void loadMatrix(int n) {
-
-        // Set the max num of vertices
-        this->numVertices = n;
-        adjMatrix = new bool*[n];
+        adjMatrix = new bool*[numVertices];
         
-        for (int i = 0; i < n; i++) {
-            adjMatrix[i] = new bool[n];
+        for (int i = 0; i < numVertices; i++) {
+            adjMatrix[i] = new bool[numVertices];
             for (int j = 0; j < n; j++)
             adjMatrix[i][j] = false;
         }
@@ -46,9 +29,6 @@ public:
     }
 
     void loadList(int n, int m ) {
-
-        this->numVertices = n;
-        this->numEdges = m;
 
         for (int i = 0; i < numVertices; i++) {
             std::list<int> temp;
@@ -107,8 +87,7 @@ public:
 
     }
 
-    void DFSUtil(int a)
-    {
+    void DFSUtil(int a){
 
         // Mark the current node as visited and print it
         visited[a] = true;
@@ -125,9 +104,57 @@ public:
         }
 
     }
+    
+
+public:
+
+    Graph() {
+        bool** adjMatrix;
+        int numVertices;
+        std::vector<std::vector<int>> adjList;
+        currentEdges = 0; 
+    }
+
+    ~Graph() {
+        for (int i = 0; i < numVertices; i++) {
+            delete[] adjMatrix[i];
+            delete[] adjMatrix;
+        }
+    }
+
+    void loadGraph(int n, int m ) {
+
+        this->numVertices = n;
+        this->numEdges = m;
+        loadList(numVertices, numEdges);
+        loadMatrix(numVertices);
+
+    }
+
+    void addEdge(int a, int b) {
+
+        if (currentEdges < numEdges) {
+            currentEdges++;
+            addEdgeToMatrix(a, b);
+            addEdgeToList(a, b);
+        }
+
+        else {
+            std::cout << "Numero de conexiones maximo alcanzado\n";
+            return;
+        }
+        
+    }
+
+    void print() {
+        std::cout << "\nLa matriz se creo con la siguiente estructura:\n";
+        printMatrix();
+        std::cout << "\nLa lista se creo con la siguiente estructura:\n";
+        printList();
+    }
 
     /*Imprima el Recorrido de DFS (Profundidad) a partir de nodo inicial.*/
-    void DFS(int a, int b) {
+    void DFS(int a) {
 
         /*Hacer DFS con la matriz*/
         
@@ -135,16 +162,24 @@ public:
         // traversal starting from all vertices one by one
         for (auto i : adjList) {
 
-            if (visited[i.first] == false) {
-                DFSUtil(i.first);
+            if (i.first < a) {
+                std::cout << "a\n";
+            }
+
+            else {
+
+                if (visited[i.first] == false) {
+                    DFSUtil(i.first);
+                }
+
             }
 
         }
 
         std::cout << "\n";
- 
-                
+            
     }
+
 
     /*Imprima el Recorrido de BFS (Anchura) a partir de nodo inicial.o.*/
     void BFS(int a, int b) {
@@ -162,26 +197,19 @@ public:
 
 int main()
 {
-    /*
+
     Graph *g = new Graph();
-    g->loadMatrix(6);
-    g->addEdgeToMatrix(1, 3);
-    g->addEdgeToMatrix(5, 2);
-    g->addEdgeToMatrix(3, 4);
-    g->addEdgeToMatrix(0, 4);
-    g->printMatrix();
-    */
+    g->loadGraph(10, 6);
 
+    g->addEdge(0, 1);
+    g->addEdge(0, 9);
+    g->addEdge(1, 2);
+    g->addEdge(2, 0);
+    g->addEdge(2, 3);
+    g->addEdge(9, 3);
 
-    Graph *g2 = new Graph();
-    g2->loadList(6, 3); // 6 nodos/vertices y 3 aristas 
-
-    g2->addEdgeToList(0, 3);
-    g2->addEdgeToList(5, 2);
-    g2->addEdgeToList(3, 4);
-    g2->addEdgeToList(3, 5);
+    g->print();
+    g->DFS(0);
     
-    g2->printList();
-    g2->DFS(0,6);
 
 }
