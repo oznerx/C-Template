@@ -118,10 +118,12 @@ public:
     }
 
     ~Graph() {
+
         for (int i = 0; i < numVertices; i++) {
             delete[] adjMatrix[i];
             delete[] adjMatrix;
         }
+
     }
 
     void loadGraph(int n, int m ) {
@@ -149,10 +151,12 @@ public:
     }
 
     void print() {
+
         std::cout << "\nLa matriz se creo con la siguiente estructura:\n";
         printMatrix();
         std::cout << "\nLa lista se creo con la siguiente estructura:\n";
         printList();
+
     }
 
     /*Imprima el Recorrido de DFS (Profundidad) a partir de nodo inicial.*/
@@ -203,8 +207,33 @@ public:
     void BFS(int a) {
         /*Hacer BFS con la lista*/
 
+        // Create a queue for BFS
+        std::list<int> queue;
+    
+        // Mark the current node as visited and enqueue it
+        visited[a] = true;
+        queue.push_back(a);
+    
+        while(!queue.empty())
+        {
+            // Dequeue a vertex from queue and print it
+            a = queue.front();
+            std::cout << a << " ";
+            queue.pop_front();
+    
+            // Get all adjacent vertices of the dequeued
+            // vertex s. If a adjacent has not been visited,
+            // then mark it visited and enqueue it
+            for (auto i: adjList[a]) {
 
+                if (!visited[i]) {
+                    visited[i] = true;
+                    queue.push_back(i);
+                }
 
+            }
+
+        }
 
     }
 
@@ -220,7 +249,7 @@ public:
 
 int main()
 {
-    /*
+    
     Graph *g = new Graph();
     g->loadGraph(6, 8);
 
@@ -238,11 +267,69 @@ int main()
     g->addEdge(4, 5);
 
     g->print();
+    std::cout << "\n";
     g->DFS(0);
+    std::cout << "\n";
+    g->BFS(0);
+    std::cout << "\n";
+
+    /*
+    //Goes like: 012354
+    Graph *g = new Graph();
+    g->loadGraph(6, 7);
+
+    g->addEdge(0, 1);
+
+    g->addEdge(1, 2);
+    g->addEdge(1, 3);
+
+    g->addEdge(2, 0);
+    g->addEdge(2, 5);
+
+    g->addEdge(3, 4);
+    
+    g->addEdge(4, 5);
+
+    g->print();
+    std::cout << "\n";
+    g->DFS(0);
+    std::cout << "\n";
+    g->BFS(0);
+    std::cout << "\n";
     */
-
     
+    /*
+    //Goes like: 0 9 7 11 10 8 6 3 1 12 5 2 4 
+    Graph *g = new Graph();
+    g->loadGraph(13, 15);
 
+    g->addEdge(0, 9);
+    g->addEdge(0, 7);
+    g->addEdge(0, 11);
+
+    g->addEdge(3, 2);
+    g->addEdge(3, 4);
+
+    g->addEdge(6, 5);
+
+    g->addEdge(7, 3);
+    g->addEdge(7, 6);
+    g->addEdge(7, 11);
+
+
+    g->addEdge(8, 12);
+    g->addEdge(8, 1);
+
+    g->addEdge(9, 8);
+    g->addEdge(9, 10);
+
+    g->addEdge(10, 1);
+
+    g->addEdge(12, 2);
+
+
+    g->print();
+    g->BFS(0);
+    */
     
-
 }
