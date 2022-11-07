@@ -90,20 +90,10 @@ private:
 
     }
 
-    void listDFS(int a){
+    void clearVisited() {
 
-        // Mark the current node as visited and print it
-        visited[a] = true;
-        std::cout << a << " ";
-    
-        // Recur for all the vertices adjacent to this vertex
-        std::list<int>::iterator i;
-        for (i = adjList[a].begin(); i != adjList[a].end(); ++i) {
-
-            if (!visited[*i]) {
-                listDFS(*i);
-            }
-                
+        for (int i = 0; i < visited.size() ;i++) {
+            visited[i] = false;
         }
 
     }
@@ -160,34 +150,26 @@ public:
     }
 
     /*Imprima el Recorrido de DFS (Profundidad) a partir de nodo inicial.*/
-    void listDFSH(int a) {
+    void listDFS(int a) {
 
-        /*Hacer DFS con la matriz*/
-        
-        // Call the recursive helper function to print DFS
-        // traversal starting from all vertices one by one
-        for (auto i : adjList) {
+        // Mark the current node as visited and print it
+        visited[a] = true;
+        std::cout << a << " ";
+    
+        // Recur for all the vertices adjacent to this vertex
+        std::list<int>::iterator i;
+        for (i = adjList[a].begin(); i != adjList[a].end(); ++i) {
 
-            if (i.first < a) {
-                std::cout << "a\n";
+            if (!visited[*i]) {
+                listDFS(*i);
             }
-
-            else {
-
-                if (visited[i.first] == false) {
-                    listDFS(i.first);
-                }
-
-            }
-
+                
         }
-
-        std::cout << "\n";
             
     }
 
     /*Imprima el Recorrido de DFS (Profundidad) a partir de nodo inicial.*/
-    void DFS(int a) {
+    void _DFS(int a) {
 
         visited[a] = true;
         std::cout << a << " ";
@@ -195,22 +177,24 @@ public:
         for (int i = a; i < sizeof(adjMatrix[a]); ++i) {
 
             if (adjMatrix[a][i] == true && (!visited[i])) {
-                DFS(i);
+                _DFS(i);
             }
 
         }
             
     }
 
+    void DFS(int a) {
+        clearVisited();
+        _DFS(a);
+    }
+
 
     /*Imprima el Recorrido de BFS (Anchura) a partir de nodo inicial.o.*/
     void BFS(int a) {
-        /*Hacer BFS con la lista*/
 
-        // Create a queue for BFS
+        clearVisited();
         std::list<int> queue;
-    
-        // Mark the current node as visited and enqueue it
         visited[a] = true;
         queue.push_back(a);
     
@@ -249,7 +233,7 @@ public:
 
 int main()
 {
-    
+
     Graph *g = new Graph();
     g->loadGraph(6, 8);
 
