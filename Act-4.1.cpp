@@ -191,7 +191,7 @@ public:
         }
 
         else {
-            std::cout << "Numero de conexiones maximo alcanzado\n";
+            std::cout << "Numero de conexiones máximo alcanzado\n";
             return;
         }
         
