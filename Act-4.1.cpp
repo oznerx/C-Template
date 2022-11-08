@@ -5,14 +5,19 @@
 #include <map>
 #include <list>
 
+/*
+Ozner Axel Leyva Mariscal
+A01742377
+9 de Noviembre del 2022
+En este código se implementará un grafo direccionado asi como algunas de sus funcionalidades como el recorrido por DFS y BFS. 
+*/
 
-/*Grafo direccionado*/
 class Graph {
 private:
 
     bool** adjMatrix;
     std::map<int, std::list<int> > adjList;
-    int numVertices;
+    int numVertex;
     int numEdges;
     int currentEdges;
     std::map<int, bool> visited;
@@ -26,12 +31,12 @@ private:
     */
     void loadMatrix() {
 
-        adjMatrix = new bool*[numVertices];
+        adjMatrix = new bool*[numVertex];
         
-        for (int i = 0; i < numVertices; i++) {
-            adjMatrix[i] = new bool[numVertices];
+        for (int i = 0; i < numVertex; i++) {
+            adjMatrix[i] = new bool[numVertex];
 
-            for (int j = 0; j < numVertices; j++) {
+            for (int j = 0; j < numVertex; j++) {
                 adjMatrix[i][j] = false;
             }
 
@@ -46,9 +51,9 @@ private:
     Complejidad de tiempo: O()
     Complejidad de espacio: O() 
     */
-    void loadList(int n, int m ) {
+    void loadList() {
 
-        for (int i = 0; i < numVertices; i++) {
+        for (int i = 0; i < numVertex; i++) {
             std::list<int> temp;
             adjList.emplace(i, temp);
         }
@@ -87,11 +92,11 @@ private:
     */
     void printMatrix() {
             
-        for (int i = 0; i < numVertices; i++) {
+        for (int i = 0; i < numVertex; i++) {
 
             std::cout << i << " : ";
 
-            for (int j = 0; j < numVertices; j++) {
+            for (int j = 0; j < numVertex; j++) {
                 std::cout << adjMatrix[i][j] << " " ;
             }
 
@@ -145,10 +150,9 @@ public:
 
     /* Constructor de la clase de grafo */
     Graph() {
-        bool** adjMatrix;
-        int numVertices;
-        std::vector<std::vector<int>> adjList;
-        currentEdges = 0; 
+        int numVertex = 0;
+        int numEdges = 0;
+        int currentEdges = 0;
     }
 
     /*
@@ -158,12 +162,16 @@ public:
     Complejidad de tiempo: O()
     Complejidad de espacio: O() 
     */
-    void loadGraph(int n, int m ) {
+    void loadGraph(int n, int m, std::vector <std::pair<int, int>> edges) {
 
-        this->numVertices = n;
+        this->numVertex = n;
         this->numEdges = m;
-        loadList(numVertices, numEdges);
+        loadList();
         loadMatrix();
+
+        for (int i = 0; i < edges.size() ; i++) {
+            addEdge(edges[i].first, edges[i].second);
+        }
 
     }
 
@@ -214,11 +222,9 @@ public:
     */
     void listDFS(int a) {
 
-        // Mark the current node as visited and print it
         visited[a] = true;
         std::cout << a << " ";
     
-        // Recur for all the vertices adjacent to this vertex
         std::list<int>::iterator i;
         for (i = adjList[a].begin(); i != adjList[a].end(); ++i) {
 
@@ -303,21 +309,8 @@ int main()
 {
 
     Graph *g = new Graph();
-    g->loadGraph(6, 8);
-
-    g->addEdge(0, 1);
-    g->addEdge(0, 3);
-    
-    g->addEdge(1, 2);
-    
-    g->addEdge(2, 5);
-    
-    g->addEdge(3, 1);
-    g->addEdge(3, 5);
-    g->addEdge(3, 4);
-    
-    g->addEdge(4, 5);
-
+    std::vector <std::pair<int, int>> edges = {{0,1}, {0,3}, {1,2}, {2,5}, {3,1}, {3,5}, {3,4}, {4,5}}; 
+    g->loadGraph(6, 8, edges);
     g->print();
     std::cout << "\n";
     g->DFS(0);
@@ -385,3 +378,10 @@ int main()
     */
     
 }
+
+/*
+Referencias: 
+
+    GeeksforGeeks. (2022). Breadth First Search or BFS for a Graph. https://www.geeksforgeeks.org/breadth-first-search-or-bfs-for-a-graph
+
+*/
