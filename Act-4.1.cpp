@@ -21,6 +21,7 @@ private:
     int numEdges;
     int currentEdges;
     std::map<int, bool> visited;
+    int edgesCounter;
 
     /*
     Carga una matriz de adjacencia
@@ -247,14 +248,14 @@ public:
         visited[a] = true;
         std::cout << a << " ";
 
-        for (int i = a; i < sizeof(adjMatrix[a]); ++i) {
+        for (int i = 0; i < sizeof(adjMatrix[a]); ++i) {
 
             if (adjMatrix[a][i] == true && (!visited[i])) {
                 _DFS(i);
             }
 
         }
-            
+           
     }
 
     /*
@@ -288,7 +289,7 @@ public:
             a = queue.front();
             std::cout << a << " ";
             queue.pop_front();
-    
+
             for (auto i: adjList[a]) {
 
                 if (!visited[i]) {
@@ -308,13 +309,14 @@ int main()
 {
 
     Graph *g = new Graph();
-    std::vector <std::pair<int, int>> edges = {{0,1}, {0,3}, {1,2}, {2,5}, {3,1}, {3,5}, {3,4}, {4,5}}; 
-    g->loadGraph(6, 8, edges);
+    std::vector <std::pair<int, int>> edges = {{0,1}, {0,3}, {1,2}, {2,5}, {3,1}, {3,5}, {3,4}, {4,5}, {5,0}}; 
+
+    g->loadGraph(6, 9, edges);
     g->print();
     std::cout << "\n";
-    g->DFS(0);
+    g->DFS(5);
     std::cout << "\n";
-    g->BFS(0);
+    g->BFS(5);
     std::cout << "\n";
 
     /*
