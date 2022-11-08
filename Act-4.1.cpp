@@ -381,6 +381,8 @@ int main()
 /*
 Referencias: 
 
-    GeeksforGeeks. (2022). Breadth First Search or BFS for a Graph. https://www.geeksforgeeks.org/breadth-first-search-or-bfs-for-a-graph
+    GeeksforGeeks. (2022). Breadth First Search or BFS for a Graph. https://www.geeksforgeeks.org/breadth-first-search-or-bfs-for-a-graph.
+
+    GeeksforGeeks. (2022). Depth First Search or DFS for a Graph. https://www.geeksforgeeks.org/depth-first-search-or-dfs-for-a-graph.
 
 */
