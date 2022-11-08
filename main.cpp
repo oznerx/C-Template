@@ -5,6 +5,8 @@
 #include <map>
 #include <list>
 
+
+/*Grafo direccionado*/
 class Graph {
 private:
 
@@ -13,10 +15,16 @@ private:
     int numVertices;
     int numEdges;
     int currentEdges;
-
     std::map<int, bool> visited;
 
-    void loadMatrix(int n) {
+    /*
+    Carga una matriz de adjacencia
+    @Param: nada
+    Salida: nada
+    Complejidad de tiempo: O()
+    Complejidad de espacio: O() 
+    */
+    void loadMatrix() {
 
         adjMatrix = new bool*[numVertices];
         
@@ -31,6 +39,13 @@ private:
 
     }
 
+    /*
+    Carga una lista de adjacencia
+    @Param: nada
+    Salida: nada
+    Complejidad de tiempo: O()
+    Complejidad de espacio: O() 
+    */
     void loadList(int n, int m ) {
 
         for (int i = 0; i < numVertices; i++) {
@@ -38,44 +53,65 @@ private:
             adjList.emplace(i, temp);
         }
 
-        //std::cout << adjList.size() << "\n";
-
     } 
 
-    void addEdgeToMatrix(int i, int j) {
-        adjMatrix[i][j] = true;
-        adjMatrix[j][i] = true;
+    /*
+    Agrega un arco entre 2 vértices de una matriz de adjacencia 
+    @Param: (int a) vértice al cual se le va a agregar la conexión , (int b) vértice el cual será conectado
+    Salida: nada
+    Complejidad de tiempo: O()
+    Complejidad de espacio: O() 
+    */
+    void addEdgeToMatrix(int a, int b) {
+        adjMatrix[a][b] = true;
+        adjMatrix[b][a] = true;
     }
 
-    void removeEdgeFromMatrix(int i, int j) {
-        adjMatrix[i][j] = false;
-        adjMatrix[j][i] = false;
-    }
-
+    /*
+    Agrega un arco entre 2 vértices de una lista de adjacencia
+    @Param: (int a) vértice al cual se le va a agregar la conexión , (int b) vértice el cual será conectado
+    Salida: nada
+    Complejidad de tiempo: O()
+    Complejidad de espacio: O() 
+    */
     void addEdgeToList(int a, int b) {
-        adjList[a].push_back(b); // Add b to a’s list.
+        adjList[a].push_back(b); 
     }
 
-    void removeEdgeFromList(int i, int j) {
-        //adjMatrix[i][j] = false;    
-        //adjMatrix[j][i] = false;
-    }
-
+    /*
+    Imprime una idea general de la matriz de adjacencia del grafo creado
+    @Param: nada
+    Salida: nada
+    Complejidad de tiempo: O()
+    Complejidad de espacio: O() 
+    */
     void printMatrix() {
             
         for (int i = 0; i < numVertices; i++) {
+
             std::cout << i << " : ";
+
             for (int j = 0; j < numVertices; j++) {
                 std::cout << adjMatrix[i][j] << " " ;
             }
+
             std::cout << "\n";
+
         }
 
     }
 
+    /*
+    Imprime una idea general de la lista de adjacencia del grafo creado
+    @Param: nada
+    Salida: nada
+    Complejidad de tiempo: O()
+    Complejidad de espacio: O() 
+    */
     void printList() {
 
         std::map<int, std::list<int>>::iterator i;
+
         for (i=adjList.begin(); i!=adjList.end(); i++) {
 
             std::cout << i->first << " : ";
@@ -90,6 +126,13 @@ private:
 
     }
 
+    /*
+    Establece todos los nodos como a "no visitados"
+    @Param: nada
+    Salida: nada
+    Complejidad de tiempo: O()
+    Complejidad de espacio: O() 
+    */
     void clearVisited() {
 
         for (int i = 0; i < visited.size() ;i++) {
@@ -100,6 +143,7 @@ private:
     
 public:
 
+    /* Constructor de la clase de grafo */
     Graph() {
         bool** adjMatrix;
         int numVertices;
@@ -107,24 +151,29 @@ public:
         currentEdges = 0; 
     }
 
-    ~Graph() {
-
-        for (int i = 0; i < numVertices; i++) {
-            delete[] adjMatrix[i];
-            delete[] adjMatrix;
-        }
-
-    }
-
+    /*
+    Carga los arcos del grafo, los almacena en una Matriz de Adjacencia y en una Lista de Adjacencia
+    @Param:(int n) Cantidad de Vertices, (int m) Cantidad de Arcos
+    Salida: nada
+    Complejidad de tiempo: O()
+    Complejidad de espacio: O() 
+    */
     void loadGraph(int n, int m ) {
 
         this->numVertices = n;
         this->numEdges = m;
         loadList(numVertices, numEdges);
-        loadMatrix(numVertices);
+        loadMatrix();
 
     }
 
+    /*
+    Agrega un arco entre 2 vertices
+    @Param: (int a) vertice al cual se le va a agregar la conexión , (int b) vertice el cual será conectado
+    Salida: nada
+    Complejidad de tiempo: O()
+    Complejidad de espacio: O() 
+    */
     void addEdge(int a, int b) {
 
         if (currentEdges < numEdges) {
@@ -140,16 +189,29 @@ public:
         
     }
 
+    /*
+    Imprime una idea general de la estrcutura del grafo creado
+    @Param: nada
+    Salida: nada
+    Complejidad de tiempo: O()
+    Complejidad de espacio: O() 
+    */
     void print() {
 
-        std::cout << "\nLa matriz se creo con la siguiente estructura:\n";
+        std::cout << "\nLa matriz se creó con la siguiente estructura:\n";
         printMatrix();
-        std::cout << "\nLa lista se creo con la siguiente estructura:\n";
+        std::cout << "\nLa lista se creó con la siguiente estructura:\n";
         printList();
 
     }
 
-    /*Imprima el Recorrido de DFS (Profundidad) a partir de nodo inicial.*/
+    /*
+    Imprime el Recorrido de DFS de una lista de adjacencia a partir de un nodo inicial
+    @Param: nada
+    Salida: nada
+    Complejidad de tiempo: O()
+    Complejidad de espacio: O() 
+    */
     void listDFS(int a) {
 
         // Mark the current node as visited and print it
@@ -168,7 +230,13 @@ public:
             
     }
 
-    /*Imprima el Recorrido de DFS (Profundidad) a partir de nodo inicial.*/
+    /*
+    Imprime el Recorrido de DFS de una matriz de adjacencia a partir de un nodo inicial
+    @Param: nada
+    Salida: nada
+    Complejidad de tiempo: O()
+    Complejidad de espacio: O() 
+    */
     void _DFS(int a) {
 
         visited[a] = true;
@@ -184,13 +252,25 @@ public:
             
     }
 
+    /*
+    Ayudante de del método _DFS
+    @Param: nada
+    Salida: nada
+    Complejidad de tiempo: O()
+    Complejidad de espacio: O() 
+    */
     void DFS(int a) {
         clearVisited();
         _DFS(a);
     }
 
-
-    /*Imprima el Recorrido de BFS (Anchura) a partir de nodo inicial.o.*/
+    /*
+    Imprime el Recorrido de BFS de una lista de adjacencia a partir de un nodo inicial
+    @Param: nada
+    Salida: nada
+    Complejidad de tiempo: O()
+    Complejidad de espacio: O() 
+    */
     void BFS(int a) {
 
         clearVisited();
@@ -198,16 +278,12 @@ public:
         visited[a] = true;
         queue.push_back(a);
     
-        while(!queue.empty())
-        {
-            // Dequeue a vertex from queue and print it
+        while (!queue.empty()) {
+
             a = queue.front();
             std::cout << a << " ";
             queue.pop_front();
     
-            // Get all adjacent vertices of the dequeued
-            // vertex s. If a adjacent has not been visited,
-            // then mark it visited and enqueue it
             for (auto i: adjList[a]) {
 
                 if (!visited[i]) {
@@ -221,15 +297,7 @@ public:
 
     }
 
-
-
-
 };
-
-
-
-
-
 
 int main()
 {
