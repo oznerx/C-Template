@@ -69,7 +69,6 @@ private:
     */
     void addEdgeToMatrix(int a, int b) {
         adjMatrix[a][b] = true;
-        adjMatrix[b][a] = true;
     }
 
     /*
