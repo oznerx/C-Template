@@ -344,8 +344,8 @@ int main()
 
     std::cout << "\n=================== Cuarto Grafo ===================\n";
     Graph *g4 = new Graph();
-    std::vector <std::pair<int, int>> edges4 = {{0,1}, {1,2}, {1,3}, {2,0}, {2,5}, {3,4}, {4,5}}; 
-    g4->loadGraph(6, 7, edges4);
+    std::vector <std::pair<int, int>> edges4 = {{0,1}, {0,3}, {3,4}, {4,5}, {4,2}}; 
+    g4->loadGraph(6, 5, edges4);
     g4->print();
     std::cout << "Recorrido por DFS: ";
     g4->DFS(0);
