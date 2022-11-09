@@ -115,13 +115,11 @@ private:
     */
     void printList() {
 
-        std::map<int, std::list<int>>::iterator i;
+        for (auto i : adjList) {
 
-        for (i=adjList.begin(); i!=adjList.end(); i++) {
+            std::cout << i.first << " : ";
 
-            std::cout << i->first << " : ";
-
-            for (auto j : i->second) {
+            for (auto j : i.second) {
                 std::cout << j << " ";
             }
 
@@ -146,6 +144,50 @@ private:
 
     }
     
+    /*
+    Imprime el Recorrido de DFS de una lista de adjacencia a partir de un nodo inicial
+    @Param: nada
+    Salida: nada
+    Complejidad de tiempo: O(V + E)
+    Complejidad de espacio: O(V) 
+    */
+    void listDFS(int a) {
+
+        visited[a] = true;
+        std::cout << a << " ";
+    
+        std::list<int>::iterator i;
+        for (i = adjList[a].begin(); i != adjList[a].end(); ++i) {
+
+            if (!visited[*i]) {
+                listDFS(*i);
+            }
+                
+        }
+            
+    }
+
+    /*
+    Imprime el Recorrido de DFS de una matriz de adjacencia a partir de un nodo inicial
+    @Param: nada
+    Salida: nada
+    Complejidad de tiempo: O(V^2)
+    Complejidad de espacio: O(V) 
+    */
+    void _DFS(int a) {
+
+        visited[a] = true;
+        std::cout << a << " ";
+
+        for (int i = 0; i < sizeof(adjMatrix[a]); ++i) {
+
+            if (adjMatrix[a][i] == true && (!visited[i])) {
+                _DFS(i);
+            }
+
+        }
+           
+    }
 public:
 
     /* Constructor de la clase de grafo */
@@ -212,51 +254,6 @@ public:
         printList();
         std::cout << "\n";
 
-    }
-
-    /*
-    Imprime el Recorrido de DFS de una lista de adjacencia a partir de un nodo inicial
-    @Param: nada
-    Salida: nada
-    Complejidad de tiempo: O(V + E)
-    Complejidad de espacio: O(V) 
-    */
-    void listDFS(int a) {
-
-        visited[a] = true;
-        std::cout << a << " ";
-    
-        std::list<int>::iterator i;
-        for (i = adjList[a].begin(); i != adjList[a].end(); ++i) {
-
-            if (!visited[*i]) {
-                listDFS(*i);
-            }
-                
-        }
-            
-    }
-
-    /*
-    Imprime el Recorrido de DFS de una matriz de adjacencia a partir de un nodo inicial
-    @Param: nada
-    Salida: nada
-    Complejidad de tiempo: O(V^2)
-    Complejidad de espacio: O(V) 
-    */
-    void _DFS(int a) {
-
-        visited[a] = true;
-        std::cout << a << " ";
-
-        for (int i = 0; i < sizeof(adjMatrix[a]); ++i) {
-
-            if (adjMatrix[a][i] == true && (!visited[i])) {
-                _DFS(i);
-            }
-
-        }
-           
     }
 
     /*
