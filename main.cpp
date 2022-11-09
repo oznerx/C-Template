@@ -21,13 +21,14 @@ private:
     int numEdges;
     int currentEdges;
     std::map<int, bool> visited;
+    int edgesCounter;
 
     /*
     Carga una matriz de adjacencia
     @Param: nada
     Salida: nada
     Complejidad de tiempo: O(V^2)
-    Complejidad de espacio: O(1) 
+    Complejidad de espacio: O(V^2) 
     */
     void loadMatrix() {
 
@@ -143,50 +144,6 @@ private:
 
     }
     
-    /*
-    Imprime el Recorrido de DFS de una lista de adjacencia a partir de un nodo inicial
-    @Param: nada
-    Salida: nada
-    Complejidad de tiempo: O(V + E)
-    Complejidad de espacio: O(V) 
-    */
-    void listDFS(int a) {
-
-        visited[a] = true;
-        std::cout << a << " ";
-    
-        std::list<int>::iterator i;
-        for (i = adjList[a].begin(); i != adjList[a].end(); ++i) {
-
-            if (!visited[*i]) {
-                listDFS(*i);
-            }
-                
-        }
-            
-    }
-
-    /*
-    Imprime el Recorrido de DFS de una matriz de adjacencia a partir de un nodo inicial
-    @Param: nada
-    Salida: nada
-    Complejidad de tiempo: O(V^2)
-    Complejidad de espacio: O(V) 
-    */
-    void _DFS(int a) {
-
-        visited[a] = true;
-        std::cout << a << " ";
-
-        for (int i = 0; i < sizeof(adjMatrix[a]); ++i) {
-
-            if (adjMatrix[a][i] == true && (!visited[i])) {
-                _DFS(i);
-            }
-
-        }
-           
-    }
 public:
 
     /* Constructor de la clase de grafo */
@@ -201,7 +158,7 @@ public:
     @Param:(int n) Cantidad de Vertices, (int m) Cantidad de Arcos
     Salida: nada
     Complejidad de tiempo: O(V^2)
-    Complejidad de espacio: O(V) 
+    Complejidad de espacio: O(V^2) 
     */
     void loadGraph(int n, int m, std::vector <std::pair<int, int>> edges) {
 
@@ -253,6 +210,51 @@ public:
         printList();
         std::cout << "\n";
 
+    }
+
+    /*
+    Imprime el Recorrido de DFS de una lista de adjacencia a partir de un nodo inicial
+    @Param: nada
+    Salida: nada
+    Complejidad de tiempo: O(V + E)
+    Complejidad de espacio: O(V) 
+    */
+    void listDFS(int a) {
+
+        visited[a] = true;
+        std::cout << a << " ";
+    
+        std::list<int>::iterator i;
+        for (i = adjList[a].begin(); i != adjList[a].end(); ++i) {
+
+            if (!visited[*i]) {
+                listDFS(*i);
+            }
+                
+        }
+            
+    }
+
+    /*
+    Imprime el Recorrido de DFS de una matriz de adjacencia a partir de un nodo inicial
+    @Param: nada
+    Salida: nada
+    Complejidad de tiempo: O(V^2)
+    Complejidad de espacio: O(V) 
+    */
+    void _DFS(int a) {
+
+        visited[a] = true;
+        std::cout << a << " ";
+
+        for (int i = 0; i < sizeof(adjMatrix[a]); ++i) {
+
+            if (adjMatrix[a][i] == true && (!visited[i])) {
+                _DFS(i);
+            }
+
+        }
+           
     }
 
     /*
@@ -310,7 +312,7 @@ int main()
 
     std::cout << "\n=================== Primer Grafo ===================\n";
     Graph *g = new Graph();
-    std::vector <std::pair<int, int>> edges1 = {{0,1}, {0,3}, {1,2}, {2,5}, {3,1}, {3,5}, {3,4}, {4,5}}; 
+    std::vector <std::pair<int, int>> edges1 = {{0,1}, {1,2}, {1,3}, {2,0}, {2,5}, {3,4}, {4,5}}; 
     g->loadGraph(6, 8, edges1);
     g->print();
     std::cout << "Recorrido por DFS: ";
