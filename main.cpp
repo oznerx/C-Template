@@ -21,7 +21,6 @@ private:
     int numEdges;
     int currentEdges;
     std::map<int, bool> visited;
-    int edgesCounter;
 
     /*
     Carga una matriz de adjacencia
