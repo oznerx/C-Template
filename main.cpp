@@ -155,7 +155,7 @@ public:
 
     /*
     Carga los arcos del grafo, los almacena en una Matriz de Adjacencia y en una Lista de Adjacencia
-    @Param:(int n) Cantidad de Vertices, (int m) Cantidad de Arcos
+    @Param:(int n) Cantidad de Vertices, (int m) Cantidad de Arcos, (std::vector <std::pair<int, int>> edges) lista de los arcos entre aristas
     Salida: nada
     Complejidad de tiempo: O(V^2)
     Complejidad de espacio: O(V^2) 
@@ -214,7 +214,7 @@ public:
 
     /*
     Imprime el Recorrido de DFS de una lista de adjacencia a partir de un nodo inicial
-    @Param: nada
+    @Param: (int a) nodo inicial
     Salida: nada
     Complejidad de tiempo: O(V + E)
     Complejidad de espacio: O(V) 
@@ -237,7 +237,7 @@ public:
 
     /*
     Imprime el Recorrido de DFS de una matriz de adjacencia a partir de un nodo inicial
-    @Param: nada
+    @Param: (int a) nodo inicial
     Salida: nada
     Complejidad de tiempo: O(V^2)
     Complejidad de espacio: O(V) 
@@ -259,7 +259,7 @@ public:
 
     /*
     Ayudante de del método _DFS
-    @Param: nada
+    @Param: (int a) nodo inicial
     Salida: nada
     Complejidad de tiempo: O(V^2)
     Complejidad de espacio: O(V) 
@@ -272,7 +272,7 @@ public:
 
     /*
     Imprime el Recorrido de BFS de una lista de adjacencia a partir de un nodo inicial
-    @Param: nada
+    @Param: (int a) nodo inicial
     Salida: nada
     Complejidad de tiempo: O(V + E)
     Complejidad de espacio: O(V) 
