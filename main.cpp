@@ -4,6 +4,8 @@
 #include <unordered_map>
 #include <map>
 #include <list>
+#include <stack>
+
 
 /*
 Ozner Axel Leyva Mariscal
@@ -20,6 +22,7 @@ private:
     int currentEdges;
     std::map<int, bool> visited;
     std::map<int, std::list<int>> adjList;
+    std::stack<int> stack; 
 
     /*
     Carga una lista de adjacencia
@@ -49,49 +52,35 @@ private:
     }
 
     /*
-    Imprime una idea general de la lista de adjacencia del grafo creado
+    Establece todos los nodos como a "no visitados"
     @Param: nada
     Salida: nada
-    Complejidad de tiempo: O(V + E)
+    Complejidad de tiempo: O(V)
     Complejidad de espacio: O(1) 
     */
-    void printList() {
+    void clearVisited() {
 
-        for (auto i : adjList) {
-
-            std::cout << i.first << " : ";
-
-            for (auto j : i.second) {
-                std::cout << j << " ";
-            }
-
-            std::cout << "\n";
-
+        for (int i = 0; i < visited.size() ;i++) {
+            visited[i] = false;
         }
 
     }
 
-    /*
-    Imprime el Recorrido de DFS de una lista de adjacencia a partir de un nodo inicial
-    @Param: nada
-    Salida: nada
-    Complejidad de tiempo: O(V + E)
-    Complejidad de espacio: O(V) 
-    */
-    void _DFS(int a) {
+    /*Ordene en forma ascendente los datos con el método de Merge*/
+    void _topologicalSort(int current) {
 
-        visited[a] = true;
-        std::cout << a << " ";
-    
-        std::list<int>::iterator i;
-        for (i = adjList[a].begin(); i != adjList[a].end(); ++i) {
+        visited[current] = true;
+
+        for (auto i = adjList[current].begin(); i != adjList[current].end(); ++i) {
 
             if (!visited[*i]) {
-                _DFS(*i);
+                _topologicalSort(*i);
             }
-                
+
         }
-            
+
+        stack.push(current);
+    
     }
 
 public:
@@ -144,35 +133,69 @@ public:
     }
 
     /*
-    Imprime una idea general de la estrcutura del grafo creado
+    Imprime una idea general de la lista de adjacencia del grafo creado
     @Param: nada
     Salida: nada
     Complejidad de tiempo: O(V + E)
     Complejidad de espacio: O(1) 
     */
     void print() {
+
         std::cout << "\nLa lista se creó con la siguiente estructura:\n";
-        printList();
+        
+        for (auto i : adjList) {
+
+            std::cout << i.first << " : ";
+
+            for (auto j : i.second) {
+                std::cout << j << " ";
+            }
+
+            std::cout << "\n";
+
+        }
+
         std::cout << "\n";
+
     }
 
-    /*
-    Ayudante de del método _DFS
-    @Param: nada
-    Salida: nada
-    Complejidad de tiempo: O(V + E)
-    Complejidad de espacio: O(V) 
-    */
-    void DFS(int a) {
-        _DFS(a);
-        std::cout << "\n";
+    /*Diga si el Grafo Dirigido (DAG) es un árbol o no*/
+    void isTree() {
+
+    } 
+
+    /*Ordene en forma ascendente los datos con el método de Merge*/
+    void topologicalSort() {
+ 
+        clearVisited();
+
+        for (int i = 0; i < numVertex; i++) {
+
+            if (visited[i] == false) {
+                _topologicalSort(i);
+            }
+
+        }
+
+        while (stack.empty() == false) {
+            std::cout << stack.top() << " ";
+            stack.pop();
+        }
+
     }
+
+
+    /*bipartiteGraph*/
+    void bipartiteGraph() {
+        
+    }
+
 
 };
 
 int main()
 {
-
+/*
     std::cout << "\n=================== Primer Grafo ===================\n";
     Graph *g = new Graph();
     std::vector <std::pair<int, int>> edges1 = {{0,1}, {0,3}, {1,2}, {2,5}, {3,1}, {3,5}, {3,4}, {4,5}}; 
@@ -180,12 +203,20 @@ int main()
     g->print();
     std::cout << "Recorrido por DFS: ";
     g->DFS(0);
+    g->topologicalSort();
+*/
+    std::cout << "\n=================== Topological Sort ===================\n";
+    Graph *g = new Graph();
+    std::vector <std::pair<int, int>> edges = {{5,2}, {5,0}, {4,0}, {4,1}, {2,3}, {3,1}}; 
+    g->loadGraph(6, 6, edges);
+    g->topologicalSort();
+    std::cout << "\n";
 
 }
 
 /*
 Referencias: 
 
-    GeeksforGeeks. (2022). Depth First Search or DFS for a Graph. https://www.geeksforgeeks.org/depth-first-search-or-dfs-for-a-graph.
+    GeeksforGeeks. (2022). Topological Sorting. https://www.geeksforgeeks.org/topological-sorting.
 
 */
