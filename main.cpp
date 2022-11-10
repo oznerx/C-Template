@@ -159,6 +159,11 @@ public:
 
     }
 
+    /*bipartiteGraph*/
+    bool bipartiteGraph() {
+        return true;
+    }
+    
     /*Diga si el Grafo Dirigido (DAG) es un árbol o no*/
     void isTree() {
 
@@ -185,10 +190,6 @@ public:
     }
 
 
-    /*bipartiteGraph*/
-    void bipartiteGraph() {
-        
-    }
 
 
 };
