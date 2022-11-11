@@ -161,83 +161,65 @@ public:
     }
 
     /*bipartiteGraph*/
-    bool _bipartiteGraph(int colorArr[]) {
-
-        colorArr[0] = 1;
-    
-        // Create a queue (FIFO) of vertex numbers a
-        // nd enqueue source vertex for BFS traversal
-        std::queue<int> q;
-        q.push(0);
-    
-        // Run while there are vertices in queue (Similar to
-        // BFS)
-        while (!q.empty()) {
-            // Dequeue a vertex from queue ( Refer
-            // http://goo.gl/35oz8 )
-            int u = q.front();
-            q.pop();
-    
-            // Return false if there is a self-loop
-            if (adjList[u][u] == 1) {
-                return false;
-            }
-    
-            // Find all non-colored adjacent vertices
-            for (int v = 0; v < numVertex; ++v) {
-                // An edge from u to v exists and
-                // destination v is not colored
-                if (adjList[u][v] && colorArr[v] == -1) {
-                    // Assign alternate color to this
-                    // adjacent v of u
-                    colorArr[v] = 1 - colorArr[u];
-                    q.push(v);
-                }
-    
-                // An edge from u to v exists and destination
-                // v is colored with same color as u
-                else if (adjList[u][v] && colorArr[v] == colorArr[u]) {
-                    return false;
-                }
-            }
-        }
-    
-        // If we reach here, then all adjacent vertices can
-        // be colored with alternate color
-        return true;
-    }
-    
     bool bipartiteGraph() { 
-        // Create a color array to store colors assigned to all
-        // vertices. Vertex/ number is used as index in this
-        // array. The value '-1' of colorArr[i] is used to
-        // indicate that no color is assigned to vertex 'i'.
-        // The value 1 is used to indicate first color is
-        // assigned and value 0 indicates second color is
-        // assigned.
-        int colorArr[numVertex];
-        for (int i = 0; i < numVertex; ++i) {
-            colorArr[i] = -1;
-        }
+
+        // vector to store colour of vertex
+        // assigning all to -1 i.e. uncoloured
+        // colours are either 0 or 1
+        // for understanding take 0 as red and 1 as blue
+        std::vector<int> color(numVertex, -1);
     
-        // This code is to handle disconnected graph
+        // queue for BFS storing {vertex , colour}
+        std::queue<std::pair<int, int> > q;
+    
+        //loop incase graph is not connected
         for (int i = 0; i < numVertex; i++) {
-            if (colorArr[i] == -1) {
-                if (_bipartiteGraph(colorArr) == false) {
-                    return false;
+        
+            //if not coloured
+            if (color[i] == -1) {
+            
+                //colouring with 0 i.e. red
+                q.push({ i, 0 });
+                color[i] = 0;
+            
+                while (!q.empty()) {
+                    std::pair<int, int> p = q.front();
+                    q.pop();
+                
+                    //current vertex
+                    int v = p.first;
+                    //colour of current vertex
+                    int c = p.second;
+                    
+                    //traversing vertexes connected to current vertex
+                    for (int j : adjList[v]) {
+                    
+                        //if already coloured with parent vertex color
+                        //then bipartite graph is not possible
+                        if (color[j] == c) {
+                            return 0;
+                        }
+                    
+                        //if uncoloured
+                        if (color[j] == -1) {
+                            //colouring with opposite color to that of parent
+                            color[j] = (c) ? 0 : 1;
+                            q.push({ j, color[j] });
+                        }
+
+                    }
+
                 }
+
             }
+
         }
 
-    
-        return true;
+        //if all vertexes are coloured such that
+        //no two connected vertex have same colours
+        return 1;
+
     }
-
-
-    /*Diga si el Grafo Dirigido (DAG) es un árbol o no*/
-    void isTree() {
-
-    } 
 
     /*Ordene en forma ascendente los datos con el método de Merge*/
     void topologicalSort() {
@@ -259,37 +241,73 @@ public:
 
     }
 
+    /*Diga si el Grafo Dirigido (DAG) es un árbol o no*/
+    bool isTree() {
+ 
+        clearVisited();
 
+        for (int i = 0; i < numVertex; i++) {
 
+            if (visited[i] == false) {
+                _topologicalSort(i);
+            }
+
+        }
+
+        std::cout << "size: " << stack.size() << "\n";
+        return stack.size() == numVertex ? true : false;
+
+    } 
 
 };
 
 int main()
 {
-/*
-    std::cout << "\n=================== Primer Grafo ===================\n";
-    Graph *g = new Graph();
-    std::vector <std::pair<int, int>> edges1 = {{0,1}, {0,3}, {1,2}, {2,5}, {3,1}, {3,5}, {3,4}, {4,5}}; 
-    g->loadGraph(6, 8, edges1);
-    g->print();
-    std::cout << "Recorrido por DFS: ";
-    g->DFS(0);
-    g->topologicalSort();
-*//*
+
+    /*
     std::cout << "\n=================== Topological Sort ===================\n";
     Graph *g = new Graph();
     std::vector <std::pair<int, int>> edges = {{5,2}, {5,0}, {4,0}, {4,1}, {2,3}, {3,1}}; 
     g->loadGraph(6, 6, edges);
+    g->print();
     g->topologicalSort();
-    std::cout << "\n";*/
+    std::cout << "\n";
+    */
+    
 
+    /*
     std::cout << "\n=================== Is Bipartite ===================\n";
     Graph *g = new Graph();
-    std::vector <std::pair<int, int>> edges = {{0,1}, {0,3}, {1,0}, {1,3}, {2,1}, {2,3}, {3,0}, {3,2}}; 
+    std::vector <std::pair<int, int>> edges = {{0,1}, {0,3}, {1,0}, {1,2}, {2,1}, {2,3}, {3,0}, {3,2}}; 
     g->loadGraph(4, 8, edges);
     std::cout << g->bipartiteGraph() << "\n";
     g->print();
     g->bipartiteGraph() ? std::cout << "Yes" : std::cout << "No";
+    */
+
+    
+    std::cout << "\n=================== Isn't Tree ===================\n";
+    Graph *g = new Graph();
+    std::vector <std::pair<int, int>> edges = {{0,1}, {1,2}, {2,0}}; 
+    g->loadGraph(3, 3, edges);
+    //std::cout << g->isTree() << "\n";
+    g->print();
+    g->isTree() ? std::cout << "Yes" : std::cout << "No";
+
+    
+    
+    
+    /*
+    std::cout << "\n=================== Is Tree ===================\n";
+    Graph *g = new Graph();
+    std::vector <std::pair<int, int>> edges = {{0,1}, {0,2}, {1,3}, {1,4}, {4,5}, {4,6}, {2,7}, {7,8}}; 
+    g->loadGraph(9, 8, edges);
+    std::cout << g->isTree() << "\n";
+    g->print();
+    g->isTree() ? std::cout << "Yes" : std::cout << "No";
+    */
+    
+    
 
 }
 
@@ -297,5 +315,7 @@ int main()
 Referencias: 
 
     GeeksforGeeks. (2022). Topological Sorting. https://www.geeksforgeeks.org/topological-sorting.
+
+    GeeksforGeeks. (2022). Check whether a given graph is Bipartite or not. https://www.geeksforgeeks.org/bipartite-graph.
 
 */
