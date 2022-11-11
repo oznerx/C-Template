@@ -1,12 +1,11 @@
 #include <iostream>
 #include <fstream>
+#include <unordered_set>
 #include <vector>
 #include <unordered_map>
 #include <map>
 #include <stack>
 #include <queue>
-
-
 
 /*
 Ozner Axel Leyva Mariscal
@@ -82,6 +81,50 @@ private:
 
         stack.push(current);
     
+    }
+
+    /*
+    Imprime el Recorrido de DFS de una lista de adjacencia a partir de un nodo inicial
+    @Param: (int a) nodo inicial
+    Salida: nada
+    Complejidad de tiempo: O(V + E)
+    Complejidad de espacio: O(V) 
+    */
+    void _DFS(int a) {
+
+        visited[a] = true;
+    
+        for (auto i : adjList[a]) {
+
+            if (!visited[i]) {
+                _DFS(i);
+            }
+                
+        }
+            
+    }
+
+    bool isConnected() {
+        
+        clearVisited();
+    
+        _DFS(0);
+    
+
+        /*for (int i = 0; i < numVertex; i++) {
+            std::cout << visited[i] << "\n";
+        }
+
+        for (int i = 0; i < numVertex; i++) {
+            
+            if (!visited[i]) {
+                return false;
+            }
+
+        }*/
+
+        return true;
+
     }
 
 public:
@@ -243,20 +286,7 @@ public:
 
     /*Diga si el Grafo Dirigido (DAG) es un árbol o no*/
     bool isTree() {
- 
-        clearVisited();
-
-        for (int i = 0; i < numVertex; i++) {
-
-            if (visited[i] == false) {
-                _topologicalSort(i);
-            }
-
-        }
-
-        std::cout << "size: " << stack.size() << "\n";
-        return stack.size() == numVertex ? true : false;
-
+        return isConnected() && numEdges == numVertex - 1;
     } 
 
 };
@@ -285,30 +315,45 @@ int main()
     g->bipartiteGraph() ? std::cout << "Yes" : std::cout << "No";
     */
 
-    
-    std::cout << "\n=================== Isn't Tree ===================\n";
-    Graph *g = new Graph();
-    std::vector <std::pair<int, int>> edges = {{0,1}, {1,2}, {2,0}}; 
-    g->loadGraph(3, 3, edges);
-    //std::cout << g->isTree() << "\n";
-    g->print();
-    g->isTree() ? std::cout << "Yes" : std::cout << "No";
-
-    
-    
-    
     /*
+    std::cout << "\n=================== Isn't Tree ===================\n";
+    Graph *g2 = new Graph();
+    std::vector <std::pair<int, int>> edges2 = {{0,1}, {1,2}, {2,0}}; 
+    g2->loadGraph(3, 3, edges2);
+    //std::cout << g->isTree() << "\n";
+    g2->print();
+    g2->isTree() ? std::cout << "Yes" : std::cout << "No";
+    
     std::cout << "\n=================== Is Tree ===================\n";
     Graph *g = new Graph();
     std::vector <std::pair<int, int>> edges = {{0,1}, {0,2}, {1,3}, {1,4}, {4,5}, {4,6}, {2,7}, {7,8}}; 
     g->loadGraph(9, 8, edges);
-    std::cout << g->isTree() << "\n";
     g->print();
     g->isTree() ? std::cout << "Yes" : std::cout << "No";
     */
     
     
+    /*
+    Graph *g1 = new Graph();
+    std::vector <std::pair<int, int>> edges = {{1,0}, {0,2}, {0,3}, {3,4}}; 
+    g1->loadGraph(5,4,edges);
+    g1->print();
+    g1->isTree()? std::cout << "Graph is Tree\n": std::cout << "Graph is not Tree\n";
 
+    Graph *g2 = new Graph();
+    std::vector <std::pair<int, int>> edges2 = {{1,0}, {0,2}, {2,1}, {0,3}, {3,4}}; 
+    g2->loadGraph(5,5,edges2);
+    g2->print();
+    g2->isTree()? std::cout << "Graph is Tree\n": std::cout << "Graph is not Tree\n";
+    */
+
+    std::cout << "\n=================== Big Tree Test ===================\n";
+    Graph *g = new Graph();
+    std::vector <std::pair<int, int>> edges = {{0,2}, {1,2}, {2,3}, {3,5}, {3,12}, {5,4}, {5,9}, {9,7}, {9,10}, {7,6}, {7,8}, {12,11}, {12,13}, {13,14}, {13,15}, {15,16}, {15,17}}; 
+    g->loadGraph(18, 17, edges);
+    g->print();
+    g->isTree() ? std::cout << "Yes" : std::cout << "No";
+    
 }
 
 /*
