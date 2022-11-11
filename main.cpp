@@ -23,6 +23,7 @@ private:
     std::map<int, bool> visited;
     std::map<int, std::vector<int>> adjList;
     std::stack<int> stack; 
+    int last;
 
     /*
     Carga una lista de adjacencia
@@ -93,11 +94,13 @@ private:
     void _DFS(int a) {
 
         visited[a] = true;
+        std::cout << a << " ";
     
-        for (auto i : adjList[a]) {
+        std::vector<int>::iterator i;
+        for (i = adjList[a].begin(); i != adjList[a].end(); ++i) {
 
-            if (!visited[i]) {
-                _DFS(i);
+            if (!visited[*i]) {
+                _DFS(*i);
             }
                 
         }
@@ -109,9 +112,11 @@ private:
         clearVisited();
     
         _DFS(0);
+        std::cout << "\n\n" << this->last << "\n\n";
+        //visited[last] = true;
     
 
-        /*for (int i = 0; i < numVertex; i++) {
+        for (int i = 0; i < numVertex; i++) {
             std::cout << visited[i] << "\n";
         }
 
@@ -121,7 +126,7 @@ private:
                 return false;
             }
 
-        }*/
+        }
 
         return true;
 
@@ -315,7 +320,7 @@ int main()
     g->bipartiteGraph() ? std::cout << "Yes" : std::cout << "No";
     */
 
-    /*
+    
     std::cout << "\n=================== Isn't Tree ===================\n";
     Graph *g2 = new Graph();
     std::vector <std::pair<int, int>> edges2 = {{0,1}, {1,2}, {2,0}}; 
@@ -330,7 +335,7 @@ int main()
     g->loadGraph(9, 8, edges);
     g->print();
     g->isTree() ? std::cout << "Yes" : std::cout << "No";
-    */
+    
     
     
     /*
@@ -347,12 +352,12 @@ int main()
     g2->isTree()? std::cout << "Graph is Tree\n": std::cout << "Graph is not Tree\n";
     */
 
-    std::cout << "\n=================== Big Tree Test ===================\n";
+    /*std::cout << "\n=================== Big Tree Test ===================\n";
     Graph *g = new Graph();
-    std::vector <std::pair<int, int>> edges = {{0,2}, {1,2}, {2,3}, {3,5}, {3,12}, {5,4}, {5,9}, {9,7}, {9,10}, {7,6}, {7,8}, {12,11}, {12,13}, {13,14}, {13,15}, {15,16}, {15,17}}; 
+    std::vector <std::pair<int, int>> edges = {{0,2}, {2,1}, {2,3}, {3,5}, {3,12}, {5,4}, {5,9}, {9,7}, {9,10}, {7,6}, {7,8}, {12,11}, {12,13}, {13,14}, {13,15}, {15,16}, {15,17}}; 
     g->loadGraph(18, 17, edges);
     g->print();
-    g->isTree() ? std::cout << "Yes" : std::cout << "No";
+    g->isTree() ? std::cout << "Yes" : std::cout << "No";*/
     
 }
 
