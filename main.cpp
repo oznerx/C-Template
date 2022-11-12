@@ -23,7 +23,6 @@ private:
     std::map<int, bool> visited;
     std::map<int, std::vector<int>> adjList;
     std::stack<int> stack; 
-    int last;
 
     /*
     Carga una lista de adjacencia
@@ -67,7 +66,13 @@ private:
 
     }
 
-    /*Ordene en forma ascendente los datos con el método de Merge*/
+    /*
+    Ordena en forma ascendente los datos con el método de Merge    
+    @Param: (int current) nodo actual en el que se encuentra
+    Salida: nada
+    Complejidad de tiempo: O(V + E)
+    Complejidad de espacio: O(V) 
+    */
     void _topologicalSort(int current) {
 
         visited[current] = true;
@@ -107,14 +112,18 @@ private:
             
     }
 
+    /*
+    Verifica que el grafo esté conectado
+    @Param: nada
+    Salida: nada
+    Complejidad de tiempo: O(V + E)
+    Complejidad de espacio: O(V)
+    */
     bool isConnected() {
         
         clearVisited();
     
-        _DFS(0);
-        std::cout << "\n\n" << this->last << "\n\n";
-        //visited[last] = true;
-    
+        _DFS(0);    
 
         for (int i = 0; i < numVertex; i++) {
             std::cout << visited[i] << "\n";
@@ -208,7 +217,13 @@ public:
 
     }
 
-    /*bipartiteGraph*/
+    /*
+    Verifica que el Grafo Dirigido (DAG) puede ser representado como Grafo bipartita.    
+    @Param: (int current) nodo actual en el que se encuentra
+    Salida: nada
+    Complejidad de tiempo: O(V + E)
+    Complejidad de espacio: O(V) 
+    */
     bool bipartiteGraph() { 
 
         // vector to store colour of vertex
@@ -269,7 +284,13 @@ public:
 
     }
 
-    /*Ordene en forma ascendente los datos con el método de Merge*/
+    /*
+    Ordena en forma ascendente los datos con el método de Merge    
+    @Param: (int current) nodo actual en el que se encuentra
+    Salida: nada
+    Complejidad de tiempo: O(V + E)
+    Complejidad de espacio: O(V) 
+    */
     void topologicalSort() {
  
         clearVisited();
@@ -289,11 +310,25 @@ public:
 
     }
 
-    /*Diga si el Grafo Dirigido (DAG) es un árbol o no*/
+
+    /*
+    Verifica que el Grafo Dirigido (DAG) es un árbol
+    @Param: nada
+    Salida: nada
+    Complejidad de tiempo: O(V + E)
+    Complejidad de espacio: O(V) 
+    */
     bool isTree() {
         return isConnected() && numEdges == numVertex - 1;
     } 
 
+    /*
+    Verifica que el Grafo Dirigido (DAG) es un árbol utilizando ordenación topológica
+    @Param: nada
+    Salida: nada
+    Complejidad de tiempo: O(V + E)
+    Complejidad de espacio: O(V) 
+    */
     bool topologicalSortCheck() {
         // Create a vector to store
         // indegrees of all
