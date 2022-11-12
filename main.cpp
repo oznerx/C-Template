@@ -221,46 +221,32 @@ public:
     */
     bool bipartiteGraph() { 
 
-        // vector to store colour of vertex
-        // assigning all to -1 i.e. uncoloured
-        // colours are either 0 or 1
-        // for understanding take 0 as red and 1 as blue
         std::vector<int> color(numVertex, -1);
     
-        // queue for BFS storing {vertex , colour}
         std::queue<std::pair<int, int> > q;
     
-        //loop incase graph is not connected
         for (int i = 0; i < numVertex; i++) {
         
-            //if not coloured
             if (color[i] == -1) {
             
-                //colouring with 0 i.e. red
                 q.push({ i, 0 });
                 color[i] = 0;
             
                 while (!q.empty()) {
+
                     std::pair<int, int> p = q.front();
                     q.pop();
                 
-                    //current vertex
                     int v = p.first;
-                    //colour of current vertex
                     int c = p.second;
                     
-                    //traversing vertexes connected to current vertex
                     for (int j : adjList[v]) {
                     
-                        //if already coloured with parent vertex color
-                        //then bipartite graph is not possible
                         if (color[j] == c) {
                             return 0;
                         }
                     
-                        //if uncoloured
                         if (color[j] == -1) {
-                            //colouring with opposite color to that of parent
                             color[j] = (c) ? 0 : 1;
                             q.push({ j, color[j] });
                         }
@@ -273,8 +259,6 @@ public:
 
         }
 
-        //if all vertexes are coloured such that
-        //no two connected vertex have same colours
         return 1;
 
     }
@@ -325,16 +309,9 @@ public:
     Complejidad de espacio: O(V) 
     */
     bool topologicalSortCheck() {
-        // Create a vector to store
-        // indegrees of all
-        // vertices. Initialize all
-        // indegrees as 0.
+
         std::vector<int> in_degree(numVertex, 0);
     
-        // Traverse adjacency lists
-        // to fill indegrees of
-        // vertices.  This step
-        // takes O(V+E) time
         for (int u = 0; u < numVertex; u++) {
             std::vector<int>::iterator itr;
             for (itr = adjList[u].begin();itr != adjList[u].end(); itr++) {
@@ -342,8 +319,6 @@ public:
             }
         }
     
-        // Create an queue and enqueue
-        // all vertices with indegree 0
         std::queue<int> q;
         for (int i = 0; i < numVertex; i++) {
             if (in_degree[i] == 0) {
@@ -351,46 +326,29 @@ public:
             }
         }
 
-    
-        // Initialize count of visited vertices
         int cnt = 0;
     
-        // Create a vector to store
-        // result (A topological
-        // ordering of the vertices)
         std::vector<int> top_order;
     
-        // One by one dequeue vertices
-        // from queue and enqueue
-        // adjacents if indegree of
-        // adjacent becomes 0
         while (!q.empty()) {
-            // Extract front of queue
-            // (or perform dequeue)
-            // and add it to topological order
+
             int u = q.front();
             q.pop();
             top_order.push_back(u);
     
-            // Iterate through all its
-            // neighbouring nodes
-            // of dequeued node u and
-            // decrease their in-degree
-            // by 1
             std::vector<int>::iterator itr;
             for (itr = adjList[u].begin(); itr != adjList[u].end(); itr++) {
-                // If in-degree becomes zero,
-                // add it to queue
+
                 if (--in_degree[*itr] == 0) {
                     q.push(*itr);
                 }
+
             }
 
             cnt++;
 
         }
 
-        // Check if there was a cycle
         if (cnt != numVertex) {
             std::cout << "There exists a cycle in the graph\n";
             return false;
@@ -407,7 +365,7 @@ int main()
 {
 
     std::cout << "\n======================== Primer Grafo ========================\n";
-    Graph *g1 = new Graph(); // Topological sort
+    Graph *g1 = new Graph();
     std::vector <std::pair<int, int>> edges1 = {{5,2}, {5,0}, {4,0}, {4,1}, {2,3}, {3,1}}; 
     g1->loadGraph(6, 6, edges1);
     g1->print();
@@ -418,7 +376,7 @@ int main()
     std::cout << "\n";
     
     std::cout << "\n======================== Segundo Grafo ========================\n";
-    Graph *g2 = new Graph(); // is bipartite
+    Graph *g2 = new Graph(); 
     std::vector <std::pair<int, int>> edges2 = {{0,1}, {0,3}, {1,0}, {1,2}, {2,1}, {2,3}, {3,0}, {3,2}}; 
     g2->loadGraph(4, 8, edges2);
     g2->print();
@@ -429,7 +387,7 @@ int main()
     std::cout << "\n";
 
     std::cout << "\n======================== Tercer Grafo ========================\n";
-    Graph *g3 = new Graph(); // isnt a tree
+    Graph *g3 = new Graph(); 
     std::vector <std::pair<int, int>> edges3 = {{0,1}, {1,2}, {2,0}}; 
     g3->loadGraph(3, 3, edges3);
     g3->print();
@@ -440,7 +398,7 @@ int main()
     std::cout << "\n";
     
     std::cout << "\n======================== Cuarto Grafo ========================\n";
-    Graph *g4 = new Graph(); // is a tree
+    Graph *g4 = new Graph();
     std::vector <std::pair<int, int>> edges4 = {{0,1}, {0,2}, {1,3}, {1,4}, {4,5}, {4,6}, {2,7}, {7,8}}; 
     g4->loadGraph(9, 8, edges4);
     g4->print();
