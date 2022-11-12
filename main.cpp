@@ -411,35 +411,30 @@ public:
 int main()
 {
 
-    /*
+    
     std::cout << "\n=================== Topological Sort ===================\n";
-    Graph *g = new Graph();
-    std::vector <std::pair<int, int>> edges = {{5,2}, {5,0}, {4,0}, {4,1}, {2,3}, {3,1}}; 
-    g->loadGraph(6, 6, edges);
-    g->print();
-    g->topologicalSort();
+    Graph *g1 = new Graph();
+    std::vector <std::pair<int, int>> edges1 = {{5,2}, {5,0}, {4,0}, {4,1}, {2,3}, {3,1}}; 
+    g1->loadGraph(6, 6, edges1);
+    g1->print();
+    g1->topologicalSort();
     std::cout << "\n";
-    */
     
-
-    /*
     std::cout << "\n=================== Is Bipartite ===================\n";
-    Graph *g = new Graph();
-    std::vector <std::pair<int, int>> edges = {{0,1}, {0,3}, {1,0}, {1,2}, {2,1}, {2,3}, {3,0}, {3,2}}; 
-    g->loadGraph(4, 8, edges);
-    std::cout << g->bipartiteGraph() << "\n";
-    g->print();
-    g->bipartiteGraph() ? std::cout << "Yes" : std::cout << "No";
-    */
-
-    
-    std::cout << "\n=================== Isn't Tree ===================\n";
     Graph *g2 = new Graph();
-    std::vector <std::pair<int, int>> edges2 = {{0,1}, {1,2}, {2,0}}; 
-    g2->loadGraph(3, 3, edges2);
-    //std::cout << g->isTree() << "\n";
+    std::vector <std::pair<int, int>> edges2 = {{0,1}, {0,3}, {1,0}, {1,2}, {2,1}, {2,3}, {3,0}, {3,2}}; 
+    g2->loadGraph(4, 8, edges2);
+    std::cout << g2->bipartiteGraph() << "\n";
     g2->print();
-    g2->topologicalSortCheck() ? std::cout << "Yes" : std::cout << "No";
+    g2->bipartiteGraph() ? std::cout << "Yes" : std::cout << "No";
+    
+
+    std::cout << "\n=================== Isn't Tree ===================\n";
+    Graph *g3 = new Graph();
+    std::vector <std::pair<int, int>> edges3 = {{0,1}, {1,2}, {2,0}}; 
+    g3->loadGraph(3, 3, edges3);
+    g3->print();
+    g3->isTree() ? std::cout << "Yes" : std::cout << "No";
     
     std::cout << "\n=================== Is Tree ===================\n";
     Graph *g = new Graph();
