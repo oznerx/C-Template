@@ -443,11 +443,11 @@ int main()
     Graph *g4 = new Graph(); // is a tree
     std::vector <std::pair<int, int>> edges4 = {{0,1}, {0,2}, {1,3}, {1,4}, {4,5}, {4,6}, {2,7}, {7,8}}; 
     g4->loadGraph(9, 8, edges4);
-    g3->print();
-    g3->isTree() ? std::cout << "El grafo es un árbol\n\n" : std::cout << "El grafo no es un árbol\n\n";
+    g4->print();
+    g4->isTree() ? std::cout << "El grafo es un árbol\n\n" : std::cout << "El grafo no es un árbol\n\n";
     std::cout << "El ordenamiento topologico del grafo es: ";
-    g3->topologicalSort();
-    g3->bipartiteGraph() ? std::cout << "\n\nEl grafo es bipartita\n" : std::cout << "\n\nEl grafo no es bipartita\n";
+    g4->topologicalSort();
+    g4->bipartiteGraph() ? std::cout << "\n\nEl grafo es bipartita\n" : std::cout << "\n\nEl grafo no es bipartita\n";
     std::cout << "\n";
     
     
