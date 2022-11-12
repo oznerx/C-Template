@@ -406,7 +406,7 @@ public:
 int main()
 {
 
-    std::cout << "\n=================== Primer Grafo ===================\n";
+    std::cout << "\n======================== Primer Grafo ========================\n";
     Graph *g1 = new Graph(); // Topological sort
     std::vector <std::pair<int, int>> edges1 = {{5,2}, {5,0}, {4,0}, {4,1}, {2,3}, {3,1}}; 
     g1->loadGraph(6, 6, edges1);
@@ -417,26 +417,38 @@ int main()
     g1->bipartiteGraph() ? std::cout << "\n\nEl grafo es bipartita\n" : std::cout << "\n\nEl grafo no es bipartita\n";
     std::cout << "\n";
     
-    std::cout << "\n=================== Segundo Grafo ===================\n";
+    std::cout << "\n======================== Segundo Grafo ========================\n";
     Graph *g2 = new Graph(); // is bipartite
     std::vector <std::pair<int, int>> edges2 = {{0,1}, {0,3}, {1,0}, {1,2}, {2,1}, {2,3}, {3,0}, {3,2}}; 
     g2->loadGraph(4, 8, edges2);
     g2->print();
-    g2->bipartiteGraph() ? std::cout << "Yes\n" : std::cout << "No\n";
+    g2->isTree() ? std::cout << "El grafo es un árbol\n\n" : std::cout << "El grafo no es un árbol\n\n";
+    std::cout << "El ordenamiento topologico del grafo es: ";
+    g2->topologicalSort();
+    g2->bipartiteGraph() ? std::cout << "\n\nEl grafo es bipartita\n" : std::cout << "\n\nEl grafo no es bipartita\n";
+    std::cout << "\n";
 
-    std::cout << "\n=================== Tercer Grafo ===================\n";
+    std::cout << "\n======================== Tercer Grafo ========================\n";
     Graph *g3 = new Graph(); // isnt a tree
     std::vector <std::pair<int, int>> edges3 = {{0,1}, {1,2}, {2,0}}; 
     g3->loadGraph(3, 3, edges3);
     g3->print();
-    g3->isTree() ? std::cout << "Yes\n" : std::cout << "No\n";
+    g3->isTree() ? std::cout << "El grafo es un árbol\n\n" : std::cout << "El grafo no es un árbol\n\n";
+    std::cout << "El ordenamiento topologico del grafo es: ";
+    g3->topologicalSort();
+    g3->bipartiteGraph() ? std::cout << "\n\nEl grafo es bipartita\n" : std::cout << "\n\nEl grafo no es bipartita\n";
+    std::cout << "\n";
     
-    std::cout << "\n=================== Cuarto Grafo ===================\n";
+    std::cout << "\n======================== Cuarto Grafo ========================\n";
     Graph *g4 = new Graph(); // is a tree
     std::vector <std::pair<int, int>> edges4 = {{0,1}, {0,2}, {1,3}, {1,4}, {4,5}, {4,6}, {2,7}, {7,8}}; 
     g4->loadGraph(9, 8, edges4);
-    g4->print();
-    g4->isTree() ? std::cout << "Yes\n" : std::cout << "No\n";
+    g3->print();
+    g3->isTree() ? std::cout << "El grafo es un árbol\n\n" : std::cout << "El grafo no es un árbol\n\n";
+    std::cout << "El ordenamiento topologico del grafo es: ";
+    g3->topologicalSort();
+    g3->bipartiteGraph() ? std::cout << "\n\nEl grafo es bipartita\n" : std::cout << "\n\nEl grafo no es bipartita\n";
+    std::cout << "\n";
     
     
     /*
