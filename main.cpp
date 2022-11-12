@@ -450,28 +450,6 @@ int main()
     g4->bipartiteGraph() ? std::cout << "\n\nEl grafo es bipartita\n" : std::cout << "\n\nEl grafo no es bipartita\n";
     std::cout << "\n";
     
-    
-    /*
-    Graph *g1 = new Graph();
-    std::vector <std::pair<int, int>> edges = {{1,0}, {0,2}, {0,3}, {3,4}}; 
-    g1->loadGraph(5,4,edges);
-    g1->print();
-    g1->isTree()? std::cout << "Graph is Tree\n": std::cout << "Graph is not Tree\n";
-
-    Graph *g2 = new Graph();
-    std::vector <std::pair<int, int>> edges2 = {{1,0}, {0,2}, {2,1}, {0,3}, {3,4}}; 
-    g2->loadGraph(5,5,edges2);
-    g2->print();
-    g2->isTree()? std::cout << "Graph is Tree\n": std::cout << "Graph is not Tree\n";
-    */
-
-    /*std::cout << "\n=================== Big Tree Test ===================\n";
-    Graph *g = new Graph();
-    std::vector <std::pair<int, int>> edges = {{0,2}, {2,1}, {2,3}, {3,5}, {3,12}, {5,4}, {5,9}, {9,7}, {9,10}, {7,6}, {7,8}, {12,11}, {12,13}, {13,14}, {13,15}, {15,16}, {15,17}}; 
-    g->loadGraph(18, 17, edges);
-    g->print();
-    g->isTree() ? std::cout << "Yes" : std::cout << "No";*/
-    
 }
 
 /*
