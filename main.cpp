@@ -294,6 +294,83 @@ public:
         return isConnected() && numEdges == numVertex - 1;
     } 
 
+    bool topologicalSortCheck() {
+        // Create a vector to store
+        // indegrees of all
+        // vertices. Initialize all
+        // indegrees as 0.
+        std::vector<int> in_degree(numVertex, 0);
+    
+        // Traverse adjacency lists
+        // to fill indegrees of
+        // vertices.  This step
+        // takes O(V+E) time
+        for (int u = 0; u < numVertex; u++) {
+            std::vector<int>::iterator itr;
+            for (itr = adjList[u].begin();itr != adjList[u].end(); itr++) {
+                in_degree[*itr]++;
+            }
+        }
+    
+        // Create an queue and enqueue
+        // all vertices with indegree 0
+        std::queue<int> q;
+        for (int i = 0; i < numVertex; i++) {
+            if (in_degree[i] == 0) {
+                q.push(i);
+            }
+        }
+
+    
+        // Initialize count of visited vertices
+        int cnt = 0;
+    
+        // Create a vector to store
+        // result (A topological
+        // ordering of the vertices)
+        std::vector<int> top_order;
+    
+        // One by one dequeue vertices
+        // from queue and enqueue
+        // adjacents if indegree of
+        // adjacent becomes 0
+        while (!q.empty()) {
+            // Extract front of queue
+            // (or perform dequeue)
+            // and add it to topological order
+            int u = q.front();
+            q.pop();
+            top_order.push_back(u);
+    
+            // Iterate through all its
+            // neighbouring nodes
+            // of dequeued node u and
+            // decrease their in-degree
+            // by 1
+            std::vector<int>::iterator itr;
+            for (itr = adjList[u].begin(); itr != adjList[u].end(); itr++) {
+                // If in-degree becomes zero,
+                // add it to queue
+                if (--in_degree[*itr] == 0) {
+                    q.push(*itr);
+                }
+            }
+
+            cnt++;
+
+        }
+
+        // Check if there was a cycle
+        if (cnt != numVertex) {
+            std::cout << "There exists a cycle in the graph\n";
+            return false;
+        }
+
+        return true;
+    
+    }
+
+
 };
 
 int main()
@@ -327,14 +404,14 @@ int main()
     g2->loadGraph(3, 3, edges2);
     //std::cout << g->isTree() << "\n";
     g2->print();
-    g2->isTree() ? std::cout << "Yes" : std::cout << "No";
+    g2->topologicalSortCheck() ? std::cout << "Yes" : std::cout << "No";
     
     std::cout << "\n=================== Is Tree ===================\n";
     Graph *g = new Graph();
     std::vector <std::pair<int, int>> edges = {{0,1}, {0,2}, {1,3}, {1,4}, {4,5}, {4,6}, {2,7}, {7,8}}; 
     g->loadGraph(9, 8, edges);
     g->print();
-    g->isTree() ? std::cout << "Yes" : std::cout << "No";
+    g->topologicalSortCheck() ? std::cout << "Yes" : std::cout << "No";
     
     
     
@@ -367,5 +444,7 @@ Referencias:
     GeeksforGeeks. (2022). Topological Sorting. https://www.geeksforgeeks.org/topological-sorting.
 
     GeeksforGeeks. (2022). Check whether a given graph is Bipartite or not. https://www.geeksforgeeks.org/bipartite-graph.
+
+    GeeksforGeeks. (2022). Kahn's algorithm for Topological Sorting. https://www.geeksforgeeks.org/topological-sorting-indegree-based-solution.
 
 */
