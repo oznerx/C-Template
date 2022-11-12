@@ -99,7 +99,6 @@ private:
     void _DFS(int a) {
 
         visited[a] = true;
-        std::cout << a << " ";
     
         std::vector<int>::iterator i;
         for (i = adjList[a].begin(); i != adjList[a].end(); ++i) {
@@ -124,10 +123,6 @@ private:
         clearVisited();
     
         _DFS(0);    
-
-        for (int i = 0; i < numVertex; i++) {
-            std::cout << visited[i] << "\n";
-        }
 
         for (int i = 0; i < numVertex; i++) {
             
@@ -199,7 +194,7 @@ public:
     */
     void print() {
 
-        std::cout << "\nLa lista se creó con la siguiente estructura:\n";
+        std::cout << "\nLa lista de adyacencia se creó con la siguiente estructura:\n\n";
         
         for (auto i : adjList) {
 
@@ -411,38 +406,37 @@ public:
 int main()
 {
 
-    
-    std::cout << "\n=================== Topological Sort ===================\n";
-    Graph *g1 = new Graph();
+    std::cout << "\n=================== Primer Grafo ===================\n";
+    Graph *g1 = new Graph(); // Topological sort
     std::vector <std::pair<int, int>> edges1 = {{5,2}, {5,0}, {4,0}, {4,1}, {2,3}, {3,1}}; 
     g1->loadGraph(6, 6, edges1);
     g1->print();
+    g1->isTree() ? std::cout << "El grafo es un árbol\n\n" : std::cout << "El grafo no es un árbol\n\n";
+    std::cout << "El ordenamiento topologico del grafo es: ";
     g1->topologicalSort();
+    g1->bipartiteGraph() ? std::cout << "\n\nEl grafo es bipartita\n" : std::cout << "\n\nEl grafo no es bipartita\n";
     std::cout << "\n";
     
-    std::cout << "\n=================== Is Bipartite ===================\n";
-    Graph *g2 = new Graph();
+    std::cout << "\n=================== Segundo Grafo ===================\n";
+    Graph *g2 = new Graph(); // is bipartite
     std::vector <std::pair<int, int>> edges2 = {{0,1}, {0,3}, {1,0}, {1,2}, {2,1}, {2,3}, {3,0}, {3,2}}; 
     g2->loadGraph(4, 8, edges2);
-    std::cout << g2->bipartiteGraph() << "\n";
     g2->print();
-    g2->bipartiteGraph() ? std::cout << "Yes" : std::cout << "No";
-    
+    g2->bipartiteGraph() ? std::cout << "Yes\n" : std::cout << "No\n";
 
-    std::cout << "\n=================== Isn't Tree ===================\n";
-    Graph *g3 = new Graph();
+    std::cout << "\n=================== Tercer Grafo ===================\n";
+    Graph *g3 = new Graph(); // isnt a tree
     std::vector <std::pair<int, int>> edges3 = {{0,1}, {1,2}, {2,0}}; 
     g3->loadGraph(3, 3, edges3);
     g3->print();
-    g3->isTree() ? std::cout << "Yes" : std::cout << "No";
+    g3->isTree() ? std::cout << "Yes\n" : std::cout << "No\n";
     
-    std::cout << "\n=================== Is Tree ===================\n";
-    Graph *g = new Graph();
-    std::vector <std::pair<int, int>> edges = {{0,1}, {0,2}, {1,3}, {1,4}, {4,5}, {4,6}, {2,7}, {7,8}}; 
-    g->loadGraph(9, 8, edges);
-    g->print();
-    g->topologicalSortCheck() ? std::cout << "Yes" : std::cout << "No";
-    
+    std::cout << "\n=================== Cuarto Grafo ===================\n";
+    Graph *g4 = new Graph(); // is a tree
+    std::vector <std::pair<int, int>> edges4 = {{0,1}, {0,2}, {1,3}, {1,4}, {4,5}, {4,6}, {2,7}, {7,8}}; 
+    g4->loadGraph(9, 8, edges4);
+    g4->print();
+    g4->isTree() ? std::cout << "Yes\n" : std::cout << "No\n";
     
     
     /*
