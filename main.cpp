@@ -114,7 +114,7 @@ private:
     /*
     Verifica que el grafo esté conectado
     @Param: nada
-    Salida: nada
+    Salida: (bool) si el grafo está conectado
     Complejidad de tiempo: O(V + E)
     Complejidad de espacio: O(V)
     */
@@ -211,7 +211,14 @@ public:
         std::cout << "\n";
 
     }
-    
+
+    /*
+    Ordena nodos de manera topologica    
+    @Param: nada
+    Salida: nada
+    Complejidad de tiempo: O(V + E)
+    Complejidad de espacio: O(V) 
+    */
     void topologicalSort() {
 
         std::vector<int> in_degree(numVertex, 0);
@@ -326,7 +333,7 @@ public:
 
     /*
     Verifica que el Grafo Dirigido (DAG) puede ser representado como Grafo bipartita.    
-    @Param: (int current) nodo actual en el que se encuentra
+    @Param: nada
     Salida: nada
     Complejidad de tiempo: O(V + E)
     Complejidad de espacio: O(V) 
@@ -377,7 +384,7 @@ public:
 
     /*
     Ordena nodos de manera topologica   
-    @Param: (int current) nodo actual en el que se encuentra
+    @Param: nada
     Salida: nada
     Complejidad de tiempo: O(V + E)
     Complejidad de espacio: O(V) 
