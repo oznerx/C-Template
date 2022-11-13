@@ -67,20 +67,20 @@ private:
     }
 
     /*
-    Ordena en forma ascendente los datos con el método de Merge    
+    Ordena nodos de manera topologica
     @Param: (int current) nodo actual en el que se encuentra
     Salida: nada
     Complejidad de tiempo: O(V + E)
     Complejidad de espacio: O(V) 
     */
-    void _topologicalSort(int current) {
+    void _topologicalSort2(int current) {
 
         visited[current] = true;
 
         for (auto i = adjList[current].begin(); i != adjList[current].end(); ++i) {
 
             if (!visited[*i]) {
-                _topologicalSort(*i);
+                _topologicalSort2(*i);
             }
 
         }
@@ -149,8 +149,8 @@ public:
     Carga los arcos del grafo, los almacena en una Matriz de Adjacencia y en una Lista de Adjacencia
     @Param:(int n) Cantidad de Vertices, (int m) Cantidad de Arcos
     Salida: nada
-    Complejidad de tiempo: O(V^2)
-    Complejidad de espacio: O(V) 
+    Complejidad de tiempo: O(V + E)
+    Complejidad de espacio: O(V + E) 
     */
     void loadGraph(int n, int m, std::vector <std::pair<int, int>> edges) {
 
@@ -211,6 +211,118 @@ public:
         std::cout << "\n";
 
     }
+    
+    void topologicalSort() {
+
+        std::vector<int> in_degree(numVertex, 0);
+    
+        for (int u = 0; u < numVertex; u++) {
+            std::vector<int>::iterator itr;
+            for (itr = adjList[u].begin();itr != adjList[u].end(); itr++) {
+                in_degree[*itr]++;
+            }
+        }
+    
+        std::queue<int> q;
+        for (int i = 0; i < numVertex; i++) {
+            if (in_degree[i] == 0) {
+                q.push(i);
+            }
+        }
+
+        int cnt = 0;
+    
+        std::vector<int> top_order;
+    
+        while (!q.empty()) {
+
+            int u = q.front();
+            q.pop();
+            top_order.push_back(u);
+    
+            std::vector<int>::iterator itr;
+            for (itr = adjList[u].begin(); itr != adjList[u].end(); itr++) {
+
+                if (--in_degree[*itr] == 0) {
+                    q.push(*itr);
+                }
+
+            }
+
+            cnt++;
+
+        }
+
+        if (cnt != numVertex) {
+            std::cout << "Hay un ciclo en el grafo\n";
+            return;
+        }
+
+        // Print topological order
+        for (int i = 0; i < top_order.size(); i++) {
+            std::cout << top_order[i] << " ";
+        }
+
+        std::cout << std::endl;
+    
+    }
+    
+    /*
+    Verifica que el Grafo Dirigido (DAG) es un árbol utilizando ordenación topológica
+    @Param: nada
+    Salida: (bool) si el árbol está conectado
+    Complejidad de tiempo: O(V + E)
+    Complejidad de espacio: O(V) 
+    */
+    bool topologicalSortCheck() {
+
+        std::vector<int> in_degree(numVertex, 0);
+    
+        for (int u = 0; u < numVertex; u++) {
+            std::vector<int>::iterator itr;
+            for (itr = adjList[u].begin();itr != adjList[u].end(); itr++) {
+                in_degree[*itr]++;
+            }
+        }
+    
+        std::queue<int> q;
+        for (int i = 0; i < numVertex; i++) {
+            if (in_degree[i] == 0) {
+                q.push(i);
+            }
+        }
+
+        int cnt = 0;
+    
+        std::vector<int> top_order;
+    
+        while (!q.empty()) {
+
+            int u = q.front();
+            q.pop();
+            top_order.push_back(u);
+    
+            std::vector<int>::iterator itr;
+            for (itr = adjList[u].begin(); itr != adjList[u].end(); itr++) {
+
+                if (--in_degree[*itr] == 0) {
+                    q.push(*itr);
+                }
+
+            }
+
+            cnt++;
+
+        }
+
+        if (cnt != numVertex) {
+            std::cout << "Hay un ciclo en el grafo\n";
+            return false;
+        }
+
+        return true;
+    
+    }
 
     /*
     Verifica que el Grafo Dirigido (DAG) puede ser representado como Grafo bipartita.    
@@ -264,20 +376,20 @@ public:
     }
 
     /*
-    Ordena en forma ascendente los datos con el método de Merge    
+    Ordena nodos de manera topologica   
     @Param: (int current) nodo actual en el que se encuentra
     Salida: nada
     Complejidad de tiempo: O(V + E)
     Complejidad de espacio: O(V) 
     */
-    void topologicalSort() {
- 
+    void topologicalSort2() {
+
         clearVisited();
 
         for (int i = 0; i < numVertex; i++) {
 
             if (visited[i] == false) {
-                _topologicalSort(i);
+                _topologicalSort2(i);
             }
 
         }
@@ -287,8 +399,9 @@ public:
             stack.pop();
         }
 
-    }
+        std::cout << "\n";
 
+    }
 
     /*
     Verifica que el Grafo Dirigido (DAG) es un árbol
@@ -298,66 +411,8 @@ public:
     Complejidad de espacio: O(V) 
     */
     bool isTree() {
-        return isConnected() && numEdges == numVertex - 1;
+        return isConnected() && (numEdges == numVertex - 1) && topologicalSortCheck();
     } 
-
-    /*
-    Verifica que el Grafo Dirigido (DAG) es un árbol utilizando ordenación topológica
-    @Param: nada
-    Salida: nada
-    Complejidad de tiempo: O(V + E)
-    Complejidad de espacio: O(V) 
-    */
-    bool topologicalSortCheck() {
-
-        std::vector<int> in_degree(numVertex, 0);
-    
-        for (int u = 0; u < numVertex; u++) {
-            std::vector<int>::iterator itr;
-            for (itr = adjList[u].begin();itr != adjList[u].end(); itr++) {
-                in_degree[*itr]++;
-            }
-        }
-    
-        std::queue<int> q;
-        for (int i = 0; i < numVertex; i++) {
-            if (in_degree[i] == 0) {
-                q.push(i);
-            }
-        }
-
-        int cnt = 0;
-    
-        std::vector<int> top_order;
-    
-        while (!q.empty()) {
-
-            int u = q.front();
-            q.pop();
-            top_order.push_back(u);
-    
-            std::vector<int>::iterator itr;
-            for (itr = adjList[u].begin(); itr != adjList[u].end(); itr++) {
-
-                if (--in_degree[*itr] == 0) {
-                    q.push(*itr);
-                }
-
-            }
-
-            cnt++;
-
-        }
-
-        if (cnt != numVertex) {
-            std::cout << "There exists a cycle in the graph\n";
-            return false;
-        }
-
-        return true;
-    
-    }
-
 
 };
 
@@ -372,7 +427,7 @@ int main()
     g1->isTree() ? std::cout << "El grafo es un árbol\n\n" : std::cout << "El grafo no es un árbol\n\n";
     std::cout << "El ordenamiento topologico del grafo es: ";
     g1->topologicalSort();
-    g1->bipartiteGraph() ? std::cout << "\n\nEl grafo es bipartita\n" : std::cout << "\n\nEl grafo no es bipartita\n";
+    g1->bipartiteGraph() ? std::cout << "\nEl grafo es bipartita\n" : std::cout << "\nEl grafo no es bipartita\n";
     std::cout << "\n";
     
     std::cout << "\n======================== Segundo Grafo ========================\n";
@@ -383,7 +438,7 @@ int main()
     g2->isTree() ? std::cout << "El grafo es un árbol\n\n" : std::cout << "El grafo no es un árbol\n\n";
     std::cout << "El ordenamiento topologico del grafo es: ";
     g2->topologicalSort();
-    g2->bipartiteGraph() ? std::cout << "\n\nEl grafo es bipartita\n" : std::cout << "\n\nEl grafo no es bipartita\n";
+    g2->bipartiteGraph() ? std::cout << "\nEl grafo es bipartita\n" : std::cout << "\nEl grafo no es bipartita\n";
     std::cout << "\n";
 
     std::cout << "\n======================== Tercer Grafo ========================\n";
@@ -394,7 +449,7 @@ int main()
     g3->isTree() ? std::cout << "El grafo es un árbol\n\n" : std::cout << "El grafo no es un árbol\n\n";
     std::cout << "El ordenamiento topologico del grafo es: ";
     g3->topologicalSort();
-    g3->bipartiteGraph() ? std::cout << "\n\nEl grafo es bipartita\n" : std::cout << "\n\nEl grafo no es bipartita\n";
+    g3->bipartiteGraph() ? std::cout << "\nEl grafo es bipartita\n" : std::cout << "\nEl grafo no es bipartita\n";
     std::cout << "\n";
     
     std::cout << "\n======================== Cuarto Grafo ========================\n";
@@ -405,9 +460,9 @@ int main()
     g4->isTree() ? std::cout << "El grafo es un árbol\n\n" : std::cout << "El grafo no es un árbol\n\n";
     std::cout << "El ordenamiento topologico del grafo es: ";
     g4->topologicalSort();
-    g4->bipartiteGraph() ? std::cout << "\n\nEl grafo es bipartita\n" : std::cout << "\n\nEl grafo no es bipartita\n";
+    g4->bipartiteGraph() ? std::cout << "\nEl grafo es bipartita\n" : std::cout << "\nEl grafo no es bipartita\n";
     std::cout << "\n";
-    
+
 }
 
 /*
