@@ -1,484 +1,177 @@
-#include <iostream>
-#include <fstream>
-#include <unordered_set>
-#include <vector>
-#include <unordered_map>
-#include <map>
-#include <stack>
-#include <queue>
+/* 
+========================================================================================================
+								Pedro Alonso Moreno Salcedo, A01741437
+								Juan Carlos Hernández Ríos, A01740821
+								Ozner Axel Leyva Mariscal, A01742377
 
-/*
-Ozner Axel Leyva Mariscal
-A01742377
-9 de Noviembre del 2022
-En este código se implementará un grafo direccionado asi como algunas de sus funcionalidades como el recorrido por DFS y BFS. 
+This program simulates the propagation of a virus using graphs, and it determines the node that infects
+the most people given a period of time. Then it tests this algorithm using varios test cases. 
+
+									Made on November 17th 2022
+========================================================================================================
 */
 
-class Graph {
-private:
-
-    int numVertex;
-    int numEdges;
-    int currentEdges;
-    std::map<int, bool> visited;
-    std::map<int, std::vector<int>> adjList;
-    std::stack<int> stack; 
-
-    /*
-    Carga una lista de adjacencia
-    @Param: nada
-    Salida: nada
-    Complejidad de tiempo: O(V)
-    Complejidad de espacio: O(V) 
-    */
-    void loadList() {
-
-        for (int i = 0; i < numVertex; i++) {
-            std::vector<int> temp;
-            adjList.emplace(i, temp);
-        }
-
-    } 
-
-    /*
-    Agrega un arco entre 2 vértices de una lista de adjacencia
-    @Param: (int a) vértice al cual se le va a agregar la conexión , (int b) vértice el cual será conectado
-    Salida: nada
-    Complejidad de tiempo: O(1)
-    Complejidad de espacio: O(1) 
-    */
-    void addEdgeToList(int a, int b) {
-        adjList[a].push_back(b); 
-    }
-
-    /*
-    Establece todos los nodos como a "no visitados"
-    @Param: nada
-    Salida: nada
-    Complejidad de tiempo: O(V)
-    Complejidad de espacio: O(1) 
-    */
-    void clearVisited() {
-
-        for (int i = 0; i < visited.size() ;i++) {
-            visited[i] = false;
-        }
-
-    }
-
-    /*
-    Ordena nodos de manera topologica
-    @Param: (int current) nodo actual en el que se encuentra
-    Salida: nada
-    Complejidad de tiempo: O(V + E)
-    Complejidad de espacio: O(V) 
-    */
-    void _topologicalSort2(int current) {
-
-        visited[current] = true;
-
-        for (auto i = adjList[current].begin(); i != adjList[current].end(); ++i) {
-
-            if (!visited[*i]) {
-                _topologicalSort2(*i);
-            }
-
-        }
-
-        stack.push(current);
-    
-    }
-
-    /*
-    Imprime el Recorrido de DFS de una lista de adjacencia a partir de un nodo inicial
-    @Param: (int a) nodo inicial
-    Salida: nada
-    Complejidad de tiempo: O(V + E)
-    Complejidad de espacio: O(V) 
-    */
-    void _DFS(int a) {
-
-        visited[a] = true;
-    
-        std::vector<int>::iterator i;
-        for (i = adjList[a].begin(); i != adjList[a].end(); ++i) {
-
-            if (!visited[*i]) {
-                _DFS(*i);
-            }
-                
-        }
-            
-    }
-
-    /*
-    Verifica que el grafo esté conectado
-    @Param: nada
-    Salida: (bool) si el grafo está conectado
-    Complejidad de tiempo: O(V + E)
-    Complejidad de espacio: O(V)
-    */
-    bool isConnected() {
-        
-        clearVisited();
-    
-        _DFS(0);    
-
-        for (int i = 0; i < numVertex; i++) {
-            
-            if (!visited[i]) {
-                return false;
-            }
-
-        }
-
-        return true;
-
-    }
-
-public:
-
-    /* Constructor de la clase de grafo */
-    Graph() {
-        int numVertex = 0;
-        int numEdges = 0;
-        int currentEdges = 0;
-    }
-
-    /*
-    Carga los arcos del grafo, los almacena en una Matriz de Adjacencia y en una Lista de Adjacencia
-    @Param:(int n) Cantidad de Vertices, (int m) Cantidad de Arcos
-    Salida: nada
-    Complejidad de tiempo: O(V + E)
-    Complejidad de espacio: O(V + E) 
-    */
-    void loadGraph(int n, int m, std::vector <std::pair<int, int>> edges) {
-
-        this->numVertex = n;
-        this->numEdges = m;
-        loadList();
-
-        for (int i = 0; i < edges.size() ; i++) {
-            addEdge(edges[i].first, edges[i].second);
-        }
-
-    }
-
-    /*
-    Agrega un arco entre 2 vertices
-    @Param: (int a) vertice al cual se le va a agregar la conexión , (int b) vertice el cual será conectado
-    Salida: nada
-    Complejidad de tiempo: O(1)
-    Complejidad de espacio: O(1) 
-    */
-    void addEdge(int a, int b) {
-
-        if (currentEdges < numEdges) {
-            currentEdges++;
-            addEdgeToList(a, b);
-        }
-
-        else {
-            std::cout << "Numero de conexiones máximo alcanzado\n";
-            return;
-        }
-        
-    }
-
-    /*
-    Imprime una idea general de la lista de adjacencia del grafo creado
-    @Param: nada
-    Salida: nada
-    Complejidad de tiempo: O(V + E)
-    Complejidad de espacio: O(1) 
-    */
-    void print() {
-
-        std::cout << "\nLa lista de adyacencia se creó con la siguiente estructura:\n\n";
-        
-        for (auto i : adjList) {
-
-            std::cout << i.first << " : ";
-
-            for (auto j : i.second) {
-                std::cout << j << " ";
-            }
-
-            std::cout << "\n";
-
-        }
-
-        std::cout << "\n";
-
-    }
-
-    /*
-    Ordena nodos de manera topologica    
-    @Param: nada
-    Salida: nada
-    Complejidad de tiempo: O(V + E)
-    Complejidad de espacio: O(V) 
-    */
-    void topologicalSort() {
-
-        std::vector<int> in_degree(numVertex, 0);
-    
-        for (int u = 0; u < numVertex; u++) {
-            std::vector<int>::iterator itr;
-            for (itr = adjList[u].begin();itr != adjList[u].end(); itr++) {
-                in_degree[*itr]++;
-            }
-        }
-    
-        std::queue<int> q;
-        for (int i = 0; i < numVertex; i++) {
-            if (in_degree[i] == 0) {
-                q.push(i);
-            }
-        }
-
-        int cnt = 0;
-    
-        std::vector<int> top_order;
-    
-        while (!q.empty()) {
-
-            int u = q.front();
-            q.pop();
-            top_order.push_back(u);
-    
-            std::vector<int>::iterator itr;
-            for (itr = adjList[u].begin(); itr != adjList[u].end(); itr++) {
-
-                if (--in_degree[*itr] == 0) {
-                    q.push(*itr);
-                }
-
-            }
-
-            cnt++;
-
-        }
-
-        if (cnt != numVertex) {
-            std::cout << "Hay un ciclo en el grafo\n";
-            return;
-        }
-
-        // Print topological order
-        for (int i = 0; i < top_order.size(); i++) {
-            std::cout << top_order[i] << " ";
-        }
-
-        std::cout << std::endl;
-    
-    }
-    
-    /*
-    Verifica que el Grafo Dirigido (DAG) es un árbol utilizando ordenación topológica
-    @Param: nada
-    Salida: (bool) si el árbol está conectado
-    Complejidad de tiempo: O(V + E)
-    Complejidad de espacio: O(V) 
-    */
-    bool topologicalSortCheck() {
-
-        std::vector<int> in_degree(numVertex, 0);
-    
-        for (int u = 0; u < numVertex; u++) {
-            std::vector<int>::iterator itr;
-            for (itr = adjList[u].begin();itr != adjList[u].end(); itr++) {
-                in_degree[*itr]++;
-            }
-        }
-    
-        std::queue<int> q;
-        for (int i = 0; i < numVertex; i++) {
-            if (in_degree[i] == 0) {
-                q.push(i);
-            }
-        }
-
-        int cnt = 0;
-    
-        std::vector<int> top_order;
-    
-        while (!q.empty()) {
-
-            int u = q.front();
-            q.pop();
-            top_order.push_back(u);
-    
-            std::vector<int>::iterator itr;
-            for (itr = adjList[u].begin(); itr != adjList[u].end(); itr++) {
-
-                if (--in_degree[*itr] == 0) {
-                    q.push(*itr);
-                }
-
-            }
-
-            cnt++;
-
-        }
-
-        if (cnt != numVertex) {
-            std::cout << "Hay un ciclo en el grafo\n";
-            return false;
-        }
-
-        return true;
-    
-    }
-
-    /*
-    Verifica que el Grafo Dirigido (DAG) puede ser representado como Grafo bipartita.    
-    @Param: nada
-    Salida: nada
-    Complejidad de tiempo: O(V + E)
-    Complejidad de espacio: O(V) 
-    */
-    bool bipartiteGraph() { 
-
-        std::vector<int> color(numVertex, -1);
-    
-        std::queue<std::pair<int, int> > q;
-    
-        for (int i = 0; i < numVertex; i++) {
-        
-            if (color[i] == -1) {
-            
-                q.push({ i, 0 });
-                color[i] = 0;
-            
-                while (!q.empty()) {
-
-                    std::pair<int, int> p = q.front();
-                    q.pop();
-                
-                    int v = p.first;
-                    int c = p.second;
-                    
-                    for (int j : adjList[v]) {
-                    
-                        if (color[j] == c) {
-                            return 0;
-                        }
-                    
-                        if (color[j] == -1) {
-                            color[j] = (c) ? 0 : 1;
-                            q.push({ j, color[j] });
-                        }
-
-                    }
-
-                }
-
-            }
-
-        }
-
-        return 1;
-
-    }
-
-    /*
-    Ordena nodos de manera topologica   
-    @Param: nada
-    Salida: nada
-    Complejidad de tiempo: O(V + E)
-    Complejidad de espacio: O(V) 
-    */
-    void topologicalSort2() {
-
-        clearVisited();
-
-        for (int i = 0; i < numVertex; i++) {
-
-            if (visited[i] == false) {
-                _topologicalSort2(i);
-            }
-
-        }
-
-        while (stack.empty() == false) {
-            std::cout << stack.top() << " ";
-            stack.pop();
-        }
-
-        std::cout << "\n";
-
-    }
-
-    /*
-    Verifica que el Grafo Dirigido (DAG) es un árbol
-    @Param: nada
-    Salida: nada
-    Complejidad de tiempo: O(V + E)
-    Complejidad de espacio: O(V) 
-    */
-    bool isTree() {
-        return isConnected() && (numEdges == numVertex - 1) && topologicalSortCheck();
-    } 
-
+// To compile use: g++ -std=c++17 main.cpp -o main
+
+#include <iostream>
+#include <vector>
+#include <queue>
+
+using namespace std;
+
+class Edge {
+	int from;
+	int to;
+
+	public:
+		Edge(int from, int to) {
+			this->from = from;
+			this->to = to;
+		}
+
+		int getFrom() {
+			return from;
+		}
+
+		int getTo() {
+			return to;
+		}
 };
 
-int main()
-{
+class Graph {
+	vector<vector<int>> adjacencyList; // Graph representation
+	int t; // Time units available
 
-    std::cout << "\n======================== Primer Grafo ========================\n";
-    Graph *g1 = new Graph();
-    std::vector <std::pair<int, int>> edges1 = {{5,2}, {5,0}, {4,0}, {4,1}, {2,3}, {3,1}}; 
-    g1->loadGraph(6, 6, edges1);
-    g1->print();
-    g1->isTree() ? std::cout << "El grafo es un árbol\n\n" : std::cout << "El grafo no es un árbol\n\n";
-    std::cout << "El ordenamiento topologico del grafo es: ";
-    g1->topologicalSort();
-    g1->bipartiteGraph() ? std::cout << "\nEl grafo es bipartita\n" : std::cout << "\nEl grafo no es bipartita\n";
-    std::cout << "\n";
-    
-    std::cout << "\n======================== Segundo Grafo ========================\n";
-    Graph *g2 = new Graph(); 
-    std::vector <std::pair<int, int>> edges2 = {{0,1}, {0,3}, {1,0}, {1,2}, {2,1}, {2,3}, {3,0}, {3,2}}; 
-    g2->loadGraph(4, 8, edges2);
-    g2->print();
-    g2->isTree() ? std::cout << "El grafo es un árbol\n\n" : std::cout << "El grafo no es un árbol\n\n";
-    std::cout << "El ordenamiento topologico del grafo es: ";
-    g2->topologicalSort();
-    g2->bipartiteGraph() ? std::cout << "\nEl grafo es bipartita\n" : std::cout << "\nEl grafo no es bipartita\n";
-    std::cout << "\n";
+	public:
 
-    std::cout << "\n======================== Tercer Grafo ========================\n";
-    Graph *g3 = new Graph(); 
-    std::vector <std::pair<int, int>> edges3 = {{0,1}, {1,2}, {2,0}}; 
-    g3->loadGraph(3, 3, edges3);
-    g3->print();
-    g3->isTree() ? std::cout << "El grafo es un árbol\n\n" : std::cout << "El grafo no es un árbol\n\n";
-    std::cout << "El ordenamiento topologico del grafo es: ";
-    g3->topologicalSort();
-    g3->bipartiteGraph() ? std::cout << "\nEl grafo es bipartita\n" : std::cout << "\nEl grafo no es bipartita\n";
-    std::cout << "\n";
-    
-    std::cout << "\n======================== Cuarto Grafo ========================\n";
-    Graph *g4 = new Graph();
-    std::vector <std::pair<int, int>> edges4 = {{0,1}, {0,2}, {1,3}, {1,4}, {4,5}, {4,6}, {2,7}, {7,8}}; 
-    g4->loadGraph(9, 8, edges4);
-    g4->print();
-    g4->isTree() ? std::cout << "El grafo es un árbol\n\n" : std::cout << "El grafo no es un árbol\n\n";
-    std::cout << "El ordenamiento topologico del grafo es: ";
-    g4->topologicalSort();
-    g4->bipartiteGraph() ? std::cout << "\nEl grafo es bipartita\n" : std::cout << "\nEl grafo no es bipartita\n";
-    std::cout << "\n";
+		/* 
+			Load the graph contents into an adjacency list.
+			This function should only be executed once per graph.
+	
+			Time complexity: O(n + e) where n is the number of nodes in the graph,
+			and e is the number of edges in the graph
+			Space complexity: O(n + e) (assuming the adjacency list could be empty)
+			
+			Param: integers n, e for number of nodes and edges, and array of edges of size e.
+			integer t for the propagation time units available.
+			The values of the edges must be from 0 until n-1 (inclusive). There should not be
+			edge duplicates.
+			Return: no return
+		*/
+	
+		Graph(int n, int e, int t, Edge edges[]) {
+			// Setting t
+			this->t = t;
+			
+			// Ensure capacity
+			while(adjacencyList.size() < n) {
+				vector<int> row;
+				adjacencyList.push_back(row);
+			}
+			
+			for(int i = 0; i < e; i++) {
+				Edge edge = edges[i];
+				
+				int from = edge.getFrom();
+				int to = edge.getTo();
+				
+				// Add edge to adjacency list
+				adjacencyList[from].push_back(to);
+			}
+		}
 
+		/* 
+			?
+	
+			Time complexity: ?
+			Space complexity: ?
+			
+			Param: ?
+			Return: ?
+		*/
+
+		int getInfectedNodes(int startNode) {
+			// Keep track of the infected nodes
+			int n = adjacencyList.size();
+			vector<bool> infected(n, false);
+			int infectedCount = 0;
+
+			// Prepare the bfs search
+			queue<int> queue;
+			queue.push(startNode);
+			infected[startNode] = true;
+
+			// Keep track of the level we are in bfs
+			int level = 0;
+
+			while(!queue.empty()) {
+				int currentNode = queue.front();
+				queue.pop();
+
+				for(int neighbor : adjacencyList[currentNode]) {
+					// If we haven't infected it, then we add it to the queue
+					if(!infected[startNode]) {
+						queue.push(neighbor);
+						// Mark as infected so we don't infect it twice
+						infected[startNode] = true;
+						// Increase counter
+						infectedCount++;
+					}
+				}
+			}
+
+			// Return the number of infected nodes
+			return infectedCount;
+		}
+
+		/* 
+			Get the start node that would infect the most amount of distinct nodes.
+	
+			Time complexity: ?
+			Space complexity: ?
+			
+			Param: ?
+			Return: an integer representing the node, or -1 if not found
+		*/
+
+		int greatestPropagationNode() {
+			int n = adjacencyList.size();
+			
+			// Initialize as negative values
+			int greatestAmountInfected = -1;
+			int greatestPropagationNode = -1;
+
+			for(int i = 0; i < n; i++) {
+				int amountInfected = getInfectedNodes(i);
+				
+				// Keep track of the node with the greatest propagation
+				if(amountInfected > greatestAmountInfected) {
+					greatestAmountInfected = amountInfected;
+					greatestPropagationNode = i;
+				}
+			}
+			
+			return greatestPropagationNode;
+		}
+};
+
+int main() {
+	cout << "Test #1" << "\n";
+	Edge edges[] = {
+		{0, 1},
+	};
+	
+	/*
+		0-1
+	*/
+	Graph graph(1,1,1,edges);
+	
+	// Nota: poner el caso de prueba de otro equipo
 }
 
 /*
-Referencias: 
+References:
 
-    GeeksforGeeks. (2022). Topological Sorting. https://www.geeksforgeeks.org/topological-sorting.
-
-    GeeksforGeeks. (2022). Check whether a given graph is Bipartite or not. https://www.geeksforgeeks.org/bipartite-graph.
-
-    GeeksforGeeks. (2022). Kahn's algorithm for Topological Sorting. https://www.geeksforgeeks.org/topological-sorting-indegree-based-solution.
+    Moreno, P. (2022). Act 4.2 - Grafos: Algoritmos complementarios. Canvas. Retrieved from: https://experiencia21.tec.mx/courses/307981/assignments/9662675/submissions/166486
 
 */
