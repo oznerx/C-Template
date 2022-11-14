@@ -13,6 +13,7 @@ the most people given a period of time. Then it tests this algorithm using vario
 
 // To compile use: g++ -std=c++17 main.cpp -o main
 
+#include <algorithm>
 #include <iostream>
 #include <vector>
 #include <queue>
@@ -160,48 +161,6 @@ class Graph {
 			return greatestPropagationNode;
 		}
 
-    void BFS(int a) {
-
-        clearVisited();
-        std::list<int> queue;
-        visited[a] = true;
-		int level = 0;
-        queue.push_back(a);
-		levels[a] = level;
-
-        while (!queue.empty()) {
-
-            a = queue.front();
-            //std::cout << a << " ";
-            queue.pop_front();
-
-            for (int i: adjacencyList[a]) {
-				
-                if (!visited[i]) {
-                    visited[i] = true;
-                    queue.push_back(i);
-                }
-
-            }
-
-			level++;
-
-			for (auto j = 0; j < adjacencyList[a].size();j++) {
-				if (levels[adjacencyList[a][j]] == 0) {
-					levels[adjacencyList[a][j]] = level; 
-
-				}
-				cout << adjacencyList[a][j] << " nivel: " << levels[adjacencyList[a][j]] << "\n";
-			}
-			cout << "bandera\n";
-    		
-
-
-        }
-
-        std::cout << "\n";
-
-    }
 
     void clearVisited() {
 
@@ -239,6 +198,30 @@ class Graph {
 
 	}
 
+    void calculateLevels(int s) {
+        queue <int> q;
+        q.push(s);
+        levels[s] = 0;
+        visited[s] = true;
+
+        while(!q.empty())
+        {
+            int p = q.front();
+            //cout<<p<<endl;
+            q.pop();
+
+            vector <int>::iterator it;
+            for(it=adjacencyList[p].begin();it!=adjacencyList[p].end();++it)
+            {
+                if(visited[*it] == false)
+                {
+                    levels[*it] = levels[p] + 1;
+                    q.push(*it);
+                    visited[*it] = true;
+                }
+            }
+        }
+    }
 };
 
 int main() {
@@ -259,7 +242,7 @@ int main() {
 
     Graph graph(10, 11, 1, edges);
     graph.print();
-	graph.BFS(0);
+	graph.calculateLevels(0);
 	graph.printLevels();
 }
 
