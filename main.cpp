@@ -153,20 +153,47 @@ class Graph {
 			
 			return greatestPropagationNode;
 		}
+
+
+    void print() {
+
+        std::cout << "\nLa lista de adyacencia se creó con la siguiente estructura:\n\n";
+        
+        for (int i = 0; i < adjacencyList.size() ;i++) {
+
+
+            for (auto j : adjacencyList[i]) {
+                std::cout << j << " ";
+            }
+
+            std::cout << "\n";
+
+        }
+
+        std::cout << "\n";
+
+    }
+
 };
 
 int main() {
 	cout << "Test #1" << "\n";
-	Edge edges[] = {
+	/*Edge edges[] = {
 		{0, 1},
 	};
 	
-	/*
-		0-1
-	*/
+	
+	//	0-1
+	
 	Graph graph(1,1,1,edges);
+    */
 	
 	// Nota: poner el caso de prueba de otro equipo
+
+    Edge edges[] = {{0,2}, {0,5}, {0,6}, {0,7}, {2,5}, {5,3}, {3,8}, {8,7}, {6,1}, {6,4}};
+
+    Graph(8, 10, 1, edges);
+    //Graphprint();
 }
 
 /*
