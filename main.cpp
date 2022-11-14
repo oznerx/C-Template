@@ -16,6 +16,8 @@ the most people given a period of time. Then it tests this algorithm using vario
 #include <iostream>
 #include <vector>
 #include <queue>
+#include <list>
+
 
 using namespace std;
 
@@ -43,6 +45,8 @@ class Graph {
 	int t; // Time units available
 
 	public:
+	vector<bool> visited; 
+	vector<int> levels;
 
 		/* 
 			Load the graph contents into an adjacency list.
@@ -67,6 +71,8 @@ class Graph {
 			while(adjacencyList.size() < n) {
 				vector<int> row;
 				adjacencyList.push_back(row);
+				visited.push_back(false);
+				levels.push_back(0);
 			}
 			
 			for(int i = 0; i < e; i++) {
@@ -154,6 +160,56 @@ class Graph {
 			return greatestPropagationNode;
 		}
 
+    void BFS(int a) {
+
+        clearVisited();
+        std::list<int> queue;
+        visited[a] = true;
+		int level = 0;
+        queue.push_back(a);
+		levels[a] = level;
+
+        while (!queue.empty()) {
+
+            a = queue.front();
+            //std::cout << a << " ";
+            queue.pop_front();
+
+            for (int i: adjacencyList[a]) {
+				
+                if (!visited[i]) {
+                    visited[i] = true;
+                    queue.push_back(i);
+                }
+
+            }
+
+			level++;
+
+			for (auto j = 0; j < adjacencyList[a].size();j++) {
+				if (levels[adjacencyList[a][j]] == 0) {
+					levels[adjacencyList[a][j]] = level; 
+
+				}
+				cout << adjacencyList[a][j] << " nivel: " << levels[adjacencyList[a][j]] << "\n";
+			}
+			cout << "bandera\n";
+    		
+
+
+        }
+
+        std::cout << "\n";
+
+    }
+
+    void clearVisited() {
+
+        for (int i = 0; i < visited.size() ;i++) {
+            visited[i] = false;
+        }
+
+    }
 
     void print() {
 
@@ -175,6 +231,14 @@ class Graph {
 
     }
 
+	void printLevels() {
+
+		for (int i = 0; i < levels.size();i++) {
+			cout << "El nodo " << i << " tiene un nivel de: " << levels[i] << "\n";
+		}
+
+	}
+
 };
 
 int main() {
@@ -191,10 +255,12 @@ int main() {
 	
 	// Nota: poner el caso de prueba de otro equipo
 
-    Edge edges[] = {{0,2}, {0,5}, {0,6}, {0,7}, {2,5}, {5,3}, {3,8}, {8,7}, {6,1}, {6,4}};
+    Edge edges[] = {{0,2}, {0,5}, {0,6}, {0,7}, {2,5}, {5,3}, {3,8}, {8,7}, {6,1}, {6,4}, {4,9}};
 
-    Graph graph(9, 10, 1, edges);
+    Graph graph(10, 11, 1, edges);
     graph.print();
+	graph.BFS(0);
+	graph.printLevels();
 }
 
 /*
