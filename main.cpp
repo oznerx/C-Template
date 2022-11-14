@@ -161,6 +161,7 @@ class Graph {
         
         for (int i = 0; i < adjacencyList.size() ;i++) {
 
+            std::cout << i << " : ";
 
             for (auto j : adjacencyList[i]) {
                 std::cout << j << " ";
@@ -192,8 +193,8 @@ int main() {
 
     Edge edges[] = {{0,2}, {0,5}, {0,6}, {0,7}, {2,5}, {5,3}, {3,8}, {8,7}, {6,1}, {6,4}};
 
-    Graph(8, 10, 1, edges);
-    //Graphprint();
+    Graph graph(9, 10, 1, edges);
+    graph.print();
 }
 
 /*
