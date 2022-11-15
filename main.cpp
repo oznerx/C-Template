@@ -271,6 +271,8 @@ class Graph {
 
 	void getBest() {
 		
+		// usa la libreria de algorithm
+		
 		vector<int> infected(adjacencyList.size(), 0);
 		int best;
 
