@@ -231,9 +231,8 @@ class Graph {
     Complejidad de espacio: O(V) 
     */
     int BFS(int a) {
-
+		clearVisited();
 		int infected = 0;
-        clearVisited();
         std::list<int> queue;
         visited[a] = true;
         queue.push_back(a);
@@ -270,43 +269,52 @@ class Graph {
 	}
 
 	void getBest() {
-		
 		// usa la libreria de algorithm
-		
 		vector<int> infected(adjacencyList.size(), 0);
-		int best;
+		int best = 0;
 
 		for (int i = 0; i < adjacencyList.size(); i++) {
+			clearVisited();
+			calculateLevels(i);
 			infected[i] = BFS(i);
 		}
 
-		for (auto i : infected) {
+		clearVisited();
+
+		for (int i = 0; i < infected.size(); i++) {
+			cout << "El nodo "<< i << " infectó un máximo de ";
+			cout << infected[i] << " nodos\n";
 			if (infected[i] == *max_element(infected.begin(), infected.end())) {
 				best = i;
 			}
 		}
 
-		cout << "El nodo que mas infectó desde el con el tiempo " << t << " es el: " << best << "\n";
+		cout << "\nEl nodo que mas infectó con el tiempo " << t << " es el: " << best << "\n";
 
 	}
 
 };
 
 int main() {
-	cout << "Test #1" << "\n";
+	/*cout << "Test #1" << "\n";
 	
 	// Nota: poner el caso de prueba de otro equipo
 
     Edge edges[] = {{0,2}, {0,5}, {0,6}, {0,7}, {2,5}, {5,3}, {3,8}, {8,7}, {6,1}, {6,4}, {4,9}};
 
-    Graph graph(10, 11, 2, edges);
+    Graph graph(10, 11, 3, edges);
     graph.print();
-	graph.calculateLevels(0);
-	graph.printLevels();
-	cout << "\n\n";
-	graph.getInfected();
-	graph.getBest();
+	graph.getBest();*/
 
+	cout << "Test #2" << "\n";
+	
+	// Nota: poner el caso de prueba de otro equipo
+
+    Edge edges2[] = {{0,6}, {6,0}, {1,6}, {6,1}, {6,2}, {2,6}, {6,3}, {3,6}, {3,4}, {4,3}, {2,5}, {5,2}};
+
+    Graph graph2(7, 12, 1, edges2);
+    graph2.print();
+	graph2.getBest();
 
 }
 
