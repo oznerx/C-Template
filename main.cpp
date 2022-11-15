@@ -222,28 +222,90 @@ class Graph {
             }
         }
     }
+
+    /*
+    Imprime el Recorrido de BFS de una lista de adjacencia a partir de un nodo inicial
+    @Param: (int a) nodo inicial
+    Salida: nada
+    Complejidad de tiempo: O(V + E)
+    Complejidad de espacio: O(V) 
+    */
+    int BFS(int a) {
+
+		int infected = 0;
+        clearVisited();
+        std::list<int> queue;
+        visited[a] = true;
+        queue.push_back(a);
+    
+        while (!queue.empty()) {
+
+            a = queue.front();
+            //std::cout << a << " ";
+            queue.pop_front();
+
+            for (auto i: adjacencyList[a]) {
+
+                if (!visited[i] && ( levels[i] <= t)) {
+                    visited[i] = true;
+                    queue.push_back(i);
+					infected += 1;
+                }
+
+            }
+
+        }
+
+        //std::cout << "\n";
+		return infected;
+
+    }
+
+	void getInfected() {
+		
+		for (int i = 0; i < adjacencyList.size(); i++) {
+			cout << "El vértice " << i << " infectó a " << BFS(i) << " nodos\n";
+		}
+
+	}
+
+	void getBest() {
+		
+		vector<int> infected(adjacencyList.size(), 0);
+		int best;
+
+		for (int i = 0; i < adjacencyList.size(); i++) {
+			infected[i] = BFS(i);
+		}
+
+		for (auto i : infected) {
+			if (infected[i] == *max_element(infected.begin(), infected.end())) {
+				best = i;
+			}
+		}
+
+		cout << "El nodo que mas infectó desde el con el tiempo " << t << " es el: " << best << "\n";
+
+	}
+
 };
 
 int main() {
 	cout << "Test #1" << "\n";
-	/*Edge edges[] = {
-		{0, 1},
-	};
-	
-	
-	//	0-1
-	
-	Graph graph(1,1,1,edges);
-    */
 	
 	// Nota: poner el caso de prueba de otro equipo
 
     Edge edges[] = {{0,2}, {0,5}, {0,6}, {0,7}, {2,5}, {5,3}, {3,8}, {8,7}, {6,1}, {6,4}, {4,9}};
 
-    Graph graph(10, 11, 1, edges);
+    Graph graph(10, 11, 2, edges);
     graph.print();
 	graph.calculateLevels(0);
 	graph.printLevels();
+	cout << "\n\n";
+	graph.getInfected();
+	graph.getBest();
+
+
 }
 
 /*
