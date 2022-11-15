@@ -308,13 +308,19 @@ int main() {
 
 	cout << "Test #2" << "\n";
 	
-	// Nota: poner el caso de prueba de otro equipo
-
     Edge edges2[] = {{0,6}, {6,0}, {1,6}, {6,1}, {6,2}, {2,6}, {6,3}, {3,6}, {3,4}, {4,3}, {2,5}, {5,2}};
 
     Graph graph2(7, 12, 1, edges2);
     graph2.print();
 	graph2.getBest();
+
+	cout << "Test #3" << "\n";
+	
+    Edge edges3[] = {};
+
+    Graph graph3(7, 12, 1, edges3);
+    graph3.print();
+	graph3.getBest();
 
 }
 
