@@ -1,8 +1,5 @@
 #include <iostream>
-#include <fstream>
-#include <unordered_set>
 #include <vector>
-#include <unordered_map>
 #include <map>
 #include <stack>
 #include <queue>
@@ -10,8 +7,9 @@
 /*
 Ozner Axel Leyva Mariscal
 A01742377
-9 de Noviembre del 2022
-En este código se implementará un grafo direccionado asi como algunas de sus funcionalidades como el recorrido por DFS y BFS. 
+14 de Noviembre del 2022
+En este código se implementará un grafo direccionado asi como algunas de sus funcionalidades como el 
+recorrido por DFS, Ordenamiento topológico, saber si es un árbol y saber si es un grafo bipartita. 
 */
 
 class Graph {
@@ -147,7 +145,7 @@ public:
 
     /*
     Carga los arcos del grafo, los almacena en una Matriz de Adjacencia y en una Lista de Adjacencia
-    @Param:(int n) Cantidad de Vertices, (int m) Cantidad de Arcos
+    @Param:(int n) Cantidad de Vertices, (int m) Cantidad de Arcos, (vector <pair<int, int>> edges) lista de conexiones entre los nodos 
     Salida: nada
     Complejidad de tiempo: O(V + E)
     Complejidad de espacio: O(V + E) 
@@ -224,17 +222,22 @@ public:
         std::vector<int> in_degree(numVertex, 0);
     
         for (int u = 0; u < numVertex; u++) {
+
             std::vector<int>::iterator itr;
             for (itr = adjList[u].begin();itr != adjList[u].end(); itr++) {
                 in_degree[*itr]++;
             }
+
         }
     
         std::queue<int> q;
+
         for (int i = 0; i < numVertex; i++) {
+
             if (in_degree[i] == 0) {
                 q.push(i);
             }
+
         }
 
         int cnt = 0;
@@ -248,6 +251,7 @@ public:
             top_order.push_back(u);
     
             std::vector<int>::iterator itr;
+            
             for (itr = adjList[u].begin(); itr != adjList[u].end(); itr++) {
 
                 if (--in_degree[*itr] == 0) {
@@ -265,7 +269,6 @@ public:
             return;
         }
 
-        // Print topological order
         for (int i = 0; i < top_order.size(); i++) {
             std::cout << top_order[i] << " ";
         }
@@ -286,10 +289,12 @@ public:
         std::vector<int> in_degree(numVertex, 0);
     
         for (int u = 0; u < numVertex; u++) {
+
             std::vector<int>::iterator itr;
             for (itr = adjList[u].begin();itr != adjList[u].end(); itr++) {
                 in_degree[*itr]++;
             }
+
         }
     
         std::queue<int> q;
