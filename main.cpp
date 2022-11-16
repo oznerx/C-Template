@@ -90,49 +90,31 @@ class HashTable {
 public:
 
     HashTable(int n) {
-
         this->BUCKET = n;
         this->table = new int [n];
-
     }
 
-    void insertItem(int x) {
-        int key = hashFunction(x);
-        table[key] = x;
-    }
-
-    void deleteItem(int key) {
-        // Put some stuff 
-    }
-    
     int hashFunction(int x) {
         return (x % BUCKET);
     }
 
-    void getSize() {
-        cout << "Size of: " << BUCKET << "\n";
-    }
-
     void display() {
-
         for (int i = 0; i < BUCKET; i++) {
             cout << "La posición " << i << " contiene: " << table[i] << "\n";
         }
-
     }
 
     void loadTable() {
-
         for (int i = 0; i < BUCKET; i++) {
             table[i] = -1;
         }
-
     }
 
     void quadratic(int elements[]) {
 
         loadTable();
 
+        // En este "for" no es "BUCKET", es el número de elementos 
         for (int i = 0; i < BUCKET; i++) {
 
             int key = hashFunction(elements[i]) + (i*i);
@@ -158,10 +140,7 @@ public:
 
         }
 
-
     }
-
-
 
 };
 
@@ -185,7 +164,6 @@ int main() {
     HashTable h(7);
     int elements[] = {50, 700, 76, 85, 92, 73, 101};
     h.quadratic(elements);
-    h.getSize();
     h.display();
 
 }
