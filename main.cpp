@@ -17,22 +17,22 @@ public:
 
 };
 
-class dispersionTable {
+class DispersionTable {
 
   int BUCKET; // size 
   list<Entry> *table;
 
 public:
 
-    dispersionTable(int b) {
-        this->BUCKET = b;
+    DispersionTable(int n) {
+        this->BUCKET = n;
         table = new list<Entry>[BUCKET];
     }
 
     void insertItem(int key, string value) {
         Entry entry(key, value);
 
-        int index = dispersionTableFunction(key);
+        int index = DispersionTableFunction(key);
         table[index].push_back(entry);
     }
 
@@ -42,7 +42,7 @@ public:
 
     string searchItem(int key) {
 
-        int index = dispersionTableFunction(key);
+        int index = DispersionTableFunction(key);
         list<Entry> list = table[index];
         std::list<Entry>::iterator it;
 
@@ -56,7 +56,7 @@ public:
 
     }
 
-    int dispersionTableFunction(int x) { 
+    int DispersionTableFunction(int x) { 
         return (x % BUCKET); 
     }
 
@@ -82,36 +82,69 @@ public:
 
 
 
-class hashTable {
+class HashTable {
 
-  int BUCKET; // size 
+    int BUCKET;
+    int *table;
 
 public:
 
-  hashTable(int n);
-  void insertItem(int key, string value);
-  void deleteItem(int key);
-  string searchItem(int key);
-  int hashTableFunction(int x);
-  void displayHashTable();
+    HashTable(int n) {
+        this->BUCKET = n;
+        this->table = new int [n];
+    }
+
+    void insertItem(int x) {
+        int key = hashFunction(x);
+        table[key] = x;
+    }
+
+    void deleteItem(int key) {
+
+    }
+    
+    int hashFunction(int x) {
+        return (x % BUCKET);
+    }
+
+    void getSize() {
+        cout << "Size of: " << sizeof(table) << "\n";
+    }
+
+    void display() {
+
+        for (int i = 0; i < sizeof(table); i++) {
+            cout << "La posición " << i << " contiene :" << table[i] << "\n";
+        }
+        
+    }
 
 };
 
 int main() {
+    /*
+    int a[] = {100, 119, 367, 49, 116, 3};
+    int n = 6;
+    DispersionTable h(8);
 
-  int a[] = {100, 119, 367, 49, 116, 3};
-  int n = 6;
-  dispersionTable h(8);
-
-  for (int i = 0; i < n; i++) {
+    for (int i = 0; i < n; i++) {
     h.insertItem(a[i], "TEST" + to_string(i));
     h.displayDispersionTable();
-  }
+    }
 
 
-  cout << h.searchItem(49) << "\n";
-  cout << h.searchItem(1) << "\n";
+    cout << h.searchItem(49) << "\n";
+    cout << h.searchItem(1) << "\n";
 
+    */
 
-  return 0;
+    HashTable h(5);
+    h.insertItem(5);
+    h.insertItem(1);
+    h.insertItem(25);
+    h.insertItem(12);
+    h.insertItem(64);
+    h.getSize();
+    h.display();
+
 }
