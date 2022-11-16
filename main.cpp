@@ -90,8 +90,10 @@ class HashTable {
 public:
 
     HashTable(int n) {
+
         this->BUCKET = n;
         this->table = new int [n];
+
     }
 
     void insertItem(int x) {
@@ -100,7 +102,7 @@ public:
     }
 
     void deleteItem(int key) {
-
+        // Put some stuff 
     }
     
     int hashFunction(int x) {
@@ -108,16 +110,58 @@ public:
     }
 
     void getSize() {
-        cout << "Size of: " << sizeof(table) << "\n";
+        cout << "Size of: " << BUCKET << "\n";
     }
 
     void display() {
 
-        for (int i = 0; i < sizeof(table); i++) {
-            cout << "La posición " << i << " contiene :" << table[i] << "\n";
+        for (int i = 0; i < BUCKET; i++) {
+            cout << "La posición " << i << " contiene: " << table[i] << "\n";
         }
-        
+
     }
+
+    void loadTable() {
+
+        for (int i = 0; i < BUCKET; i++) {
+            table[i] = -1;
+        }
+
+    }
+
+    void quadratic(int elements[]) {
+
+        loadTable();
+
+        for (int i = 0; i < BUCKET; i++) {
+
+            int key = hashFunction(elements[i]) + (i*i);
+
+            if (table[key] == -1) {
+                table[key] = elements[i];
+            }
+
+            else {
+
+                for (int j = 0; j < BUCKET; j++) {
+
+                    key = hashFunction(elements[i]) + (j*j);
+                    
+                    if (table[key] == -1) {
+                        table[key] = elements[i];
+                        break;
+                    }
+
+                }
+
+            }
+
+        }
+
+
+    }
+
+
 
 };
 
@@ -138,12 +182,9 @@ int main() {
 
     */
 
-    HashTable h(5);
-    h.insertItem(5);
-    h.insertItem(1);
-    h.insertItem(25);
-    h.insertItem(12);
-    h.insertItem(64);
+    HashTable h(7);
+    int elements[] = {50, 700, 76, 85, 92, 73, 101};
+    h.quadratic(elements);
     h.getSize();
     h.display();
 
