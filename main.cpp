@@ -3,16 +3,15 @@
 #include <string>
 #include <array>
 #include <iterator>
-
-using namespace std;
+#include <vector>
 
 class Entry {
 public:
 
     int key;
-    string value;
+    std::string value;
 
-    Entry(int key, string value) {
+    Entry(int key, std::string value) {
         this->key = key;
         this->value = value;
     }
@@ -21,61 +20,59 @@ public:
 
 class DispersionTable {
 
-  int BUCKET; // size 
-  list<Entry> *table;
+  int BUCKET;
+  std::list<Entry> *table;
 
 public:
 
     DispersionTable(int n) {
         this->BUCKET = n;
-        table = new list<Entry>[BUCKET];
-    }
-
-    void insertItem(int key, string value) {
-        Entry entry(key, value);
-
-        int index = DispersionTableFunction(key);
-        table[index].push_back(entry);
-    }
-
-    void deleteItem(int key) {
-        // Stuff 
-    }
-
-    string searchItem(int key) {
-
-        int index = DispersionTableFunction(key);
-        list<Entry> list = table[index];
-        std::list<Entry>::iterator it;
-
-        for (it = list.begin(); it != list.end(); ++it) {
-            if (it->key == key) {
-            return it->value;
-            }
-        }
-
-        return "No se encontró";
-
+        table = new std::list<Entry>[BUCKET];
     }
 
     int DispersionTableFunction(int x) { 
         return (x % BUCKET); 
     }
 
-    void displayDispersionTable() {
+    std::string searchItem(int key) {
+
+        int index = DispersionTableFunction(key);
+        std::list<Entry> list = table[index];
+
+        for (auto it : list) {
+
+            if (it.key == key) {
+                return it.value;
+            }
+
+        }
+
+        return "No se encontró";
+
+    }
+
+    void display() {
         
         for (int i = 0; i < BUCKET; i++) {
-            std::cout << i;
+            
+            std::cout << i << " -> ";
 
-            list<Entry> list = table[i];
-            std::list<Entry>::iterator it;
-
-            for (it = list.begin(); it != list.end(); ++it) {
-                std::cout << "->" << "(" << it->key << "," << it->value << ")";
+            for (auto it : table[i]) {
+                std::cout << "(" << it.key << "," << it.value << ")" << " ";
             }
 
             std::cout << "\n";
 
+        }
+
+    }
+
+    void chain(std::vector<std::pair<int,std::string>> entries) {
+
+        for (auto i : entries) {
+            Entry entry(i.first, i.second);
+            int index = DispersionTableFunction(i.first);
+            table[index].push_back(entry);
         }
 
     }
@@ -100,7 +97,7 @@ public:
 
     void display() {
         for (int i = 0; i < BUCKET; i++) {
-            cout << "La posición " << i << " contiene: " << table[i] << "\n";
+            std::cout << i << " -> " << table[i] << "\n";
         }
     }
 
@@ -118,7 +115,6 @@ public:
 
         loadTable();
 
-        // En este "for" no es "BUCKET", es el número de elementos a insertar 
         for (int i = 0; i < n; i++) {
 
             int key = hashFunction(elements[i]) + (i*i);
@@ -149,27 +145,35 @@ public:
 };
 
 int main() {
-    /*
-    int a[] = {100, 119, 367, 49, 116, 3};
-    int n = 6;
+
+    /*int a[] = {50, 700, 76, 85, 92, 73, 101};
+    int dtn = 6;
     DispersionTable h(8);
 
-    for (int i = 0; i < n; i++) {
-    h.insertItem(a[i], "TEST" + to_string(i));
-    h.displayDispersionTable();
+    for (int i = 0; i < dtn; i++) {
+        h.insertItem(a[i], "TEST" + to_string(i));
     }
+    
+    h.displayDispersionTable();
 
 
     cout << h.searchItem(49) << "\n";
-    cout << h.searchItem(1) << "\n";
+    cout << h.searchItem(1) << "\n";*/
 
-    */
+    std::cout << "\n============ Dispersion Table ============\n\n"; 
 
-    HashTable h(7);
-    int elements[] = {50, 700, 76, 85, 92, 73, 101};
-    int n = 7; // number of elements to insert
-    h.quadratic(n , elements);
-    h.display();
+    std::vector<std::pair<int,std::string>> entries = {{50,"caballo"}, {700, "perro"},  {76, "gato"},  {85, "cerdo"}, {92, "vaca"}, {73, "hámster"},  {101, "perico"}};
+    DispersionTable dt(7);
+    dt.chain(entries);
+    dt.display();
+
+    
+    std::cout << "\n=============== Hash Table ===============\n\n"; 
+    HashTable ht(7);
+    int elements[] = {50, 700, 76, 85, 92, 73, 101}; // can be changed for a vector
+    int elementsNumber = 7; // number of elements to insert
+    ht.quadratic(elementsNumber , elements);
+    ht.display();
 
 }
 
