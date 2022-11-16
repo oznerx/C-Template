@@ -1,6 +1,8 @@
 #include <iostream>
 #include <list>
 #include <string>
+#include <array>
+#include <iterator>
 
 using namespace std;
 
@@ -80,8 +82,6 @@ public:
 
 };
 
-
-
 class HashTable {
 
     int BUCKET;
@@ -110,12 +110,16 @@ public:
         }
     }
 
-    void quadratic(int elements[]) {
+    /*
+    Time: O(N * B) N is the number of elements to insert, B is the size of the hash table 
+    Space: O(1)
+    */
+    void quadratic(int n, int elements[]) {
 
         loadTable();
 
-        // En este "for" no es "BUCKET", es el número de elementos 
-        for (int i = 0; i < BUCKET; i++) {
+        // En este "for" no es "BUCKET", es el número de elementos a insertar 
+        for (int i = 0; i < n; i++) {
 
             int key = hashFunction(elements[i]) + (i*i);
 
@@ -163,7 +167,15 @@ int main() {
 
     HashTable h(7);
     int elements[] = {50, 700, 76, 85, 92, 73, 101};
-    h.quadratic(elements);
+    int n = 7; // number of elements to insert
+    h.quadratic(n , elements);
     h.display();
 
 }
+
+/*
+Referencias: 
+
+    GeeksforGeeks. (2022, September 20). Quadratic Probing in Hashing. https://www.geeksforgeeks.org/quadratic-probing-in-hashing.
+
+*/
