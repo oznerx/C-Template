@@ -5,7 +5,7 @@
 								Ozner Axel Leyva Mariscal, A01742377
 
 This program simulates the propagation of a virus using graphs, and it determines the node that infects
-the most people given a period of time. Then it tests this algorithm using varios test cases. 
+the most people given a period of time. Then it tests this algorithm using various test cases. 
 
 									Made on November 17th 2022
 ========================================================================================================
@@ -13,12 +13,13 @@ the most people given a period of time. Then it tests this algorithm using vario
 
 // To compile use: g++ -std=c++17 main.cpp -o main
 
-#include <algorithm>
 #include <iostream>
 #include <vector>
 #include <queue>
 #include <list>
-
+#include <algorithm>
+#include <fstream>
+#include <string>
 
 using namespace std;
 
@@ -46,8 +47,6 @@ class Graph {
 	int t; // Time units available
 
 	public:
-	vector<bool> visited; 
-	vector<int> levels;
 
 		/* 
 			Load the graph contents into an adjacency list.
@@ -64,23 +63,19 @@ class Graph {
 			Return: no return
 		*/
 	
-		Graph(int n, int e, int t, Edge edges[]) {
+		Graph(int n, int e, int t, vector<Edge> edges) {
 			// Setting t
 			this->t = t;
 			
 			// Ensure capacity
-			while(adjacencyList.size() < n) {
-				vector<int> row;
-				adjacencyList.push_back(row);
-				visited.push_back(false);
-				levels.push_back(0);
-			}
+			adjacencyList.resize(n);
 			
 			for(int i = 0; i < e; i++) {
 				Edge edge = edges[i];
 				
 				int from = edge.getFrom();
 				int to = edge.getTo();
+        
 				
 				// Add edge to adjacency list
 				adjacencyList[from].push_back(to);
@@ -88,68 +83,79 @@ class Graph {
 		}
 
 		/* 
-			?
+			Gets the levels and how many nodes infected, given a startNode.
 	
-			Time complexity: ?
-			Space complexity: ?
+			Time complexity: O (n + e) where n is the number of nodes and e the number of edges
+			Space complexity: (n)
 			
-			Param: ?
-			Return: ?
+			Param: integer start node for getting amount infected
+			Return: integer of the amount of infected nodes by start node 
 		*/
-
-		int getInfectedNodes(int startNode) {
-			// Keep track of the infected nodes
+	
+	    int getAmountInfected(int startNode) {
+			// Required structures
 			int n = adjacencyList.size();
-			vector<bool> infected(n, false);
-			int infectedCount = 0;
+			vector<bool> enqueued(n, false);
+			vector<int> levels(n, -1);
+			int infectedNodes = 0;
 
-			// Prepare the bfs search
-			queue<int> queue;
-			queue.push(startNode);
-			infected[startNode] = true;
+			// Initialize with start node
+			levels[startNode] = 0;
+	        enqueued[startNode] = true;
 
-			// Keep track of the level we are in bfs
-			int level = 0;
+			// BFS search 
+			queue <int> q;
+	        q.push(startNode);
 
-			while(!queue.empty()) {
-				int currentNode = queue.front();
-				queue.pop();
+	        while(!q.empty()) {
+	            int currentNode = q.front();
+	            q.pop();
+	
+	            for(int neighbor : adjacencyList[currentNode]) {
+					// If we haven't enqueued the neighbor
+	                if(!enqueued[neighbor]) {
+						// Get its level and store it
+						int neighborLevel = levels[currentNode] + 1;
+	                    levels[neighbor] = neighborLevel;
 
-				for(int neighbor : adjacencyList[currentNode]) {
-					// If we haven't infected it, then we add it to the queue
-					if(!infected[startNode]) {
-						queue.push(neighbor);
-						// Mark as infected so we don't infect it twice
-						infected[startNode] = true;
-						// Increase counter
-						infectedCount++;
-					}
-				}
-			}
+						// If neighbor level is not in [0, t] (inclusive) we exit
+						if(neighborLevel > t) {
+							break;
+						}
 
-			// Return the number of infected nodes
-			return infectedCount;
-		}
+						// Otherwise we add it to the queue and mark it as enqueued
+	                    q.push(neighbor);
+	                    enqueued[neighbor] = true;
 
+						// Increase the number of infected nodes
+						infectedNodes++;
+	                }
+	            }
+	        }
+	
+			return infectedNodes;
+	    }	
+	
 		/* 
-			Get the start node that would infect the most amount of distinct nodes.
+			Get the node with the greatest propagation within the given time.
 	
-			Time complexity: ?
-			Space complexity: ?
+			Time complexity: O (n*(n + e)) where n is the number of nodes and e the number of edges
+			Space complexity: O(n)
 			
-			Param: ?
-			Return: an integer representing the node, or -1 if not found
+			Param: no parameters
+			Return: integer representing the node that infected the most nodes within the time
 		*/
-
-		int greatestPropagationNode() {
+	
+		int getGreatestPropagationNode() {
 			int n = adjacencyList.size();
-			
+				
 			// Initialize as negative values
 			int greatestAmountInfected = -1;
 			int greatestPropagationNode = -1;
-
+	
 			for(int i = 0; i < n; i++) {
-				int amountInfected = getInfectedNodes(i);
+				int amountInfected = getAmountInfected(i);
+				cout << "Node #" << i << " infected " << amountInfected << " nodes\n";
 				
 				// Keep track of the node with the greatest propagation
 				if(amountInfected > greatestAmountInfected) {
@@ -157,179 +163,129 @@ class Graph {
 					greatestPropagationNode = i;
 				}
 			}
-			
+			cout << endl;
 			return greatestPropagationNode;
 		}
-
-
-    void clearVisited() {
-
-        for (int i = 0; i < visited.size() ;i++) {
-            visited[i] = false;
-        }
-
-    }
-
-    void print() {
-
-        std::cout << "\nLa lista de adyacencia se creó con la siguiente estructura:\n\n";
-        
-        for (int i = 0; i < adjacencyList.size() ;i++) {
-
-            std::cout << i << " : ";
-
-            for (auto j : adjacencyList[i]) {
-                std::cout << j << " ";
-            }
-
-            std::cout << "\n";
-
-        }
-
-        std::cout << "\n";
-
-    }
-
-	void printLevels() {
-
-		for (int i = 0; i < levels.size();i++) {
-			cout << "El nodo " << i << " tiene un nivel de: " << levels[i] << "\n";
-		}
-
-	}
-
-    void calculateLevels(int s) {
-        queue <int> q;
-        q.push(s);
-        levels[s] = 0;
-        visited[s] = true;
-
-        while(!q.empty())
-        {
-            int p = q.front();
-            //cout<<p<<endl;
-            q.pop();
-
-            vector <int>::iterator it;
-            for(it=adjacencyList[p].begin();it!=adjacencyList[p].end();++it)
-            {
-                if(visited[*it] == false)
-                {
-                    levels[*it] = levels[p] + 1;
-                    q.push(*it);
-                    visited[*it] = true;
-                }
-            }
-        }
-    }
-
-    /*
-    Imprime el Recorrido de BFS de una lista de adjacencia a partir de un nodo inicial
-    @Param: (int a) nodo inicial
-    Salida: nada
-    Complejidad de tiempo: O(V + E)
-    Complejidad de espacio: O(V) 
-    */
-    int BFS(int a) {
-		clearVisited();
-		int infected = 0;
-        std::list<int> queue;
-        visited[a] = true;
-        queue.push_back(a);
-    
-        while (!queue.empty()) {
-
-            a = queue.front();
-            //std::cout << a << " ";
-            queue.pop_front();
-
-            for (auto i: adjacencyList[a]) {
-
-                if (!visited[i] && ( levels[i] <= t)) {
-                    visited[i] = true;
-                    queue.push_back(i);
-					infected += 1;
-                }
-
-            }
-
-        }
-
-        //std::cout << "\n";
-		return infected;
-
-    }
-
-	void getInfected() {
-		
-		for (int i = 0; i < adjacencyList.size(); i++) {
-			cout << "El vértice " << i << " infectó a " << BFS(i) << " nodos\n";
-		}
-
-	}
-
-	void getBest() {
-		// usa la libreria de algorithm
-		vector<int> infected(adjacencyList.size(), 0);
-		int best = 0;
-
-		for (int i = 0; i < adjacencyList.size(); i++) {
-			clearVisited();
-			calculateLevels(i);
-			infected[i] = BFS(i);
-		}
-
-		clearVisited();
-
-		for (int i = 0; i < infected.size(); i++) {
-			cout << "El nodo "<< i << " infectó un máximo de ";
-			cout << infected[i] << " nodos\n";
-			if (infected[i] == *max_element(infected.begin(), infected.end())) {
-				best = i;
-			}
-		}
-
-		cout << "\nEl nodo que mas infectó con el tiempo " << t << " es el: " << best << "\n";
-
-	}
-
+	
+		/* 
+			Print the graph (adjacency list)
+	
+			Time complexity: O (n + e) where n is the number of nodes and e the number of edges
+			Space complexity: O(1)
+			
+			Param: no parameters
+			Return: no return
+		*/
+	
+	    void print() {
+	        cout << "The adjacency list was created with the following structure:\n\n";
+	        
+	        for (int i = 0; i < adjacencyList.size() ;i++) {
+	            cout << i << " : ";
+	            for (int j : adjacencyList[i]) {
+	                cout << j << " ";
+	            }
+	            cout << "\n";
+	        }
+	        cout << "\n";
+	    }
 };
+// n e t 
+// from - to
+void read(string inputFilePath, int &n, int &e, int &t, vector<Edge> &edges) {
+    ifstream inputFile(inputFilePath);
+    string vertex, edge, time, from, to;   
+    inputFile >> vertex >> edge >> time;
+    n = stoi(vertex);
+    e = stoi(edge);
+    t = stoi(time);
 
+    for(int i = 0; i < e; i++) {
+        getline(inputFile, to);
+        inputFile >> from >> to;
+        Edge *ed = new Edge(stoi(from),stoi(to));
+        //cout << from << " " << to << endl;
+        edges.push_back(*ed);       
+    }
+    
+    inputFile.close();
+    
+
+}
 int main() {
-	/*cout << "Test #1" << "\n";
+  int n, e, t;
+  
+  cout << "============================ Test 1 ============================\n";
+  vector<Edge> edges;
+  read("Grafo1.txt", n, e, t, edges);
+  Graph graph(n, e, t, edges);
+  graph.print();
+  int greatestNode = graph.getGreatestPropagationNode();
+	cout << "Node #" << greatestNode << ", within t="<< t << ", allows the greatest infection propagation." << "\n\n";
+
+  vector<Edge> edges2;
+  read("grafo2.txt", n, e, t, edges2);
+  Graph graph2(n, e, t, edges2);
+  graph2.print();
+  greatestNode = graph2.getGreatestPropagationNode();
+	cout << "Node #" << greatestNode << ", within t="<< t << ", allows the greatest infection propagation." << "\n\n";
+
+  vector<Edge> edges3;
+  read("grafo3.txt", n, e, t, edges3);
+  Graph graph3(n, e, t, edges3); 
+  graph3.print(); 
+  greatestNode = graph3.getGreatestPropagationNode();
+	cout << "Node #" << greatestNode << ", within t="<< t << ", allows the greatest infection propagation." << "\n\n";
+
+  
+  vector<Edge> edges4;
+  read("grafo4.txt", n, e, t, edges4);
+  Graph graph4(n, e, t, edges4);
+  graph4.print();
+  greatestNode = graph4.getGreatestPropagationNode();
+	cout << "Node #" << greatestNode << ", within t="<< t << ", allows the greatest infection propagation." << "\n\n";
+  /*
+    vector<Edge> edges1 = {{0,2}, {0,5}, {0,6}, {0,7}, {2,5}, {5,3}, {3,8}, {8,7}, {6,1}, {6,4}, {4,9}};
+    
+    Graph graph1(10, 11, 2, edges1);
+    graph1.print();
+    greatestNode = graph1.getGreatestPropagationNode();
+	cout << "Node #" << greatestNode << ", within t=2, allows the greatest infection propagation." << "\n";
+
+  	cout << "\n\nTest #2" << "\n";
 	
-	// Nota: poner el caso de prueba de otro equipo
+    vector<Edge> _edges2 = {{0,6}, {6,0}, {1,6}, {6,1}, {6,2}, {2,6}, {6,3}, {3,6}, {3,4}, {4,3}, {2,5}, {5,2}};
 
-    Edge edges[] = {{0,2}, {0,5}, {0,6}, {0,7}, {2,5}, {5,3}, {3,8}, {8,7}, {6,1}, {6,4}, {4,9}};
-
-    Graph graph(10, 11, 3, edges);
-    graph.print();
-	graph.getBest();*/
-
-	cout << "Test #2" << "\n";
+    Graph _graph2(7, 12, 2, _edges2);
+    _graph2.print();
+    greatestNode = _graph2.getGreatestPropagationNode();
+	cout << "Node #" << greatestNode << ", within t=2, allows the greatest infection propagation." << "\n";
+  
+  	cout << "\n\nTest #3" << "\n";
 	
-    Edge edges2[] = {{0,6}, {6,0}, {1,6}, {6,1}, {6,2}, {2,6}, {6,3}, {3,6}, {3,4}, {4,3}, {2,5}, {5,2}};
-
-    Graph graph2(7, 12, 1, edges2);
-    graph2.print();
-	graph2.getBest();
-
-	cout << "Test #3" << "\n";
-	
-    Edge edges3[] = {{0,1}, {0,2}, {1,0}, {2,0}, {1,12}, {12,1}, {2,12}, {12,2}, {12,4}, {4,12}, 
+    vector<Edge> _edges3 = {{0,1}, {0,2}, {1,0}, {2,0}, {1,12}, {12,1}, {2,12}, {12,2}, {12,4}, {4,12}, 
 	{4,5}, {5,4},{5,11}, {11,5}, {5,6}, {6,5}, {4,3}, {3,4}, {3,10}, {10,3}, {4,9},
 	{9,4}, {9,7}, {7,9}, {7,8}, {8,7}, {8,14}, {14,8}, {9,13}, {13,9}, {13,15}, {15,13},
 	{13,16}, {16,13}};
 
-    Graph graph3(17, 34, 3, edges3);
-    graph3.print();
-	graph3.getBest();
+    Graph _graph3(17, 34, 2, _edges3);
+    _graph3.print();
+    greatestNode = _graph3.getGreatestPropagationNode();
+	cout << "Node #" << greatestNode << ", within t=2, allows the greatest infection propagation." << "\n";
 
+*/
+
+	// Nota: poner el caso de prueba de otro equipo
 }
 
 /*
 References:
 
-    Moreno, P. (2022). Act 4.2 - Grafos: Algoritmos complementarios. Canvas. Retrieved from: https://experiencia21.tec.mx/courses/307981/assignments/9662675/submissions/166486
+Moreno, P. (2022). Act 4.2 - Grafos: Algoritmos complementarios. Canvas. Retrieved from:   https://experiencia21.tec.mx/courses/307981/assignments/9662675/submissions/166486
 
+GeeksforGeeks. (2019, March 19). How to find the maximum element of a Vector using STL in C++?. https://www.geeksforgeeks.org/how-to-find-the-maximum-element-of-a-vector-using-stl-in-c
+
+C++ List Library - resize() Function. (s.f.) TutorialsPoint. Retrieved from: https://www.tutorialspoint.com/cpp_standard_library/cpp_list_resize.htm
+
+Chaudhary, M. (2016). Breadth First Search time complexity analysis. Retrieved from: https://stackoverflow.com/questions/26549140/breadth-first-search-time-complexity-analysis
 */
