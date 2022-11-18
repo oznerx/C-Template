@@ -77,6 +77,15 @@ public:
 
     }
 
+    //con arreglo de entries
+    void chainarr(int n, Entry entries[]) {
+
+        for (int i = 0; i < n; i++) {
+            int index = DispersionTableFunction(entries[i].key);
+            table[index].push_back(entries[i]);
+        }
+
+    }
 };
 
 class HashTable {
@@ -162,9 +171,16 @@ int main() {
 
     std::cout << "\n============ Dispersion Table ============\n\n"; 
 
-    std::vector<std::pair<int,std::string>> entries = {{50,"caballo"}, {700, "perro"},  {76, "gato"},  {85, "cerdo"}, {92, "vaca"}, {73, "hámster"},  {101, "perico"}};
+    Entry entry1({50,"caballo"});
+    Entry entry2({700, "perro"});
+    Entry entry3({76, "gato"});
+    Entry entry4({85, "cerdo"});
+    Entry entry5({92, "vaca"});
+    Entry entry6({73, "hámster"});
+    Entry entry7({101, "perico"});
+    Entry entries[] = {entry1, entry2, entry3, entry4, entry5, entry6, entry7};
     DispersionTable dt(7);
-    dt.chain(entries);
+    dt.chainarr(7,entries);
     dt.display();
 
     
