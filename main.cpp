@@ -158,9 +158,19 @@ public:
     Complejidad de espacio: O(1) 
     */
     void display() {
+
         for (int i = 0; i < BUCKET; i++) {
-            std::cout << i << " -> " << table[i] << "\n";
+
+            if (table[i] == -1) { 
+                std::cout << i << " -> " << " " << "\n"; 
+            }
+
+            else { 
+                std::cout << i << " -> " << table[i] << "\n"; 
+            }
+
         }
+
     }
 
     /*
@@ -219,7 +229,7 @@ public:
                 for (int j = 0; j < BUCKET; j++) {
 
                     key = hashFunction(elements[i]) + (j*j);
-                    
+
                     if (table[key] == -1 && (memoryUsed != BUCKET)) {
                         table[key] = elements[i];
                         memoryUsed++;
