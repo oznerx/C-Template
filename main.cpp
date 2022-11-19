@@ -25,15 +25,36 @@ class DispersionTable {
 
 public:
 
+    /*
+    Constructor de la tabla de dispersión
+    @Param: (int n) tamaño de la tabla 
+    Salida: nada
+    Complejidad de tiempo: O(1)
+    Complejidad de espacio: O(1) 
+    */
     DispersionTable(int n) {
         this->BUCKET = n;
         table = new std::list<Entry>[BUCKET];
     }
 
+    /*
+    Aplica una función de hashing a un valor 
+    @Param: (int x) valor al cual se le aplicará la función de hashing
+    Salida: (int) resultado de la función
+    Complejidad de tiempo: O(1)
+    Complejidad de espacio: O(1) 
+    */
     int DispersionTableFunction(int x) { 
         return (x % BUCKET); 
     }
 
+    /*
+    Busca un valor dentro de la tabla
+    @Param: (int key) llave del valor a buscar en la tabla 
+    Salida: (string) valor encontrado
+    Complejidad de tiempo: O(b) siendo b el tamaño del arreglo
+    Complejidad de espacio: O(1) 
+    */
     std::string searchItem(int key) {
 
         int index = DispersionTableFunction(key);
@@ -51,6 +72,13 @@ public:
 
     }
 
+    /*
+    B
+    @Param:
+    Salida:
+    Complejidad de tiempo: O(b + n) siendo b el tamaño del arreglo y n el número de elementos insertados en la tabla  
+    Complejidad de espacio: O(1) 
+    */
     void display() {
         
         for (int i = 0; i < BUCKET; i++) {
@@ -67,37 +95,33 @@ public:
 
     }
 
-    void chain(std::vector<std::pair<int,std::string>> entries) {
-
-        for (auto i : entries) {
-            Entry entry(i.first, i.second);
-            int index = DispersionTableFunction(i.first);
-            table[index].push_back(entry);
-        }
-
+    void insertItem(Entry entry) {
+        int index = DispersionTableFunction(entry.key);
+        table[index].push_back(entry);
     }
 
-    //con arreglo de entries
-    void chainarr(int n, Entry entries[]) {
+    void chain(int n, Entry entries[]) {
 
         for (int i = 0; i < n; i++) {
-            int index = DispersionTableFunction(entries[i].key);
-            table[index].push_back(entries[i]);
+            insertItem(entries[i]);
         }
 
     }
+
 };
 
 class HashTable {
 
     int BUCKET;
     int *table;
+    int memoryUsed;
 
 public:
 
     HashTable(int n) {
         this->BUCKET = n;
         this->table = new int [n];
+        this->memoryUsed = 0;
     }
 
     int hashFunction(int x) {
@@ -116,6 +140,17 @@ public:
         }
     }
 
+    void insertItem(int item) {
+
+        if (memoryUsed != BUCKET) {
+            int key = hashFunction(item);
+            table[key] = item;
+            memoryUsed++;
+        }
+
+        std::cout << "Ya no hay espacio disponible\n";
+    }
+
     /*
     Time: O(N * B) N is the number of elements to insert, B is the size of the hash table 
     Space: O(1)
@@ -130,6 +165,7 @@ public:
 
             if (table[key] == -1) {
                 table[key] = elements[i];
+                memoryUsed++;
             }
 
             else {
@@ -138,8 +174,9 @@ public:
 
                     key = hashFunction(elements[i]) + (j*j);
                     
-                    if (table[key] == -1) {
+                    if (table[key] == -1 && (memoryUsed != BUCKET)) {
                         table[key] = elements[i];
+                        memoryUsed++;
                         break;
                     }
 
@@ -155,22 +192,7 @@ public:
 
 int main() {
 
-    /*int a[] = {50, 700, 76, 85, 92, 73, 101};
-    int dtn = 6;
-    DispersionTable h(8);
-
-    for (int i = 0; i < dtn; i++) {
-        h.insertItem(a[i], "TEST" + to_string(i));
-    }
-    
-    h.displayDispersionTable();
-
-
-    cout << h.searchItem(49) << "\n";
-    cout << h.searchItem(1) << "\n";*/
-
     std::cout << "\n============ Dispersion Table ============\n\n"; 
-
     Entry entry1({50,"caballo"});
     Entry entry2({700, "perro"});
     Entry entry3({76, "gato"});
@@ -179,15 +201,15 @@ int main() {
     Entry entry6({73, "hámster"});
     Entry entry7({101, "perico"});
     Entry entries[] = {entry1, entry2, entry3, entry4, entry5, entry6, entry7};
-    DispersionTable dt(7);
-    dt.chainarr(7,entries);
+    int entriesNumber = 7;
+    DispersionTable dt(entriesNumber);
+    dt.chain(entriesNumber,entries);
     dt.display();
 
-    
     std::cout << "\n=============== Hash Table ===============\n\n"; 
     HashTable ht(7);
-    int elements[] = {50, 700, 76, 85, 92, 73, 101}; // can be changed for a vector
-    int elementsNumber = 7; // number of elements to insert
+    int elements[] = {50, 700, 76, 85, 92, 73, 101}; 
+    int elementsNumber = 7; 
     ht.quadratic(elementsNumber , elements);
     ht.display();
 
