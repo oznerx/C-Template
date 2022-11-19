@@ -5,6 +5,14 @@
 #include <iterator>
 #include <vector>
 
+/*
+Ozner Axel Leyva Mariscal
+A01742377
+22 de Noviembre del 2022
+En este código se implementará una tabla hash y una tabla de dispersión que incluye su técnica 
+de hashing así como el manejo de colisiones a través de dirección abierta y sondeo lineal.
+*/
+
 class Entry {
 public:
 
@@ -25,13 +33,6 @@ class DispersionTable {
 
 public:
 
-    /*
-    Constructor de la tabla de dispersión
-    @Param: (int n) tamaño de la tabla 
-    Salida: nada
-    Complejidad de tiempo: O(1)
-    Complejidad de espacio: O(1) 
-    */
     DispersionTable(int n) {
         this->BUCKET = n;
         table = new std::list<Entry>[BUCKET];
@@ -52,7 +53,7 @@ public:
     Busca un valor dentro de la tabla
     @Param: (int key) llave del valor a buscar en la tabla 
     Salida: (string) valor encontrado
-    Complejidad de tiempo: O(b) siendo b el tamaño del arreglo
+    Complejidad de tiempo: O(b) siendo b el tamaño de la tabla
     Complejidad de espacio: O(1) 
     */
     std::string searchItem(int key) {
@@ -73,10 +74,10 @@ public:
     }
 
     /*
-    B
-    @Param:
-    Salida:
-    Complejidad de tiempo: O(b + n) siendo b el tamaño del arreglo y n el número de elementos insertados en la tabla  
+    Imprime todos los elementos que contiene la tabla de dispersión
+    @Param: nada
+    Salida: nada
+    Complejidad de tiempo: O(b + n) siendo b el tamaño de la tabla y n el número de elementos insertados en la tabla  
     Complejidad de espacio: O(1) 
     */
     void display() {
@@ -95,11 +96,25 @@ public:
 
     }
 
+    /*
+    Inserta un elemento a la tabla de dispersión
+    @Param: (Entry entry) elemento a insertar en la tabla de dispersión
+    Salida: nada
+    Complejidad de tiempo: O(1) 
+    Complejidad de espacio: O(1) 
+    */
     void insertItem(Entry entry) {
         int index = DispersionTableFunction(entry.key);
         table[index].push_back(entry);
     }
 
+    /*
+    Maneja el desbordamiento por encadenamiento e inserta los elementos 
+    @Param: (int n) número de elementos a insertar, (Entry entries[]) arreglo que contiene todas los elementos a insertar 
+    Salida: nada
+    Complejidad de tiempo: O(n) siendo n el número de elementos a insertar 
+    Complejidad de espacio: O(n) siendo n el número de elementos a insertar
+    */
     void chain(int n, Entry entries[]) {
 
         for (int i = 0; i < n; i++) {
@@ -124,22 +139,50 @@ public:
         this->memoryUsed = 0;
     }
 
+    /*
+    Aplica una función de hashing a un valor 
+    @Param: (int x) valor al cual se le aplicará la función de hashing
+    Salida: (int) resultado de la función
+    Complejidad de tiempo: O(1)
+    Complejidad de espacio: O(1) 
+    */
     int hashFunction(int x) {
         return (x % BUCKET);
     }
 
+    /*
+    Imprime todos los elementos que contiene la tabla de hash
+    @Param: nada
+    Salida: nada
+    Complejidad de tiempo: O(b) siendo b el tamaño de la tabla
+    Complejidad de espacio: O(1) 
+    */
     void display() {
         for (int i = 0; i < BUCKET; i++) {
             std::cout << i << " -> " << table[i] << "\n";
         }
     }
 
+    /*
+    Inicializa los valores de la tabla como -1
+    @Param: nada
+    Salida: nada
+    Complejidad de tiempo: O(b) siendo b el tamaño de la tabla  
+    Complejidad de espacio: O(1) 
+    */
     void loadTable() {
         for (int i = 0; i < BUCKET; i++) {
             table[i] = -1;
         }
     }
 
+    /*
+    Inserta un elemento a la tabla de hash
+    @Param: (int item) elemento a insertar en la tabla de hash
+    Salida: nada
+    Complejidad de tiempo: O(1) 
+    Complejidad de espacio: O(1) 
+    */
     void insertItem(int item) {
 
         if (memoryUsed != BUCKET) {
@@ -152,8 +195,11 @@ public:
     }
 
     /*
-    Time: O(N * B) N is the number of elements to insert, B is the size of the hash table 
-    Space: O(1)
+    Maneja el desbordamiento por sondeo cuadrático e inserta los elementos 
+    @Param: (int n) número de elementos a insertar, (int elements[]) arreglo que contiene todas los elementos a insertar 
+    Salida: nada
+    Complejidad de tiempo: O(b * n) siendo b el tamaño de la tabla, siendo n el número de elementos a insertar 
+    Complejidad de espacio: O(1)
     */
     void quadratic(int n, int elements[]) {
 
@@ -192,7 +238,7 @@ public:
 
 int main() {
 
-    std::cout << "\n============ Dispersion Table ============\n\n"; 
+    std::cout << "\n============ Tabla de Dispersión ============\n"; 
     Entry entry1({50,"caballo"});
     Entry entry2({700, "perro"});
     Entry entry3({76, "gato"});
@@ -206,7 +252,7 @@ int main() {
     dt.chain(entriesNumber,entries);
     dt.display();
 
-    std::cout << "\n=============== Hash Table ===============\n\n"; 
+    std::cout << "\n=============== Tabla de Hash ===============\n"; 
     HashTable ht(7);
     int elements[] = {50, 700, 76, 85, 92, 73, 101}; 
     int elementsNumber = 7; 
