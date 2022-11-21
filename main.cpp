@@ -281,9 +281,9 @@ int main() {
     Entry e1({1,"caballo"});
     Entry e2({2, "perro"});
     Entry e3({3, "gato"});
-    Entry e4({4, "cerdo"}); 
-    Entry e5({5, "vaca"}); 
-    Entry entries2[] = {e1, e2, e3, e4, e5}; 
+    Entry e4({4, "cerdo"});
+    Entry e5({5, "vaca"});
+    Entry entries2[] = {e1, e2, e3, e4, e5};
     int entriesNumber2 = 5;
     DispersionTable dt2(6);
     dt2.chain(entriesNumber2,entries2);
