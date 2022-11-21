@@ -217,7 +217,7 @@ public:
 
         for (int i = 0; i < n; i++) {
 
-            int key = hashFunction(elements[i]) + (i*i);
+            int key = hashFunction(elements[i]);
 
             if (table[key] == -1) {
                 table[key] = elements[i];
@@ -248,26 +248,46 @@ public:
 
 int main() {
 
-    std::cout << "\n============ Tabla de Dispersión ============\n"; 
+    std::cout << "\n============ Colisiónes con método de cadena ============\n"; 
     Entry entry1({50,"caballo"});
     Entry entry2({700, "perro"});
     Entry entry3({76, "gato"});
-    Entry entry4({85, "cerdo"});
-    Entry entry5({92, "vaca"});
+    Entry entry4({85, "cerdo"}); // colisión con (50, caballo)
+    Entry entry5({92, "vaca"}); // colisión con (85, cerdo)
     Entry entry6({73, "hámster"});
-    Entry entry7({101, "perico"});
-    Entry entries[] = {entry1, entry2, entry3, entry4, entry5, entry6, entry7};
-    int entriesNumber = 7;
-    DispersionTable dt(entriesNumber);
+    Entry entry7({101, "perico"}); // colisión con (73, hámster)
+    Entry entry8({70, "hurón"}); // colisión con (700, perro)
+    Entry entries[] = {entry1, entry2, entry3, entry4, entry5, entry6, entry7, entry8}; 
+    int entriesNumber = 8;
+    DispersionTable dt(7);
     dt.chain(entriesNumber,entries);
     dt.display();
-
-    std::cout << "\n=============== Tabla de Hash ===============\n"; 
-    HashTable ht(7);
-    int elements[] = {50, 700, 76, 85, 92, 73, 101}; 
-    int elementsNumber = 7; 
-    ht.quadratic(elementsNumber , elements);
+    
+    std::cout << "\n============ Colisiónes con método cuadrático ============\n"; 
+    HashTable ht(10);
+    int elements2[] = {0, 10, 2, 42, 94, 4, 6, 8, 18}; // Colisiones: (0->10), (2->42), (94->4), (8->18)
+    int elementsNumber2 = 9; 
+    ht.quadratic(elementsNumber2 , elements2);
     ht.display();
+
+    std::cout << "\n============ Tabla sin colisiones con método cuadrático============\n"; 
+    HashTable ht2(10);
+    int elements3[] = {1, 2, 3, 4, 5};
+    int elementsNumber3 = 5; 
+    ht2.quadratic(elementsNumber3 , elements3);
+    ht2.display();
+
+    std::cout << "\n============ Tabla sin colisiones con método de cadena ============\n"; 
+    Entry e1({1,"caballo"});
+    Entry e2({2, "perro"});
+    Entry e3({3, "gato"});
+    Entry e4({4, "cerdo"}); 
+    Entry e5({5, "vaca"}); 
+    Entry entries2[] = {e1, e2, e3, e4, e5}; 
+    int entriesNumber2 = 5;
+    DispersionTable dt2(6);
+    dt2.chain(entriesNumber2,entries2);
+    dt2.display();
 
 }
 
