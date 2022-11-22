@@ -5,13 +5,6 @@
 #include <queue>
 #include <unordered_map>
 
-/*
-Ozner Axel Leyva Mariscal
-A01742377
-14 de Noviembre del 2022
-En este código se implementará un grafo direccionado asi como algunas de sus funcionalidades como el 
-recorrido por DFS, Ordenamiento topológico, saber si es un árbol y saber si es un grafo bipartita. 
-*/
 
 class Graph {
 private:
@@ -595,7 +588,7 @@ public:
             }
 
         }
-        
+
     }
 
 };
@@ -621,14 +614,3 @@ int main()
     g2->disconnectedSearch(0, 2);
 
 }
-
-/*
-Referencias: 
-
-    GeeksforGeeks. (2022). Topological Sorting. https://www.geeksforgeeks.org/topological-sorting.
-
-    GeeksforGeeks. (2022). Check whether a given graph is Bipartite or not. https://www.geeksforgeeks.org/bipartite-graph.
-
-    GeeksforGeeks. (2022). Kahn's algorithm for Topological Sorting. https://www.geeksforgeeks.org/topological-sorting-indegree-based-solution.
-
-*/
