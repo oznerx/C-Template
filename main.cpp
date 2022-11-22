@@ -444,6 +444,53 @@ public:
 
     }
 
+    /* Obtiene los el nodo mas lejano a partir de un nodo inicial */
+    void farthestNode(int startNode) {
+    // Required structures
+    std::vector<bool> enqueued(numVertex, false);
+    std::vector<int> levels(numVertex, -1);
+    int infectedNodes = 0;
+
+    // Initialize with start node
+    levels[startNode] = 0;
+    enqueued[startNode] = true;
+
+    // BFS search 
+    std::queue <int> q;
+    q.push(startNode);
+
+    while(!q.empty()) {
+
+        int currentNode = q.front();
+        q.pop();
+
+        for(int neighbor : adjList[currentNode]) {
+            // If we haven't enqueued the neighbor
+            if(!enqueued[neighbor]) {
+                // Get its level and store it
+                int neighborLevel = levels[currentNode] + 1;
+                levels[neighbor] = neighborLevel;
+
+                // Otherwise we add it to the queue and mark it as enqueued
+                q.push(neighbor);
+                enqueued[neighbor] = true;
+
+            }
+        }
+    }
+
+
+    int farthest = 0;
+    for (int i = 0; i < levels.size(); i++) {
+        if ( levels[i] > levels[farthest]) {
+            farthest = i;
+        }
+    }
+
+    std::cout << "The farthest node from the node " << startNode << " is the node: " << farthest << "\n";
+
+}	
+
 };
 
 int main()
@@ -457,8 +504,8 @@ int main()
     g1->getFanOut();
     g1->getMaxFanOut();
     std::cout << "\n";
+    g1->farthestNode(5);
     
-
 }
 
 /*
