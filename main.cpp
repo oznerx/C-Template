@@ -270,7 +270,7 @@ int main() {
     ht.quadratic(elementsNumber2 , elements2);
     ht.display();
 
-    std::cout << "\n============ Tabla sin colisiones con método cuadrático============\n"; 
+    std::cout << "\n============ Tabla sin colisiones con método cuadrático ============\n"; 
     HashTable ht2(10);
     int elements3[] = {1, 2, 3, 4, 5};
     int elementsNumber3 = 5; 
