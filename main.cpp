@@ -19,8 +19,9 @@ private:
     int numEdges;
     int currentEdges;
     std::map<int, bool> visited;
-    std::map<int, std::vector<int>> adjList;
+    std::vector<std::vector<int>> adjList;
     std::stack<int> stack; 
+    std::vector<int> fanOut; // usar mapa si se trata de nodos descritos con letras 
 
     /*
     Carga una lista de adjacencia
@@ -30,12 +31,8 @@ private:
     Complejidad de espacio: O(V) 
     */
     void loadList() {
-
-        for (int i = 0; i < numVertex; i++) {
-            std::vector<int> temp;
-            adjList.emplace(i, temp);
-        }
-
+        adjList.resize(numVertex);
+        fanOut.resize(numVertex, 0);
     } 
 
     /*
@@ -47,6 +44,7 @@ private:
     */
     void addEdgeToList(int a, int b) {
         adjList[a].push_back(b); 
+        fanOut[a] += 1;
     }
 
     /*
@@ -193,12 +191,12 @@ public:
     void print() {
 
         std::cout << "\nLa lista de adyacencia se creó con la siguiente estructura:\n\n";
-        
-        for (auto i : adjList) {
+        	        
+        for (int i = 0; i < adjList.size() ;i++) {
 
-            std::cout << i.first << " : ";
+            std::cout << i << " : ";
 
-            for (auto j : i.second) {
+            for (int j : adjList[i]) {
                 std::cout << j << " ";
             }
 
@@ -207,7 +205,7 @@ public:
         }
 
         std::cout << "\n";
-
+	    
     }
 
     /*
@@ -426,6 +424,26 @@ public:
         return isConnected() && (numEdges == numVertex - 1) && topologicalSortCheck();
     } 
 
+    void getFanOut() {
+        for (int i = 0; i < fanOut.size(); i++) {
+            std::cout << "El nodo " << i << " tiene " << fanOut[i] << " nodos adyacentes.\n";
+        } 
+    }
+
+    void getMaxFanOut() {
+
+        int max = 0;
+
+        for (int i = 0; i < fanOut.size(); i++) {
+            if ( fanOut[i] > fanOut[max]) {
+                max = i;
+            }
+        } 
+
+        std::cout << "El nodo con mas nodos adyacentes es el: " << max << "\n";
+
+    }
+
 };
 
 int main()
@@ -436,44 +454,10 @@ int main()
     std::vector <std::pair<int, int>> edges1 = {{5,2}, {5,0}, {4,0}, {4,1}, {2,3}, {3,1}}; 
     g1->loadGraph(6, 6, edges1);
     g1->print();
-    g1->isTree() ? std::cout << "El grafo es un árbol\n\n" : std::cout << "El grafo no es un árbol\n\n";
-    std::cout << "El ordenamiento topologico del grafo es: ";
-    g1->topologicalSort();
-    g1->bipartiteGraph() ? std::cout << "\nEl grafo es bipartita\n" : std::cout << "\nEl grafo no es bipartita\n";
+    g1->getFanOut();
+    g1->getMaxFanOut();
     std::cout << "\n";
     
-    std::cout << "\n======================== Segundo Grafo ========================\n";
-    Graph *g2 = new Graph(); 
-    std::vector <std::pair<int, int>> edges2 = {{0,1}, {0,3}, {1,0}, {1,2}, {2,1}, {2,3}, {3,0}, {3,2}}; 
-    g2->loadGraph(4, 8, edges2);
-    g2->print();
-    g2->isTree() ? std::cout << "El grafo es un árbol\n\n" : std::cout << "El grafo no es un árbol\n\n";
-    std::cout << "El ordenamiento topologico del grafo es: ";
-    g2->topologicalSort();
-    g2->bipartiteGraph() ? std::cout << "\nEl grafo es bipartita\n" : std::cout << "\nEl grafo no es bipartita\n";
-    std::cout << "\n";
-
-    std::cout << "\n======================== Tercer Grafo ========================\n";
-    Graph *g3 = new Graph(); 
-    std::vector <std::pair<int, int>> edges3 = {{0,1}, {1,2}, {2,0}}; 
-    g3->loadGraph(3, 3, edges3);
-    g3->print();
-    g3->isTree() ? std::cout << "El grafo es un árbol\n\n" : std::cout << "El grafo no es un árbol\n\n";
-    std::cout << "El ordenamiento topologico del grafo es: ";
-    g3->topologicalSort();
-    g3->bipartiteGraph() ? std::cout << "\nEl grafo es bipartita\n" : std::cout << "\nEl grafo no es bipartita\n";
-    std::cout << "\n";
-    
-    std::cout << "\n======================== Cuarto Grafo ========================\n";
-    Graph *g4 = new Graph();
-    std::vector <std::pair<int, int>> edges4 = {{0,1}, {0,2}, {1,3}, {1,4}, {4,5}, {4,6}, {2,7}, {7,8}}; 
-    g4->loadGraph(9, 8, edges4);
-    g4->print();
-    g4->isTree() ? std::cout << "El grafo es un árbol\n\n" : std::cout << "El grafo no es un árbol\n\n";
-    std::cout << "El ordenamiento topologico del grafo es: ";
-    g4->topologicalSort();
-    g4->bipartiteGraph() ? std::cout << "\nEl grafo es bipartita\n" : std::cout << "\nEl grafo no es bipartita\n";
-    std::cout << "\n";
 
 }
 
