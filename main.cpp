@@ -1,8 +1,5 @@
 #include <iostream>
 #include <list>
-#include <string>
-#include <array>
-#include <iterator>
 #include <vector>
 
 /*
@@ -47,30 +44,6 @@ public:
     */
     int DispersionTableFunction(int x) { 
         return (x % BUCKET); 
-    }
-
-    /*
-    Busca un valor dentro de la tabla
-    @Param: (int key) llave del valor a buscar en la tabla 
-    Salida: (string) valor encontrado
-    Complejidad de tiempo: O(b) siendo b el tamaño de la tabla
-    Complejidad de espacio: O(1) 
-    */
-    std::string searchItem(int key) {
-
-        int index = DispersionTableFunction(key);
-        std::list<Entry> list = table[index];
-
-        for (auto it : list) {
-
-            if (it.key == key) {
-                return it.value;
-            }
-
-        }
-
-        return "No se encontró";
-
     }
 
     /*
