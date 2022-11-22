@@ -491,9 +491,6 @@ public:
 
         clearVisited();
         std::vector<int> time(numVertex, 0);
-
-        // Initialize with start node
-        time[startNode];
         visited[startNode] = true;
 
         // BFS search 
@@ -618,13 +615,23 @@ public:
 
     }
 
-    void differentsPaths(int startNode, int nodeToSearch) {
+    void removePath(std::vector<std::vector<int>> &tempList, std::vector<std::pair<int,int>> bfsWithBlockedPaths) {
+        for (auto i : bfsWithBlockedPaths) {
+            for (int j = 0; j < tempList[i.first].size(); j++) {
+                if (tempList[i.first][j] == i.second) {
+                    tempList[i.first].erase(tempList[i.first].begin() + j);
+                }
+            }
+        }
+    }
+
+    void bfsWithBlockedPaths(int startNode, int nodeToSearch, std::vector<std::pair<int,int>> bfsWithBlockedPaths) {
 
         clearVisited();
+        std::vector<std::vector<int>> tempList = adjList;
         std::vector<int> time(numVertex, 0);
-
-        // Initialize with start node
-        time[startNode];
+        removePath(tempList, bfsWithBlockedPaths);
+        printTemp(tempList);
         visited[startNode] = true;
 
         // BFS search 
@@ -636,15 +643,12 @@ public:
             int currentNode = q.front();
             q.pop();
 
-            for(int neighbor : adjList[currentNode]) {
-                
+            for(int neighbor : tempList[currentNode]) {
                 // If we haven't enqueued the neighbor
                 if(!visited[neighbor]) {
-                    // Get its level and store it
+
                     int neighborTime = time[currentNode] + 1;
                     time[neighbor] = neighborTime;
-
-                    // Otherwise we add it to the queue and mark it as visited
                     q.push(neighbor);
                     visited[neighbor] = true;
 
@@ -658,6 +662,76 @@ public:
             }
         }
 
+    }
+
+    /*void bfsDiffrentPaths(int startNode, int nodeToSearch, std::vector<std::pair<int,int>> &bfsWithBlockedPaths) {
+
+        clearVisited();
+        std::vector<std::vector<int>> tempList = adjList;
+        std::vector<int> time(numVertex, 0);
+        removePath(tempList, bfsWithBlockedPaths);
+        printTemp(tempList);
+        visited[startNode] = true;
+
+        // BFS search 
+        std::queue <int> q;
+        q.push(startNode);
+
+        while(!q.empty()) {
+
+            int currentNode = q.front();
+            std::cout << currentNode << " ";
+            q.pop();
+
+            for(int neighbor : tempList[currentNode]) {
+                // If we haven't enqueued the neighbor
+                if(!visited[neighbor]) {
+
+                    int neighborTime = time[currentNode] + 1;
+                    time[neighbor] = neighborTime;
+                    q.push(neighbor);
+                    visited[neighbor] = true;
+
+                }
+
+                if (neighbor == nodeToSearch) {
+                    //std::cout << "El nodo " << nodeToSearch << " a partir del nodo " << startNode << ", se encontró en el tiempo " << time[nodeToSearch] << "\n"; 
+                    break;
+                }
+
+            }
+
+        }
+
+        std::cout << "\n";
+
+    }
+
+    void differentsPaths(int startNode, int nodeToSearch) {
+        std::vector<std::pair<int,int>> bfsWithBlockedPaths;
+        for (auto i : bfsWithBlockedPaths) {
+            std::cout << i.first << "," << i.second << "\n";
+        }
+        //bfsDiffrentPaths(startNode, nodeToSearch, bfsWithBlockedPaths);
+    }*/
+
+    void printTemp(std::vector<std::vector<int>> tempList) {
+
+        std::cout << "\nLa lista de adyacencia se creó con la siguiente estructura:\n\n";
+        	        
+        for (int i = 0; i < tempList.size() ;i++) {
+
+            std::cout << i << " : ";
+
+            for (int j : tempList[i]) {
+                std::cout << j << " ";
+            }
+
+            std::cout << "\n";
+
+        }
+
+        std::cout << "\n";
     }
 
 };
@@ -675,13 +749,21 @@ int main()
     std::cout << "\n";
     g1->farthestNode(5);
     g1->bfsSearch(5, 1);*/
-    
+
+
+    /*
     Graph *g2 = new Graph();
     std::vector <std::pair<int, int>> edges2 = {{0,1}, {1,2}, {2,3}, {4,5}}; 
     g2->loadGraph(6, 4, edges2); 
     g2->print();
     g2->disconnectedSearch(0, 2);
     std::vector<int> nodes = {1,5};
-    g2->isIn(nodes);
+    g2->isIn(nodes);*/
 
+    Graph *g3 = new Graph();
+    std::vector <std::pair<int, int>> edges3 = {{0,2}, {0,5}, {0,6}, {0,7}, {2,5}, {5,3}, {3,8}, {8,7}, {6,1}, {6,4}, {4,9}}; 
+    g3->loadGraph(10, 11, edges3); 
+    std::vector<std::pair<int, int> > bfsWithBlockedPaths = {{0,7}, {0,5}};
+    g3->print();
+    g3->bfsWithBlockedPaths(0, 7, bfsWithBlockedPaths);
 }
