@@ -1,0 +1,9 @@
+Ana amiga de Juan
+Juan amigo de Pedro
+Pedro amigo de Luis
+Luis amigo de Sebastian
+Pedro amigo de Gustavo
+Gustavo amigo de Adrian
+Adrian amigo de Saul
+Ana publico n=3
+Luis publico n=4
