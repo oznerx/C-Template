@@ -591,6 +591,75 @@ public:
 
     }
 
+    void isIn(std::vector<int> nodes) {  // cuales si se encontraron?
+
+        int count = nodes.size();
+        std::vector<int> notFound;
+
+        for (int i = 0; i < numVertex; i++) {
+
+            for (int j = 0; j < nodes.size(); j++) {
+
+                if (nodes[j] == i) {
+                    count -= 1;
+                }
+
+            }
+
+        }
+
+        std::cout << count << "\n";
+
+        if (count != 0) {
+            std::cout << "No se encuentran todos los nodos\n";
+        }
+
+        std::cout << "Se encontraron todos los nodos\n";
+
+    }
+
+    void differentsPaths(int startNode, int nodeToSearch) {
+
+        clearVisited();
+        std::vector<int> time(numVertex, 0);
+
+        // Initialize with start node
+        time[startNode];
+        visited[startNode] = true;
+
+        // BFS search 
+        std::queue <int> q;
+        q.push(startNode);
+
+        while(!q.empty()) {
+
+            int currentNode = q.front();
+            q.pop();
+
+            for(int neighbor : adjList[currentNode]) {
+                
+                // If we haven't enqueued the neighbor
+                if(!visited[neighbor]) {
+                    // Get its level and store it
+                    int neighborTime = time[currentNode] + 1;
+                    time[neighbor] = neighborTime;
+
+                    // Otherwise we add it to the queue and mark it as visited
+                    q.push(neighbor);
+                    visited[neighbor] = true;
+
+                }
+
+                if (neighbor == nodeToSearch) {
+                    std::cout << "El nodo " << nodeToSearch << " a partir del nodo " << startNode << ", se encontró en el tiempo " << time[nodeToSearch] << "\n"; 
+                    break;
+                }
+
+            }
+        }
+
+    }
+
 };
 
 int main()
@@ -612,5 +681,7 @@ int main()
     g2->loadGraph(6, 4, edges2); 
     g2->print();
     g2->disconnectedSearch(0, 2);
+    std::vector<int> nodes = {1,5};
+    g2->isIn(nodes);
 
 }
