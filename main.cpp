@@ -1,15 +1,9 @@
-/* 
-========================================================================================================
-								Pedro Alonso Moreno Salcedo, A01741437
-								Juan Carlos Hernández Ríos, A01740821
-								Ozner Axel Leyva Mariscal, A01742377
-This program simulates the propagation of a virus using graphs, and it determines the node that infects
-the most people given a period of time. Then it tests this algorithm using various test cases. 
-									Made on November 17th 2022
-========================================================================================================
+/*
+Ozner Axel Leyva Mariscal
+A01742377
+Mini Reto 2
 */
 
-// To compile use: g++ -std=c++17 main.cpp -o main
 
 #include <iostream>
 #include <vector>
@@ -157,32 +151,52 @@ class Graph {
 
     }
 
+
 };
 
-void read(string inputFilePath, vector<Edge> &edges, unordered_map<string, int> &inputs) {
+void read(string inputFilePath, vector<Edge> &edges, unordered_map<string, string> &inputs) {
     
     ifstream inputFile(inputFilePath);
-    vector<int> numUsers, numFriends;
-
-    string x , y, amige, de;   
+    int line = 0;
+    string x , y, amige, de, n, publico;   
+    unordered_map<string, true> names;
 
     while(inputFile >> x >> amige >> de >> y) {
 
+        names[x] = true;
+        names[y] = true; 
+
         if (amige == "publico") {
-            inputs[x] = stoi(de.substr(2,1));
-            //break;
+            cout << x << " = " << de.substr(2,1) << "\n";
+            inputs[x] = de.substr(2,1);
+            break;
         }
 
-        cout << x << "->" << y << "\n";
+        //cout << x << "->" << y << "\n";
         Edge *edge = new Edge(x,y);
         edges.push_back(*edge);
+        line++;
 
+    }
+
+    inputFile >> x >> n;
+    //cout << y << " = " << n.substr(2,1) << "\n";
+    inputs[y] = n.substr(2,1);
+    
+    for (auto k : inputs) {
+        std::cout << k.first << " = " << k.second << "\n";
+    }
+
+    int j = 0;
+    for (auto i : names) {
+        std::cout << i.first << "\n";
+        j++;
     }
 
     inputFile.close();
     
-
 }
+
 int main() {
   
     cout << "============================ Test 1 ============================\n";
@@ -204,12 +218,14 @@ int main() {
     edges.push_back(*ed5);
     edges.push_back(*ed6);
     edges.push_back(*ed7);*/
-    
-    /*Graph graph(8, 7, edges);
-    graph.printList();
-    graph.post("Ana", 3);*/
-    unordered_map<string, int> inputs;
+    unordered_map<string, string> inputs;
     read("metabook.txt", edges, inputs);
+    Graph graph(8, 7, edges);
+    //graph.printList();
+    //graph.post("Ana", 3);
+    //graph.post("Luis", 1);
+    /*unordered_map<string, int> inputs;
+    read("metabook.txt", edges, inputs);*/
     // La publicación de Ana puede ser vista por Juan, Pedro, Luis, Gustavo
 
 

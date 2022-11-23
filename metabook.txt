@@ -6,4 +6,4 @@ Pedro amigo de Gustavo
 Gustavo amigo de Adrian
 Adrian amigo de Saul
 Ana publico n=3
-Luis publico n=4
+Luis publico n=1
