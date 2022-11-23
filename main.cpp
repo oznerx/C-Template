@@ -133,9 +133,9 @@ class Graph {
     Complejidad de tiempo: O(V + E)
     Complejidad de espacio: O(1) 
     */
-    void printList() {
+    void print() {
 
-        cout << "The adjacency list was created with the following structure:\n\n";
+        cout << "La lista de adyacencia se creó con la siguiente estructura:\n";
 
         for (auto i : adjacencyList) {
 
@@ -148,18 +148,20 @@ class Graph {
             std::cout << "\n";
 
         }
+        
+        std::cout << "\n";
 
     }
 
 
 };
 
-void read(string inputFilePath, vector<Edge> &edges, unordered_map<string, string> &inputs) {
+void read(string inputFilePath, vector<Edge> &edges, unordered_map<string, string> &inputs, int &numVertex, int &numEdges) {
     
     ifstream inputFile(inputFilePath);
-    int line = 0;
+    int e = 0;
     string x , y, amige, de, n, publico;   
-    unordered_map<string, true> names;
+    unordered_map<string, bool> names;
 
     while(inputFile >> x >> amige >> de >> y) {
 
@@ -167,7 +169,6 @@ void read(string inputFilePath, vector<Edge> &edges, unordered_map<string, strin
         names[y] = true; 
 
         if (amige == "publico") {
-            cout << x << " = " << de.substr(2,1) << "\n";
             inputs[x] = de.substr(2,1);
             break;
         }
@@ -175,64 +176,39 @@ void read(string inputFilePath, vector<Edge> &edges, unordered_map<string, strin
         //cout << x << "->" << y << "\n";
         Edge *edge = new Edge(x,y);
         edges.push_back(*edge);
-        line++;
+        e++;
 
     }
+
+    numEdges = e;
 
     inputFile >> x >> n;
-    //cout << y << " = " << n.substr(2,1) << "\n";
     inputs[y] = n.substr(2,1);
     
-    for (auto k : inputs) {
-        std::cout << k.first << " = " << k.second << "\n";
-    }
 
     int j = 0;
     for (auto i : names) {
-        std::cout << i.first << "\n";
         j++;
     }
 
+    numVertex = j;
     inputFile.close();
     
 }
 
 int main() {
   
-    cout << "============================ Test 1 ============================\n";
-    Edge *ed = new Edge("Ana", "Juan");
-    Edge *ed2 = new Edge("Juan", "Pedro");
-    Edge *ed3 = new Edge("Pedro", "Luis");
-    Edge *ed4 = new Edge("Luis", "Sebastian");
-    Edge *ed5 = new Edge("Pedro", "Gustavo");
-    Edge *ed6 = new Edge("Gustavo", "Adrian");
-    Edge *ed7 = new Edge("Adrian", "Saul");
-
-    // Terminado, pero estoy leyendo el archivo todavia, en el avance lo subo bien (con la lectura)
-
-    vector<Edge> edges;/*
-    edges.push_back(*ed);
-    edges.push_back(*ed2);
-    edges.push_back(*ed3);
-    edges.push_back(*ed4);
-    edges.push_back(*ed5);
-    edges.push_back(*ed6);
-    edges.push_back(*ed7);*/
+    cout << "============================ Test de canvas ============================\n";
+    vector<Edge> edges;
     unordered_map<string, string> inputs;
-    read("metabook.txt", edges, inputs);
-    Graph graph(8, 7, edges);
-    //graph.printList();
-    //graph.post("Ana", 3);
-    //graph.post("Luis", 1);
-    /*unordered_map<string, int> inputs;
-    read("metabook.txt", edges, inputs);*/
-    // La publicación de Ana puede ser vista por Juan, Pedro, Luis, Gustavo
-
-
-
-    /*read("Grafo1.txt", n, e, t, edges);
-    Graph graph(n, e, t, edges);
+    int numVertex, numEdges;
+    read("metabook.txt", edges, inputs, numVertex, numEdges);  
+    Graph graph(numVertex, numEdges, edges);
     graph.print();
-    int greatestNode = graph.getGreatestPropagationNode();
-    cout << "Node #" << greatestNode << ", within t="<< t << ", allows the greatest infection propagation." << "\n\n";*/
+    for (auto k : inputs) {
+        graph.post(k.first, stoi(k.second));
+    }
+    std::cout << "\n";
+
+
 }
