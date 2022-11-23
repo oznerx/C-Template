@@ -199,16 +199,51 @@ void read(string inputFilePath, vector<Edge> &edges, unordered_map<string, strin
 int main() {
   
     cout << "============================ Test de canvas ============================\n";
-    vector<Edge> edges;
-    unordered_map<string, string> inputs;
-    int numVertex, numEdges;
-    read("metabook.txt", edges, inputs, numVertex, numEdges);  
-    Graph graph(numVertex, numEdges, edges);
-    graph.print();
-    for (auto k : inputs) {
-        graph.post(k.first, stoi(k.second));
+    vector<Edge> edges1;
+    unordered_map<string, string> inputs1;
+    int numVertex1, numEdges1;
+    read("metabook.txt", edges1, inputs1, numVertex1, numEdges1);  
+    Graph graph1(numVertex1, numEdges1, edges1);
+    graph1.print();
+    for (auto k : inputs1) {
+        graph1.post(k.first, stoi(k.second));
     }
     std::cout << "\n";
 
+    
+    cout << "============================ Test 2 ============================\n";
+    vector<Edge> edges2;
+    unordered_map<string, string> inputs2;
+    int numVertex2, numEdges2;
+    read("metabook2.txt", edges2, inputs2, numVertex2, numEdges2);  
+    Graph graph2(numVertex2, numEdges2, edges2);
+    graph2.print();
+    for (auto k : inputs2) {
+        graph2.post(k.first, stoi(k.second));
+    }
+    std::cout << "\n";
+    
+    cout << "============================ Test 3 ============================\n";
+    vector<Edge> edges3;
+    unordered_map<string, string> inputs3;
+    int numVertex3, numEdges3;
+    read("metabook3.txt", edges3, inputs3, numVertex3, numEdges3);  
+    Graph graph3(numVertex3, numEdges3, edges3);
+    graph3.print();
+    for (auto k : inputs3) {
+        graph3.post(k.first, stoi(k.second));
+    }
+    std::cout << "\n";
 
+    cout << "============================ Test 4 ============================\n";
+    vector<Edge> edges4;
+    unordered_map<string, string> inputs4;
+    int numVertex4, numEdges4;
+    read("metabook4.txt", edges4, inputs4, numVertex4, numEdges4);  
+    Graph graph4(numVertex4, numEdges4, edges4);
+    graph4.print();
+    for (auto k : inputs4) {
+        graph4.post(k.first, stoi(k.second));
+    }
+    std::cout << "\n";
 }

@@ -1,0 +1,9 @@
+Heros amigo de Javier
+Juan amigo de Cristian
+Eduardo amigo de Heros
+Luis amigo de Sofia
+Leonel amigo de Gustavo
+Sofia amiga de Eduardo
+Adrian amigo de Saul
+Eduardo publico n=2
+Sofia publico n=2
