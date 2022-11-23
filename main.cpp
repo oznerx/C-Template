@@ -1,7 +1,8 @@
 /*
-Ozner Axel Leyva Mariscal
-A01742377
-Mini Reto 2
+    Ozner Axel Leyva Mariscal
+    A01742377
+    Mini Reto 2
+    22 de Noviembre del 2022
 */
 
 
@@ -41,13 +42,13 @@ public:
 
 class Graph {
 
-    unordered_map <string, vector<string>> adjacencyList; // Graph representation
-
+    unordered_map <string, vector<string>> adjacencyList;
     int numVertex;
     int numEdges;
 
 	public:
 
+    /* Constructor de grafo */
     Graph(int numVertex, int numEdges, vector<Edge> edges) {
 
         this->numEdges = numEdges;
@@ -68,14 +69,12 @@ class Graph {
 
     }
 
-    /* 
-        Gets the levels and how many nodes infected, given a startNode.
-
-        Time complexity: O (n + e) where n is the number of nodes and e the number of edges
-        Space complexity: (n)
-        
-        Param: integer start node for getting amount infected
-        Return: integer of the amount of infected nodes by start node 
+    /*
+    Imprime que amigos pueden ver una publicación a partir de un nombre (nodo inicial) y la profundidad
+    @Param: (string startNode) nodo del cual empezar la búsqueda de la publicación , (int n) número de la profundidad
+    Salida: nada
+    Complejidad de tiempo: O(V + E) siendo V el número de vértices y E el número de aristas
+    Complejidad de espacio: O(V) siendo V el número de vértices
     */
     void post(string startNode, int n) {
 
@@ -156,6 +155,7 @@ class Graph {
 
 };
 
+
 void read(string inputFilePath, vector<Edge> &edges, unordered_map<string, string> &inputs, int &numVertex, int &numEdges) {
     
     ifstream inputFile(inputFilePath);
@@ -173,7 +173,6 @@ void read(string inputFilePath, vector<Edge> &edges, unordered_map<string, strin
             break;
         }
 
-        //cout << x << "->" << y << "\n";
         Edge *edge = new Edge(x,y);
         edges.push_back(*edge);
         e++;
@@ -246,4 +245,12 @@ int main() {
         graph4.post(k.first, stoi(k.second));
     }
     std::cout << "\n";
+
 }
+
+/*
+Referencias:
+
+    GeeksforGeeks. (2022). Substring in C++. https://www.geeksforgeeks.org/substring-in-cpp.
+
+*/
